@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">MTG Insight</string>
+    <string name="generic_card">generic_card_text</string>
+    <string name="generic_power_toughness">P / T</string>
+    <string name="generic_converted_mana_cost">CMC</string>
+    <string name="title_activity_card_demo">CardDemoActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 </resources>

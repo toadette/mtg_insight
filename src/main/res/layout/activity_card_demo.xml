@@ -1,0 +1,77 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:components="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/nameEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:showDividers="middle"
+        android:divider="@drawable/empty_tall_divider"
+        android:padding="40dp">
+
+        <de.avalax.mtg_insight.presentation.card.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            components:name="Scion of Ugin"
+            components:converted_mana_cost="6" />
+
+        <de.avalax.mtg_insight.presentation.card.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            components:background="@drawable/window_white"
+            components:window="@drawable/color_white"
+            components:name="Anafenza, Kin-Tree Spirit"
+            components:converted_mana_cost="WW" />
+
+        <de.avalax.mtg_insight.presentation.card.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            components:background="@drawable/window_blue"
+            components:window="@drawable/color_blue"
+            components:name="Shorecrasher Elemental"
+            components:converted_mana_cost="UUU" />
+
+        <de.avalax.mtg_insight.presentation.card.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            components:background="@drawable/window_red"
+            components:window="@drawable/color_red"
+            components:name="Zurgo Bellstriker"
+            components:converted_mana_cost="R"/>
+
+        <de.avalax.mtg_insight.presentation.card.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            components:background="@drawable/window_green"
+            components:window="@drawable/color_green"
+            components:name="Surrak, the Hunt Caller"
+            components:converted_mana_cost="2GG" />
+
+        <de.avalax.mtg_insight.presentation.card.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            components:background="@drawable/window_black"
+            components:window="@drawable/color_black"
+            components:name="Sidisi, Undead Vizier"
+            components:converted_mana_cost="3BB" />
+
+        <de.avalax.mtg_insight.presentation.card.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            components:background="@drawable/window_artifact"
+            components:window="@drawable/color_colorless"
+            components:name="Vial of Dragonfire"
+            components:converted_mana_cost="2" />
+
+        <de.avalax.mtg_insight.presentation.card.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            components:background="@drawable/window_multicolor"
+            components:window="@drawable/color_multicolor"
+            components:name="Narset Transcendent"
+            components:converted_mana_cost="2WU"/>
+    </LinearLayout>
+</ScrollView>

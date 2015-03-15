@@ -7,6 +7,11 @@ import de.avalax.mtg_insight.domain.model.card.Card;
 
 public class BasicDeck implements Deck {
     @Override
+    public Deckname name() {
+        throw new RuntimeException("Not implemented");
+    }
+
+    @Override
     public List<Card> cardsOfDeck() {
         throw new RuntimeException("Not implemented");
     }

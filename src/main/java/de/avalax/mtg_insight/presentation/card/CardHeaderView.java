@@ -10,28 +10,28 @@ import android.widget.TextView;
 import de.avalax.mtg_insight.R;
 
 
-public class CardView extends LinearLayout {
+public class CardHeaderView extends LinearLayout {
     private View background;
     private View window;
     private TextView name;
     private TextView convertedManaCost;
     private int count;
 
-    public CardView(Context context) {
+    public CardHeaderView(Context context) {
         super(context);
         init(context);
         count = 1;
         addCountToCardView();
     }
 
-    public CardView(Context context, AttributeSet attrs) {
+    public CardHeaderView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
         attributs(attrs);
         addCountToCardView();
     }
 
-    public CardView(Context context, AttributeSet attrs, int defStyle) {
+    public CardHeaderView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(context);
         attributs(attrs);
@@ -40,7 +40,6 @@ public class CardView extends LinearLayout {
 
     private void init(Context context) {
         inflate(context, R.layout.fragment_single_card, this);
-        setOrientation(VERTICAL);
         background = findViewById(R.id.cardBackground);
         window = findViewById(R.id.cardWindow);
         name = (TextView) findViewById(R.id.name);
@@ -66,8 +65,6 @@ public class CardView extends LinearLayout {
     }
 
     private void addCountToCardView() {
-        for (int i=1;i<count;i++) {
-            addView(new CardHeaderView(getContext()));
-        }
+        name.setText(String.valueOf(count) + " " + name.getText());
     }
 }

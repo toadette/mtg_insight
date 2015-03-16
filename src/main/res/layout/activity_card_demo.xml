@@ -40,7 +40,7 @@
             components:background="@drawable/window_red"
             components:window="@drawable/color_red"
             components:name="Zurgo Bellstriker"
-            components:converted_mana_cost="R"/>
+            components:converted_mana_cost="R" />
 
         <de.avalax.mtg_insight.presentation.card.CardView
             android:layout_width="wrap_content"
@@ -56,7 +56,8 @@
             components:background="@drawable/window_black"
             components:window="@drawable/color_black"
             components:name="Sidisi, Undead Vizier"
-            components:converted_mana_cost="3BB" />
+            components:converted_mana_cost="3BB"
+            components:count="2" />
 
         <de.avalax.mtg_insight.presentation.card.CardView
             android:layout_width="wrap_content"
@@ -64,7 +65,8 @@
             components:background="@drawable/window_artifact"
             components:window="@drawable/color_colorless"
             components:name="Vial of Dragonfire"
-            components:converted_mana_cost="2" />
+            components:converted_mana_cost="2"
+            components:count="3" />
 
         <de.avalax.mtg_insight.presentation.card.CardView
             android:layout_width="wrap_content"
@@ -72,6 +74,7 @@
             components:background="@drawable/window_multicolor"
             components:window="@drawable/color_multicolor"
             components:name="Narset Transcendent"
-            components:converted_mana_cost="2WU"/>
+            components:converted_mana_cost="2WU"
+            components:count="4" />
     </LinearLayout>
 </ScrollView>

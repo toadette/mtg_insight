@@ -1,0 +1,136 @@
+evaluationDependsOn(":domain")
+evaluationDependsOn(":port")
+evaluationDependsOn(":application")
+
+apply plugin: 'android-sdk-manager'
+apply plugin: 'com.android.application'
+apply plugin: 'com.github.ben-manes.versions'
+
+android {
+    sourceSets {
+        androidTest.java.srcDirs = ['src/test/java']
+    }
+    packagingOptions {
+        exclude 'LICENSE.txt'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE'
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+    compileSdkVersion 22
+    buildToolsVersion "22.0.0"
+    defaultConfig {
+        applicationId "de.avalax.mtg_insight"
+        minSdkVersion 17
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0"
+    }
+    if (System.getenv("KEYSTORE") && new File(System.getenv("KEYSTORE")).exists()) {
+        signingConfigs {
+            release {
+                storeFile file(System.getenv("KEYSTORE"))
+                storePassword System.getenv("KEYSTORE_PASSWORD")
+                keyAlias System.getenv("KEY_ALIAS")
+                keyPassword System.getenv("KEY_PASSWORD")
+            }
+        }
+    } else {
+        println 'KEYSTORE not set -> release build will not signed!'
+    }
+    buildTypes {
+        debug {
+            debuggable true
+            minifyEnabled false
+            testCoverageEnabled true
+        }
+        if (System.getenv("KEYSTORE") && new File(System.getenv("KEYSTORE")).exists()) {
+            release {
+                debuggable false
+                minifyEnabled true
+                zipAlignEnabled true
+                proguardFiles "proguard-rules.pro"
+                signingConfig signingConfigs.release
+            }
+        }
+    }
+}
+
+dependencies {
+    provided 'com.squareup.dagger:dagger-compiler:1.2.2'
+
+	compile project(':domain')
+	compile project(':port')
+	compile project(':application')
+    compile 'com.android.support:support-v4:22.0.0'
+    compile 'com.squareup.dagger:dagger:1.2.2'
+    compile 'com.jakewharton:butterknife:6.1.0'
+	
+	testCompile 'junit:junit:4.12'
+    testCompile 'org.hamcrest:hamcrest-all:1.3'
+    testCompile 'org.mockito:mockito-all:1.10.19'
+    testCompile 'de.bechte.junit:junit-hierarchicalcontextrunner:4.12.0'
+    testCompile('org.robolectric:robolectric:2.4') {
+        exclude module: 'commons-logging'
+        exclude module: 'httpclient'
+    }
+}
+
+apply plugin: 'jacoco'
+
+jacoco {
+    toolVersion = "0.7.1.201405082137"
+}
+
+def coverageSourceDirs = [
+        'src/main/java'
+]
+
+task jacocoTestReport(type: JacocoReport, dependsOn: "testDebug") {
+    group = "Reporting"
+
+    description = "Generate Jacoco coverage reports"
+
+    classDirectories = fileTree(
+            dir: 'build/intermediates/classes/debug',
+            excludes: ['**/R.class',
+                       '**/R$*.class',
+                       '**/*$ViewInjector*.*',
+                       '**/BuildConfig.*',
+                       '**/Manifest*.*',
+                       '**/*InjectAdapter*.class',
+                       '**/*$ModuleAdapter*.class',
+                       '**/*Application*.class',
+                       '**/*Module.class',
+                       '**/*Fragment*.class',
+                       '**/*Activity*.class',
+                       '**/*View.class',
+                       '**/*Listener*.class']
+    )
+
+    additionalSourceDirs = files(coverageSourceDirs)
+    sourceDirectories = files(coverageSourceDirs)
+    executionData = files('build/jacoco/testDebug.exec')
+
+    reports {
+        xml.enabled = true
+        html.enabled = true
+        xml.destination = "build/reports/jacoco/test/jacocoTestReport.xml"
+        html.destination = "build/reports/jacoco/test"
+    }
+
+    doFirst {
+        new File('build/intermediates/classes/').eachFileRecurse { file ->
+            if (file.name.contains('$$')) {
+                file.renameTo(file.path.replace('$$', '$'))
+            }
+        }
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.2.1'
+}

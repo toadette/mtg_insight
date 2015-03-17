@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="stage_background">#ffffff</color>
-    <color name="colorless_background">#5C6063</color>
+    <color name="stroke">#000000</color>
+    <color name="primary_colorless">#5C6063</color>
+    <color name="primary_artifact">#92B0BC</color>
+    <color name="primary_multicolor">#C7A245</color>
+    <color name="primary_black">#2C3327</color>
+    <color name="primary_blue">#109AD4</color>
+    <color name="primary_green">#3E7952</color>
+    <color name="primary_red">#C22A1E</color>
+    <color name="primary_white">#DBD3BB</color>
+    <color name="secondary_colorless">#D7D0CD</color>
+    <color name="secondary_multicolor">#ECECEA</color>
+    <color name="secondary_black">#CDC3C1</color>
+    <color name="secondary_blue">#ABE1FA</color>
+    <color name="secondary_green">#9CD4AF</color>
+    <color name="secondary_red">#FAAC90</color>
+    <color name="secondary_white">#FFFCD7</color>
 </resources>

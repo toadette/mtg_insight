@@ -42,7 +42,7 @@ public class CardHeaderView extends LinearLayout {
             convertedManaCost.setText(a.getString(R.styleable.CardView_converted_mana_cost));
         }
         if (a.getDrawable(R.styleable.CardView_background) != null) {
-            background.setBackground(getResources().getDrawable(R.drawable.header_colorless));
+            background.setBackground(getResources().getDrawable(R.drawable.header_multicolor));
         }
         a.recycle();
     }

@@ -21,40 +21,40 @@
         <de.avalax.mtg_insight.presentation.card.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            components:background="@drawable/window_white"
-            components:window="@drawable/color_white"
+            components:background="@drawable/background_white"
+            components:window="@drawable/window_white"
             components:name="Anafenza, Kin-Tree Spirit"
             components:converted_mana_cost="WW" />
 
         <de.avalax.mtg_insight.presentation.card.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            components:background="@drawable/window_blue"
-            components:window="@drawable/color_blue"
+            components:background="@drawable/background_blue"
+            components:window="@drawable/window_blue"
             components:name="Shorecrasher Elemental"
             components:converted_mana_cost="UUU" />
 
         <de.avalax.mtg_insight.presentation.card.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            components:background="@drawable/window_red"
-            components:window="@drawable/color_red"
+            components:background="@drawable/background_red"
+            components:window="@drawable/window_red"
             components:name="Zurgo Bellstriker"
             components:converted_mana_cost="R" />
 
         <de.avalax.mtg_insight.presentation.card.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            components:background="@drawable/window_green"
-            components:window="@drawable/color_green"
+            components:background="@drawable/background_green"
+            components:window="@drawable/window_green"
             components:name="Surrak, the Hunt Caller"
             components:converted_mana_cost="2GG" />
 
         <de.avalax.mtg_insight.presentation.card.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            components:background="@drawable/window_black"
-            components:window="@drawable/color_black"
+            components:background="@drawable/background_black"
+            components:window="@drawable/window_black"
             components:name="Sidisi, Undead Vizier"
             components:converted_mana_cost="3BB"
             components:count="2" />
@@ -62,8 +62,8 @@
         <de.avalax.mtg_insight.presentation.card.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            components:background="@drawable/window_artifact"
-            components:window="@drawable/color_colorless"
+            components:background="@drawable/background_artifact"
+            components:window="@drawable/window_colorless"
             components:name="Vial of Dragonfire"
             components:converted_mana_cost="2"
             components:count="3" />
@@ -71,8 +71,8 @@
         <de.avalax.mtg_insight.presentation.card.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            components:background="@drawable/window_multicolor"
-            components:window="@drawable/color_multicolor"
+            components:background="@drawable/background_multicolor"
+            components:window="@drawable/window_multicolor"
             components:name="Narset Transcendent"
             components:converted_mana_cost="2WU"
             components:count="4" />

@@ -21,25 +21,24 @@ public class CardView extends LinearLayout {
         super(context);
         init(context);
         count = 1;
-        addCountToCardView();
     }
 
     public CardView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
         attributs(attrs);
-        addCountToCardView();
+        addCountToCardView(attrs);
     }
 
     public CardView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(context);
         attributs(attrs);
-        addCountToCardView();
+        addCountToCardView(attrs);
     }
 
     private void init(Context context) {
-        inflate(context, R.layout.fragment_single_card, this);
+        inflate(context, R.layout.fragment_card, this);
         setOrientation(VERTICAL);
         background = findViewById(R.id.cardBackground);
         window = findViewById(R.id.cardWindow);
@@ -65,9 +64,9 @@ public class CardView extends LinearLayout {
         a.recycle();
     }
 
-    private void addCountToCardView() {
-        for (int i=1;i<count;i++) {
-            addView(new CardHeaderView(getContext()));
+    private void addCountToCardView(AttributeSet attrs) {
+        for (int i = 1; i < count; i++) {
+            addView(new CardHeaderView(getContext(), attrs), 0);
         }
     }
 }

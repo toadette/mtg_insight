@@ -11,6 +11,7 @@
     <color name="primary_red">#C22A1E</color>
     <color name="primary_white">#DBD3BB</color>
     <color name="secondary_colorless">#D7D0CD</color>
+    <color name="secondary_artifact">#D7D0CD</color>
     <color name="secondary_multicolor">#ECECEA</color>
     <color name="secondary_black">#CDC3C1</color>
     <color name="secondary_blue">#ABE1FA</color>

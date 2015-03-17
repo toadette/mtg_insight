@@ -6,6 +6,6 @@
         <attr name="converted_mana_cost" format="string" />
         <attr name="window" format="color" />
         <attr name="background" format="color" />
-        <attr name="fill_background" format="boolean" />
+        <attr name="card_background" format="color" />
     </declare-styleable>
 </resources>

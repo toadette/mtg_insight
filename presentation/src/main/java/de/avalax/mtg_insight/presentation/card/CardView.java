@@ -61,12 +61,15 @@ public class CardView extends LinearLayout {
             window.setBackground(a.getDrawable(R.styleable.CardView_window));
         }
         count = a.getInteger(R.styleable.CardView_count, 1);
+        if (count > 1) {
+            setBackground(getResources().getDrawable(R.drawable.card_background_colorless));
+        }
         a.recycle();
     }
 
     private void addCountToCardView(AttributeSet attrs) {
         for (int i = 1; i < count; i++) {
-            addView(new CardHeaderView(getContext(), attrs), 0);
+            addView(new CardHeaderView(getContext(), attrs, count-i), 0);
         }
     }
 }

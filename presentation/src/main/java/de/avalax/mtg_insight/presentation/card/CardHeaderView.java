@@ -11,23 +11,14 @@ import de.avalax.mtg_insight.R;
 
 
 public class CardHeaderView extends LinearLayout {
+    private final int headerNumber;
     private View background;
     private TextView name;
     private TextView convertedManaCost;
 
-    public CardHeaderView(Context context) {
-        super(context);
-        init(context);
-    }
-
-    public CardHeaderView(Context context, AttributeSet attrs) {
+    public CardHeaderView(Context context, AttributeSet attrs, int headerNumber) {
         super(context, attrs);
-        init(context);
-        attributs(attrs);
-    }
-
-    public CardHeaderView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
+        this.headerNumber = headerNumber;
         init(context);
         attributs(attrs);
     }
@@ -37,6 +28,9 @@ public class CardHeaderView extends LinearLayout {
         background = findViewById(R.id.cardBackground);
         name = (TextView) findViewById(R.id.name);
         convertedManaCost = (TextView) findViewById(R.id.converted_mana_cost);
+        if (headerNumber > 1) {
+            setBackground(getResources().getDrawable(R.drawable.card_background_colorless));
+        }
     }
 
     private void attributs(AttributeSet attrs) {
@@ -48,7 +42,7 @@ public class CardHeaderView extends LinearLayout {
             convertedManaCost.setText(a.getString(R.styleable.CardView_converted_mana_cost));
         }
         if (a.getDrawable(R.styleable.CardView_background) != null) {
-            background.setBackground(a.getDrawable(R.styleable.CardView_background));
+            background.setBackground(getResources().getDrawable(R.drawable.header_colorless));
         }
         a.recycle();
     }

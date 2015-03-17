@@ -9,6 +9,8 @@ public interface Card {
 
     Image image();
 
+    int count();
+
     List<CardColor> colorOfCard();
 
     List<ManaCost> convertedManaCost();

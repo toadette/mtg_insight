@@ -5,23 +5,44 @@ import java.util.List;
 import de.avalax.mtg_insight.domain.model.mana.ManaCost;
 
 public class BasicCard implements Card {
+
+    private final String name;
+    private final Image image;
+    private final List<CardColor> cardColors;
+    private final List<ManaCost> convertedManaCost;
+    private int count;
+
+    public BasicCard(String name, Image image, List<CardColor> cardColors, List<ManaCost> convertedManaCost, int count) {
+
+        this.name = name;
+        this.image = image;
+        this.cardColors = cardColors;
+        this.convertedManaCost = convertedManaCost;
+        this.count = count;
+    }
+
     @Override
     public String name() {
-        throw new RuntimeException("Not implemented");
+        return name;
     }
 
     @Override
     public Image image() {
-        throw new RuntimeException("Not implemented");
+        return image;
+    }
+
+    @Override
+    public int count() {
+        return count;
     }
 
     @Override
     public List<CardColor> colorOfCard() {
-        throw new RuntimeException("Not implemented");
+        return cardColors;
     }
 
     @Override
     public List<ManaCost> convertedManaCost() {
-        throw new RuntimeException("Not implemented");
+        return convertedManaCost;
     }
 }

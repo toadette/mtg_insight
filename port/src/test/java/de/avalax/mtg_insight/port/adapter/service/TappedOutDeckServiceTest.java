@@ -8,18 +8,19 @@ import org.junit.Test;
 import java.io.FileReader;
 import java.util.List;
 
+import de.avalax.mtg_insight.domain.model.deck.Deck;
 import de.avalax.mtg_insight.domain.model.deck.Deckname;
 
 import static org.junit.Assert.*;
 
 public class TappedOutDeckServiceTest {
 
-    private String url;
+    private String deckname;
     private TappedOutDeckService tappedOutDeckService;
     @Before
     public void setUp() throws Exception {
-        url="http://tappedout.net/mtg-decks/from-the-grave-to-the-cradle/?fmt=txt";
-        tappedOutDeckService=new TappedOutDeckService(url);
+        deckname="from-the-grave-to-the-cradle";
+        tappedOutDeckService=new TappedOutDeckService(deckname);
     }
 
     @After
@@ -29,12 +30,15 @@ public class TappedOutDeckServiceTest {
 
     @Test
     public void testDeckFromDeckname() throws Exception {
-        List<Deckname> decknames = tappedOutDeckService.decknames();
-        //assertThat(decknames.get(0).getName(), Matchers.equalTo("test"));
+        Deck deck = tappedOutDeckService.deckFromDeckname(new Deckname("from-the-grave-to-the-cradle"));
+        assertThat(deck.name().getName(),Matchers.equalTo("from-the-grave-to-the-cradle"));
+        assertThat(deck.cardsOfDeck().size(),Matchers.equalTo(30));
+        assertThat(deck.cardsOfDeck().get(0).name(),Matchers.equalTo("Boneyard Wurm"));
     }
 
     @Test
     public void testDecknames() throws Exception {
-
+        List<Deckname> decknames = tappedOutDeckService.decknames();
+        assertThat(decknames.get(0).getName(), Matchers.equalTo("from-the-grave-to-the-cradle"));
     }
 }

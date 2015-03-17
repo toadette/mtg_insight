@@ -10,44 +10,60 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.avalax.mtg_insight.domain.model.card.Card;
+import de.avalax.mtg_insight.domain.model.card.permanent.creature.Creature;
 import de.avalax.mtg_insight.domain.model.deck.Deck;
 import de.avalax.mtg_insight.domain.model.deck.DeckService;
 import de.avalax.mtg_insight.domain.model.deck.Deckname;
+import de.avalax.mtg_insight.domain.model.deck.StandardDeck;
 
-public class TappedOutDeckService implements DeckService{
+public class TappedOutDeckService implements DeckService {
 
     private List<Deckname> decknames;
-    public TappedOutDeckService(String url){
-        decknames=new ArrayList<>();
-        try {
-            readFromFile(url);
-        }catch(Exception e){
-            throw new RuntimeException("Error TappedOutDeckService: "+e.getCause().getLocalizedMessage());
-        }
+    private final String host = "http://tappedout.net/mtg-decks/";
+    private final String format = "/?fmt=txt";
+
+    public TappedOutDeckService(String deckname) {
+        decknames = new ArrayList<>();
+        decknames.add(new Deckname(deckname));
     }
 
-    private void readFromFile(String uri) throws IOException {
-        URL url= new URL(uri);
-        InputStreamReader inputStreamReader= new InputStreamReader(url.openStream());
-        String line = null;
+    private Deck readFromFile(String name) throws IOException {
+        URL url = new URL(host + name + format);
         BufferedReader reader = null;
-        StringBuilder result=new StringBuilder();
+        List<Card> cardOfDeck = new ArrayList<>();
         try {
+            String line = null;
             reader = new BufferedReader(new InputStreamReader(url.openStream()));
             while ((line = reader.readLine()) != null) {
-                result.append(line);
+                if (line.length() > 0) {
+                    cardOfDeck.add(getCardFromLine(line));
+                }
             }
-            line=result.toString();
         } finally {
             if (reader != null) {
                 reader.close();
             }
         }
-        decknames.add(new Deckname("test "+line));
+        return new StandardDeck(new Deckname(name), cardOfDeck);
     }
+
+    private Card getCardFromLine(String line) {
+        String[] split = line.split("\\t");
+        int count = Integer.valueOf(split[0]);
+        String name= split[1];
+        return new Creature(name,null,null,null,count);
+    }
+
     @Override
-    public Deck deckFromDeckname(Deckname deck) {
-        return null;
+    public Deck deckFromDeckname(Deckname deckname) {
+        Deck deck;
+        try {
+            deck = readFromFile(deckname.getName());
+        } catch (Exception e) {
+            throw new RuntimeException("Error TappedOutDeckService: " + e.getCause().getLocalizedMessage());
+        }
+        return deck;
     }
 
     @Override

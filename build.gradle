@@ -1,3 +1,5 @@
+apply plugin: 'java'
+	
 buildscript {
     repositories {
         jcenter()
@@ -10,11 +12,35 @@ buildscript {
 }
 
 allprojects {
+
     repositories {
         jcenter()
     }
 }
 
+subprojects {
+	apply plugin: 'jacoco'
+
+	jacoco.toolVersion = "0.7.2.201409121644"
+}
+
 task wrapper(type: Wrapper) {
     gradleVersion = '2.2.1'
+}
+
+task jacocoTestReport(type: JacocoReport, dependsOn: test) {
+    group = "Reporting"
+    description = "Generate Jacoco coverage reports"
+	
+    classDirectories = files("${project.buildDir}/classes")
+
+    sourceDirectories = files('src/main/java')
+    executionData = files("${project.buildDir}/jacoco/testDebug.exec")
+
+    reports {
+        xml.enabled = true
+        html.enabled = true
+        xml.destination = "${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml"
+        html.destination = "${project.buildDir}/reports/jacoco/test"
+    }
 }

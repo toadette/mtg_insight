@@ -79,58 +79,42 @@ dependencies {
     }
 }
 
-apply plugin: 'jacoco'
-
-jacoco {
-    toolVersion = "0.7.1.201405082137"
-}
-
-def coverageSourceDirs = [
-        'src/main/java'
-]
-
 task jacocoTestReport(type: JacocoReport, dependsOn: "testDebug") {
     group = "Reporting"
-
-    description = "Generate Jacoco coverage reports"
-
+    description = "Generate Android Jacoco coverage reports"
+	
     classDirectories = fileTree(
-            dir: 'build/intermediates/classes/debug',
-            excludes: ['**/R.class',
-                       '**/R$*.class',
-                       '**/*$ViewInjector*.*',
-                       '**/BuildConfig.*',
-                       '**/Manifest*.*',
-                       '**/*InjectAdapter*.class',
-                       '**/*$ModuleAdapter*.class',
-                       '**/*Application*.class',
-                       '**/*Module.class',
-                       '**/*Fragment*.class',
-                       '**/*Activity*.class',
-                       '**/*View.class',
-                       '**/*Listener*.class']
+		dir: "${project.buildDir}/intermediates/classes/debug",
+		excludes: ['**/R.class',
+				   '**/R$*.class',
+				   '**/*$ViewInjector*.*',
+				   '**/BuildConfig.*',
+				   '**/Manifest*.*',
+				   '**/*InjectAdapter*.class',
+				   '**/*$ModuleAdapter*.class',
+				   '**/*Application*.class',
+				   '**/*Module.class',
+				   '**/*Fragment*.class',
+				   '**/*Activity*.class',
+				   '**/*View.class',
+				   '**/*Listener*.class']
     )
 
-    additionalSourceDirs = files(coverageSourceDirs)
-    sourceDirectories = files(coverageSourceDirs)
-    executionData = files('build/jacoco/testDebug.exec')
+    sourceDirectories = files('src/main/java')
+    executionData = files("${project.buildDir}/jacoco/testDebug.exec")
 
     reports {
         xml.enabled = true
         html.enabled = true
-        xml.destination = "build/reports/jacoco/test/jacocoTestReport.xml"
-        html.destination = "build/reports/jacoco/test"
+        xml.destination = "${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml"
+        html.destination = "${project.buildDir}/reports/jacoco/test"
     }
 
     doFirst {
-        new File('build/intermediates/classes/').eachFileRecurse { file ->
+        new File("${project.buildDir}/intermediates/classes").eachFileRecurse { file ->
             if (file.name.contains('$$')) {
                 file.renameTo(file.path.replace('$$', '$'))
             }
         }
     }
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.2.1'
 }

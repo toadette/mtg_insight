@@ -8,6 +8,7 @@ import org.junit.Test;
 import java.io.FileReader;
 import java.util.List;
 
+import de.avalax.mtg_insight.domain.model.card.Card;
 import de.avalax.mtg_insight.domain.model.deck.Deck;
 import de.avalax.mtg_insight.domain.model.deck.Deckname;
 
@@ -33,13 +34,11 @@ public class TappedOutDeckServiceTest {
     public void testDeckFromDeckname() throws Exception {
         Deck deck = tappedOutDeckService.deckFromDeckname(new Deckname("from-the-grave-to-the-cradle"));
         assertThat(deck.name().getName(), Matchers.equalTo("from-the-grave-to-the-cradle"));
-        assertThat(deck.cardsOfDeck().size(), Matchers.equalTo(30));
+        assertThat(deck.cardsOfDeck().size(), Matchers.equalTo(61));
         assertThat(deck.cardsOfDeck().get(0).name(), Matchers.equalTo("Boneyard Wurm"));
-        assertThat(deck.cardsOfDeck().get(0).count(), Matchers.equalTo(2));
-        assertThat(deck.cardsOfDeck().get(8).name(), Matchers.equalTo("Elvish Mystic"));
-        assertThat(deck.cardsOfDeck().get(8).count(), Matchers.equalTo(2));
-        assertThat(deck.cardsOfDeck().get(23).name(), Matchers.equalTo("Swamp"));
-        assertThat(deck.cardsOfDeck().get(23).count(), Matchers.equalTo(5));
+        assertThat(deck.cardsOfDeck().get(1).name(), Matchers.equalTo("Boneyard Wurm"));
+        assertThat(deck.cardsOfDeck().get(13).name(), Matchers.equalTo("Elvish Mystic"));
+        assertThat(deck.cardsOfDeck().get(45).name(), Matchers.equalTo("Swamp"));
     }
 
     @Test

@@ -8,7 +8,7 @@ import de.avalax.mtg_insight.domain.model.card.permanent.Permanent;
 import de.avalax.mtg_insight.domain.model.mana.ManaCost;
 
 public class Planeswalker  extends Permanent {
-    public Planeswalker(String name, Image image, List<CardColor> cardColors, List<ManaCost> convertedManaCost, int count) {
-        super(name, image, cardColors, convertedManaCost, count);
+    public Planeswalker(String name, Image image, List<CardColor> cardColors, List<ManaCost> convertedManaCost) {
+        super(name, image, cardColors, convertedManaCost);
     }
 }

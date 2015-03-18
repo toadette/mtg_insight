@@ -9,7 +9,7 @@ import de.avalax.mtg_insight.domain.model.mana.ManaCost;
 
 public class Permanent extends BasicCard {
 
-    public Permanent(String name, Image image, List<CardColor> cardColors, List<ManaCost> convertedManaCost, int count) {
-        super(name, image, cardColors, convertedManaCost, count);
+    public Permanent(String name, Image image, List<CardColor> cardColors, List<ManaCost> convertedManaCost) {
+        super(name, image, cardColors, convertedManaCost);
     }
 }

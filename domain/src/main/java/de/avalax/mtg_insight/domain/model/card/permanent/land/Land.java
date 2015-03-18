@@ -8,7 +8,7 @@ import de.avalax.mtg_insight.domain.model.card.permanent.Permanent;
 import de.avalax.mtg_insight.domain.model.mana.ManaCost;
 
 public class Land extends Permanent {
-    public Land(String name, Image image, List<CardColor> cardColors, List<ManaCost> convertedManaCost, int count) {
-        super(name, image, cardColors, convertedManaCost, count);
+    public Land(String name, Image image, List<CardColor> cardColors, List<ManaCost> convertedManaCost) {
+        super(name, image, cardColors, convertedManaCost);
     }
 }

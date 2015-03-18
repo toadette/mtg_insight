@@ -37,7 +37,7 @@ public class TappedOutDeckService implements DeckService {
             reader = new BufferedReader(new InputStreamReader(url.openStream()));
             while ((line = reader.readLine()) != null) {
                 if (line.length() > 0) {
-                    cardOfDeck.add(getCardFromLine(line));
+                    addCardFromLine(line, cardOfDeck);
                 }
             }
         } finally {
@@ -48,11 +48,13 @@ public class TappedOutDeckService implements DeckService {
         return new StandardDeck(new Deckname(name), cardOfDeck);
     }
 
-    private Card getCardFromLine(String line) {
+    private void addCardFromLine(String line, List<Card> cardOfDeck) {
         String[] split = line.split("\\t");
         int count = Integer.valueOf(split[0]);
-        String name= split[1];
-        return new Creature(name,null,null,null,count);
+        String name = split[1];
+        for (int i = 0; i < count; i++) {
+            cardOfDeck.add(new Creature(name,null,null,null));
+        }
     }
 
     @Override

@@ -7,10 +7,15 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import de.avalax.mtg_insight.application.launcher.LauncherApplicationService;
+import de.avalax.mtg_insight.presentation.card.CardHeaderView;
+import de.avalax.mtg_insight.presentation.card.CardRepresentationToDrawableMapping;
+import de.avalax.mtg_insight.presentation.card.CardView;
 import de.avalax.mtg_insight.presentation.launcher.LauncherFragment;
 
 @Module(injects = {
-        LauncherFragment.class
+        LauncherFragment.class,
+        CardView.class,
+        CardHeaderView.class
 })
 public class MtgInsightModule {
     private Context context;
@@ -23,5 +28,11 @@ public class MtgInsightModule {
     @Singleton
     LauncherApplicationService provideManageWorkout(){
         return new LauncherApplicationService();
+    }
+
+    @Provides
+    @Singleton
+    CardRepresentationToDrawableMapping provideCardRepresentationToDrawableMapping(){
+        return new CardRepresentationToDrawableMapping();
     }
 }

@@ -7,31 +7,35 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import javax.inject.Inject;
+
 import de.avalax.mtg_insight.R;
+import de.avalax.mtg_insight.application.representation.CardRepresentation;
+import de.avalax.mtg_insight.presentation.MtgInsightApplication;
 
 
 public class CardView extends LinearLayout {
+    @Inject
+    protected CardRepresentationToDrawableMapping cardRepresentationToDrawableMapping;
+
     private View background;
     private View window;
     private TextView name;
     private TextView convertedManaCost;
     private int count;
 
-    public CardView(Context context) {
+    public CardView(Context context, CardRepresentation cardRepresentation) {
         super(context);
+        ((MtgInsightApplication) context.getApplicationContext()).inject(this);
         init(context);
-        count = 1;
+        attributes(cardRepresentation);
+        addCountToCardView(cardRepresentation);
     }
 
+    @Deprecated
     public CardView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(context);
-        attributs(attrs);
-        addCountToCardView(attrs);
-    }
-
-    public CardView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
+        ((MtgInsightApplication) context.getApplicationContext()).inject(this);
         init(context);
         attributs(attrs);
         addCountToCardView(attrs);
@@ -46,6 +50,20 @@ public class CardView extends LinearLayout {
         convertedManaCost = (TextView) findViewById(R.id.converted_mana_cost);
     }
 
+    private void attributes(CardRepresentation cardRepresentation) {
+        name.setText(cardRepresentation.name());
+        convertedManaCost.setText(cardRepresentation.convertedManaCost());
+        int id = cardRepresentationToDrawableMapping.backgroundFrom(cardRepresentation);
+        background.setBackground(getResources().getDrawable(id));
+        int windowBackgroundId = cardRepresentationToDrawableMapping.windowBackgroundFrom(cardRepresentation);
+        window.setBackground(getResources().getDrawable(windowBackgroundId));
+        if (cardRepresentation.count() > 1) {
+            int cardBackgroundId = cardRepresentationToDrawableMapping.cardBackgroundFrom(cardRepresentation);
+            setBackground(getResources().getDrawable(cardBackgroundId));
+        }
+    }
+
+    @Deprecated
     private void attributs(AttributeSet attrs) {
         TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.CardView);
         if (a.getString(R.styleable.CardView_name) != null) {
@@ -62,14 +80,27 @@ public class CardView extends LinearLayout {
         }
         count = a.getInteger(R.styleable.CardView_count, 1);
         if (count > 1 && a.getDrawable(R.styleable.CardView_card_background) != null) {
-            setBackground(a.getDrawable(R.styleable.CardView_card_background));
+            int cardBackgroundId = cardRepresentationToDrawableMapping.cardBackgroundFrom(null);
+            setBackground(getResources().getDrawable(cardBackgroundId));
+            //setBackground(a.getDrawable(R.styleable.CardView_card_background));
         }
         a.recycle();
     }
 
+    @Deprecated
     private void addCountToCardView(AttributeSet attrs) {
         for (int i = 1; i < count; i++) {
-            addView(new CardHeaderView(getContext(), attrs, count-i), 0);
+            addView(new CardHeaderView(getContext(), attrs, count - i), 0);
+        }
+    }
+
+    private void addCountToCardView(CardRepresentation cardRepresentation) {
+        for (int i = 1; i < cardRepresentation.count(); i++) {
+            CardHeaderView cardHeaderView = new CardHeaderView(getContext(), cardRepresentation, cardRepresentation.count() - i);
+            cardHeaderView.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT));
+            addView(cardHeaderView, 0);
         }
     }
 }

@@ -23,7 +23,7 @@ public class TappedOutDeckService implements DeckService {
     private final String host = "http://tappedout.net/mtg-decks/";
     private final String format = "/?fmt=txt";
 
-    public TappedOutDeckService(String deckname) {
+    public TappedOutDeckService(String deckname, CardService cardService) {
         decknames = new ArrayList<>();
         decknames.add(new Deckname(deckname));
     }

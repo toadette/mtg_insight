@@ -22,7 +22,7 @@ public class TappedOutDeckServiceTest {
     @Before
     public void setUp() throws Exception {
         deckname = "from-the-grave-to-the-cradle";
-        tappedOutDeckService = new TappedOutDeckService(deckname);
+        tappedOutDeckService = new TappedOutDeckService(deckname, new MtgDBCardService());
     }
 
     @After

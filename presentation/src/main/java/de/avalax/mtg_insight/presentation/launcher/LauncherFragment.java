@@ -14,7 +14,7 @@ import butterknife.OnClick;
 import de.avalax.mtg_insight.R;
 import de.avalax.mtg_insight.application.launcher.LauncherApplicationService;
 import de.avalax.mtg_insight.presentation.MtgInsightApplication;
-import de.avalax.mtg_insight.presentation.card.CardDemoActivity;
+import de.avalax.mtg_insight.presentation.card.CardStageActivity;
 
 
 public class LauncherFragment extends Fragment {
@@ -38,7 +38,7 @@ public class LauncherFragment extends Fragment {
 
     @OnClick(R.id.cardDemo)
     protected void cardDemo() {
-        Intent intent = new Intent(getActivity(), CardDemoActivity.class);
+        Intent intent = new Intent(getActivity(), CardStageActivity.class);
         startActivity(intent);
     }
 }

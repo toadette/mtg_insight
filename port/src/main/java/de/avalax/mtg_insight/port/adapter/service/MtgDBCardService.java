@@ -7,25 +7,88 @@ import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import de.avalax.mtg_insight.domain.model.card.Card;
 import de.avalax.mtg_insight.domain.model.card.permanent.creature.Creature;
+import de.avalax.mtg_insight.domain.model.mana.Mana;
+import de.avalax.mtg_insight.domain.model.mana.ManaCost;
 
 public class MtgDBCardService implements CardService {
 
-    private String host = "http://api.mtgdb.info/cards/";
+    public static final String ENCODING = "UTF-8";
+    private final String host = "http://api.mtgdb.info/cards/";
 
     @Override
     public Card cardFromCardname(String cardname) throws IOException, ParseException {
-        String encodedCardname = URLEncoder.encode("Narset, Enlightened Master", "UTF-8");
-        URL cardUrl=new URL(host+encodedCardname);
-        InputStreamReader inputStreamReader = new InputStreamReader(cardUrl.openStream());
-        JSONParser jsonParser = new JSONParser();
-        JSONArray jsonArray = (JSONArray) jsonParser.parse(inputStreamReader);
-        JSONObject jsonObject = (JSONObject) jsonArray.get(0);
-        Card card=new Creature(jsonObject.get("name").toString(),null,null,null);
-        return  card;
+        InputStreamReader inputStreamReader = new InputStreamReader(getCardUrl(cardname).openStream());
+        JSONArray jsonArray = (JSONArray) new JSONParser().parse(inputStreamReader);
+        JSONObject cardFromJson = (JSONObject) jsonArray.get(0);
+        Card card = new Creature(cardFromJson.get("name").toString(), null, null, getConvertedManaCost(cardFromJson));
+        cardFromJson.get("description");
+        cardFromJson.get("type");
+        inputStreamReader.close();
+        return card;
+    }
+
+    private List<ManaCost> getConvertedManaCost(JSONObject cardFromJson) {
+        List<ManaCost> convertedManaCost = new ArrayList<>();
+        String manaCost = cardFromJson.get("manaCost").toString();
+        char[] manaCostArray = manaCost.toCharArray();
+
+        for (int i = 0; i < manaCostArray.length; i++) {
+            String entry = String.valueOf(manaCostArray[i]);
+
+            if (entry.equals("{")) {
+                //TOOD: handle Multicolored
+            } else {
+                List<Mana> manaList = getMana(entry);
+                if(manaList.size()>1){
+                    for(Mana mana:manaList){
+                        convertedManaCost.add(new ManaCost(Arrays.asList(mana)));
+                    }
+                }else {
+                    convertedManaCost.add(new ManaCost(manaList));
+                }
+            }
+        }
+
+        System.out.println("Manacost: " + manaCost);
+        return convertedManaCost;
+    }
+
+    private List<Mana> getMana(String entry) {
+        if (entry.equals("U")) {
+            return Arrays.asList(Mana.BLUE);
+        }
+        if (entry.equals("R")) {
+            return Arrays.asList(Mana.RED);
+        }
+        if (entry.equals("W")) {
+            return Arrays.asList(Mana.WHITE);
+        }
+        if (entry.equals("B")) {
+            return Arrays.asList(Mana.BLACK);
+        }
+        if (entry.equals("G")) {
+            return Arrays.asList(Mana.GREEN);
+        }
+        List<Mana> manaList = new ArrayList<>();
+        int countOfColorlessMana = Integer.parseInt(entry);
+        for (int i = 0; i < countOfColorlessMana; i++) {
+            manaList.add(Mana.COLORLESS);
+        }
+        return manaList;
+        //TODO:phyrexian parsen: 2 Leben oder Farbe-> nur Farbe wichtig
+    }
+
+    private URL getCardUrl(String cardname) throws MalformedURLException, UnsupportedEncodingException {
+        return new URL(host + URLEncoder.encode(cardname, ENCODING));
     }
 }

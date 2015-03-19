@@ -33,6 +33,6 @@ public class MtgInsightModule {
     @Provides
     @Singleton
     CardRepresentationToDrawableMapping provideCardRepresentationToDrawableMapping(){
-        return new CardRepresentationToDrawableMapping();
+        return new CardRepresentationToDrawableMapping(context);
     }
 }

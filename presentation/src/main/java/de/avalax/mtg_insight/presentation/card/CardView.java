@@ -53,13 +53,10 @@ public class CardView extends LinearLayout {
     private void attributes(CardRepresentation cardRepresentation) {
         name.setText(cardRepresentation.name());
         convertedManaCost.setText(cardRepresentation.convertedManaCost());
-        int id = cardRepresentationToDrawableMapping.backgroundFrom(cardRepresentation);
-        background.setBackground(getResources().getDrawable(id));
-        int windowBackgroundId = cardRepresentationToDrawableMapping.windowBackgroundFrom(cardRepresentation);
-        window.setBackground(getResources().getDrawable(windowBackgroundId));
+        background.setBackground(cardRepresentationToDrawableMapping.backgroundFrom(cardRepresentation));
+        window.setBackground(cardRepresentationToDrawableMapping.windowBackgroundFrom(cardRepresentation));
         if (cardRepresentation.count() > 1) {
-            int cardBackgroundId = cardRepresentationToDrawableMapping.cardBackgroundFrom(cardRepresentation);
-            setBackground(getResources().getDrawable(cardBackgroundId));
+            setBackground(cardRepresentationToDrawableMapping.cardBackgroundFrom(cardRepresentation));
         }
     }
 
@@ -80,9 +77,7 @@ public class CardView extends LinearLayout {
         }
         count = a.getInteger(R.styleable.CardView_count, 1);
         if (count > 1 && a.getDrawable(R.styleable.CardView_card_background) != null) {
-            int cardBackgroundId = cardRepresentationToDrawableMapping.cardBackgroundFrom(null);
-            setBackground(getResources().getDrawable(cardBackgroundId));
-            //setBackground(a.getDrawable(R.styleable.CardView_card_background));
+            setBackground(cardRepresentationToDrawableMapping.cardBackgroundFrom(null));
         }
         a.recycle();
     }

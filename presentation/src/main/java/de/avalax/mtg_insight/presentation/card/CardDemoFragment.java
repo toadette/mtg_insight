@@ -1,6 +1,5 @@
 package de.avalax.mtg_insight.presentation.card;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,18 +10,14 @@ import android.widget.LinearLayout;
 import java.util.Collections;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import de.avalax.mtg_insight.R;
 import de.avalax.mtg_insight.application.representation.CardRepresentation;
-import de.avalax.mtg_insight.domain.model.card.Card;
-import de.avalax.mtg_insight.domain.model.card.CardColor;
 import de.avalax.mtg_insight.domain.model.card.Image;
 import de.avalax.mtg_insight.domain.model.card.permanent.creature.Creature;
+import de.avalax.mtg_insight.domain.model.mana.Mana;
 import de.avalax.mtg_insight.domain.model.mana.ManaCost;
-import de.avalax.mtg_insight.presentation.MtgInsightApplication;
 
 public class CardDemoFragment extends Fragment {
     @InjectView(R.id.cardStage)
@@ -44,7 +39,7 @@ public class CardDemoFragment extends Fragment {
 
     private void addDummyCard() {
         String cardName = "name";
-        List<CardColor> cardColors = Collections.<CardColor>emptyList();
+        List<Mana> cardColors = Collections.<Mana>emptyList();
         List<ManaCost> convertedManaCost = Collections.<ManaCost>emptyList();
         Image image = null;
         CardView cardView = new CardView(getActivity(), new CardRepresentation(new Creature(cardName, image, cardColors, convertedManaCost)));

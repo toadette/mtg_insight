@@ -2,6 +2,7 @@ package de.avalax.mtg_insight.presentation.card;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -56,10 +57,10 @@ public class CardHeaderView extends LinearLayout {
             convertedManaCost.setText(a.getString(R.styleable.CardView_converted_mana_cost));
         }
         if (a.getDrawable(R.styleable.CardView_background) != null) {
-            background.setBackground(getResources().getDrawable(R.drawable.header_multicolor));
+            background.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.header_multicolor));
         }
         if (headerNumber > 1) {
-            setBackground(getResources().getDrawable(R.drawable.card_background_colorless));
+            setBackground(ContextCompat.getDrawable(getContext(),R.drawable.card_background_colorless));
         }
         a.recycle();
     }
@@ -67,11 +68,9 @@ public class CardHeaderView extends LinearLayout {
     private void attributs(CardRepresentation cardRepresentation) {
         name.setText(cardRepresentation.name());
         convertedManaCost.setText(cardRepresentation.convertedManaCost());
-        int id = cardRepresentationToDrawableMapping.headerFrom(cardRepresentation);
-        background.setBackground(getResources().getDrawable(id));
+        background.setBackground(cardRepresentationToDrawableMapping.headerFrom(cardRepresentation));
         if (headerNumber > 1) {
-            int cardBackgroundId = cardRepresentationToDrawableMapping.cardBackgroundFrom(cardRepresentation);
-            setBackground(getResources().getDrawable(cardBackgroundId));
+            setBackground(cardRepresentationToDrawableMapping.cardBackgroundFrom(cardRepresentation));
         }
     }
 }

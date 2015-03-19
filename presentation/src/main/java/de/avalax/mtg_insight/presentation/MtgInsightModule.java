@@ -8,7 +8,7 @@ import dagger.Module;
 import dagger.Provides;
 import de.avalax.mtg_insight.application.launcher.LauncherApplicationService;
 import de.avalax.mtg_insight.presentation.card.CardHeaderView;
-import de.avalax.mtg_insight.presentation.card.CardRepresentationToDrawableMapping;
+import de.avalax.mtg_insight.presentation.card.CardRepresentationToDrawable;
 import de.avalax.mtg_insight.presentation.card.CardView;
 import de.avalax.mtg_insight.presentation.launcher.LauncherFragment;
 
@@ -32,7 +32,7 @@ public class MtgInsightModule {
 
     @Provides
     @Singleton
-    CardRepresentationToDrawableMapping provideCardRepresentationToDrawableMapping(){
-        return new CardRepresentationToDrawableMapping(context);
+    CardRepresentationToDrawable provideCardRepresentationToDrawable(){
+        return new CardRepresentationToDrawable(context);
     }
 }

@@ -17,7 +17,7 @@ import de.avalax.mtg_insight.presentation.MtgInsightApplication;
 
 public class CardHeaderView extends LinearLayout {
     @Inject
-    protected CardRepresentationToDrawableMapping cardRepresentationToDrawableMapping;
+    protected CardRepresentationToDrawable cardRepresentationToDrawable;
 
     private final int headerNumber;
     private View background;
@@ -68,9 +68,9 @@ public class CardHeaderView extends LinearLayout {
     private void attributs(CardRepresentation cardRepresentation) {
         name.setText(cardRepresentation.name());
         convertedManaCost.setText(cardRepresentation.convertedManaCost());
-        background.setBackground(cardRepresentationToDrawableMapping.headerFrom(cardRepresentation));
+        background.setBackground(cardRepresentationToDrawable.headerFrom(cardRepresentation));
         if (headerNumber > 1) {
-            setBackground(cardRepresentationToDrawableMapping.cardBackgroundFrom(cardRepresentation));
+            setBackground(cardRepresentationToDrawable.cardBackgroundFrom(cardRepresentation));
         }
     }
 }

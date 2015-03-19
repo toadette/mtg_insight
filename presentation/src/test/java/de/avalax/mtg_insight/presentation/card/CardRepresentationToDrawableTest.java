@@ -27,9 +27,9 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class CardRepresentationToDrawableMappingTest {
+public class CardRepresentationToDrawableTest {
     @InjectMocks
-    private CardRepresentationToDrawableMapping cardRepresentationToDrawableMapping;
+    private CardRepresentationToDrawable cardRepresentationToDrawable;
     @Mock
     private Context context;
     @Mock
@@ -80,9 +80,9 @@ public class CardRepresentationToDrawableMappingTest {
 
     @Test
     public void shouldReturnColorlessBackground() throws Exception {
-        assertThat(cardRepresentationToDrawableMapping.backgroundFrom(null), equalTo(drawable(R.drawable.background_colorless)));
-        assertThat(cardRepresentationToDrawableMapping.backgroundFrom(cardRepresentationFor()), equalTo(drawable(R.drawable.background_colorless)));
-        assertThat(cardRepresentationToDrawableMapping.backgroundFrom(cardRepresentationFor(Mana.COLORLESS)), equalTo(drawable(R.drawable.background_colorless)));
-        //assertThat(cardRepresentationToDrawableMapping.backgroundFrom(cardRepresentationFor(Mana.GREEN)), equalTo(drawable(R.drawable.background_green)));
+        assertThat(cardRepresentationToDrawable.backgroundFrom(null), equalTo(drawable(R.drawable.background_colorless)));
+        assertThat(cardRepresentationToDrawable.backgroundFrom(cardRepresentationFor()), equalTo(drawable(R.drawable.background_colorless)));
+        assertThat(cardRepresentationToDrawable.backgroundFrom(cardRepresentationFor(Mana.COLORLESS)), equalTo(drawable(R.drawable.background_colorless)));
+        assertThat(cardRepresentationToDrawable.backgroundFrom(cardRepresentationFor(Mana.GREEN)), equalTo(drawable(R.drawable.background_green)));
     }
 }

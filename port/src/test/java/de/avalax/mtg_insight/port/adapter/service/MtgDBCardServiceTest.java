@@ -11,7 +11,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import de.avalax.mtg_insight.domain.model.card.Card;
-import de.avalax.mtg_insight.domain.model.card.CardColor;
 import de.avalax.mtg_insight.domain.model.card.permanent.creature.Creature;
 import de.avalax.mtg_insight.domain.model.mana.Mana;
 import de.avalax.mtg_insight.domain.model.mana.ManaCost;

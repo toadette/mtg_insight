@@ -16,7 +16,7 @@ import de.avalax.mtg_insight.presentation.MtgInsightApplication;
 
 public class CardView extends LinearLayout {
     @Inject
-    protected CardRepresentationToDrawableMapping cardRepresentationToDrawableMapping;
+    protected CardRepresentationToDrawable cardRepresentationToDrawable;
 
     private View background;
     private View window;
@@ -53,10 +53,10 @@ public class CardView extends LinearLayout {
     private void attributes(CardRepresentation cardRepresentation) {
         name.setText(cardRepresentation.name());
         convertedManaCost.setText(cardRepresentation.convertedManaCost());
-        background.setBackground(cardRepresentationToDrawableMapping.backgroundFrom(cardRepresentation));
-        window.setBackground(cardRepresentationToDrawableMapping.windowBackgroundFrom(cardRepresentation));
+        background.setBackground(cardRepresentationToDrawable.backgroundFrom(cardRepresentation));
+        window.setBackground(cardRepresentationToDrawable.windowBackgroundFrom(cardRepresentation));
         if (cardRepresentation.count() > 1) {
-            setBackground(cardRepresentationToDrawableMapping.cardBackgroundFrom(cardRepresentation));
+            setBackground(cardRepresentationToDrawable.cardBackgroundFrom(cardRepresentation));
         }
     }
 
@@ -77,7 +77,7 @@ public class CardView extends LinearLayout {
         }
         count = a.getInteger(R.styleable.CardView_count, 1);
         if (count > 1 && a.getDrawable(R.styleable.CardView_card_background) != null) {
-            setBackground(cardRepresentationToDrawableMapping.cardBackgroundFrom(null));
+            setBackground(cardRepresentationToDrawable.cardBackgroundFrom(null));
         }
         a.recycle();
     }

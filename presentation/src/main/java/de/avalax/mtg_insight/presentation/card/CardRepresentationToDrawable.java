@@ -19,19 +19,18 @@ public class CardRepresentationToDrawable {
             return ContextCompat.getDrawable(context, R.drawable.background_colorless);
         }
         switch (cardRepresentation.color()) {
-
             case WHITE:
-
+                return ContextCompat.getDrawable(context, R.drawable.background_white);
             case BLUE:
-
+                return ContextCompat.getDrawable(context, R.drawable.background_blue);
             case BLACK:
-
+                return ContextCompat.getDrawable(context, R.drawable.background_black);
             case RED:
-
+                return ContextCompat.getDrawable(context, R.drawable.background_red);
             case GREEN:
                 return ContextCompat.getDrawable(context, R.drawable.background_green);
             case MULTICOLOR:
-
+                return ContextCompat.getDrawable(context, R.drawable.background_multicolor);
             case COLORLESS:
             default:
                 return ContextCompat.getDrawable(context, R.drawable.background_colorless);
@@ -39,14 +38,71 @@ public class CardRepresentationToDrawable {
     }
 
     public Drawable windowBackgroundFrom(CardRepresentation cardRepresentation) {
-        return ContextCompat.getDrawable(context, R.drawable.window_colorless);
+        if (cardRepresentation == null) {
+            return ContextCompat.getDrawable(context, R.drawable.window_colorless);
+        }
+        switch (cardRepresentation.color()) {
+            case WHITE:
+                return ContextCompat.getDrawable(context, R.drawable.window_white);
+            case BLUE:
+                return ContextCompat.getDrawable(context, R.drawable.window_blue);
+            case BLACK:
+                return ContextCompat.getDrawable(context, R.drawable.window_black);
+            case RED:
+                return ContextCompat.getDrawable(context, R.drawable.window_red);
+            case GREEN:
+                return ContextCompat.getDrawable(context, R.drawable.window_green);
+            case MULTICOLOR:
+                return ContextCompat.getDrawable(context, R.drawable.window_multicolor);
+            case COLORLESS:
+            default:
+                return ContextCompat.getDrawable(context, R.drawable.window_colorless);
+        }
     }
 
     public Drawable cardBackgroundFrom(CardRepresentation cardRepresentation) {
-        return ContextCompat.getDrawable(context, R.drawable.card_background_colorless);
+        if (cardRepresentation == null) {
+            return ContextCompat.getDrawable(context, R.drawable.card_background_colorless);
+        }
+        switch (cardRepresentation.color()) {
+            case WHITE:
+                return ContextCompat.getDrawable(context, R.drawable.card_background_white);
+            case BLUE:
+                return ContextCompat.getDrawable(context, R.drawable.card_background_blue);
+            case BLACK:
+                return ContextCompat.getDrawable(context, R.drawable.card_background_black);
+            case RED:
+                return ContextCompat.getDrawable(context, R.drawable.card_background_red);
+            case GREEN:
+                return ContextCompat.getDrawable(context, R.drawable.card_background_green);
+            case MULTICOLOR:
+                return ContextCompat.getDrawable(context, R.drawable.card_background_multicolor);
+            case COLORLESS:
+            default:
+                return ContextCompat.getDrawable(context, R.drawable.card_background_colorless);
+        }
     }
 
     public Drawable headerFrom(CardRepresentation cardRepresentation) {
-        return ContextCompat.getDrawable(context, R.drawable.header_colorless);
+        if (cardRepresentation == null) {
+            return ContextCompat.getDrawable(context, R.drawable.header_colorless);
+        }
+        switch (cardRepresentation.color()) {
+            case WHITE:
+                return ContextCompat.getDrawable(context, R.drawable.header_white);
+            case BLUE:
+                return ContextCompat.getDrawable(context, R.drawable.header_blue);
+            case BLACK:
+                return ContextCompat.getDrawable(context, R.drawable.header_black);
+            case RED:
+                return ContextCompat.getDrawable(context, R.drawable.header_red);
+            case GREEN:
+                return ContextCompat.getDrawable(context, R.drawable.header_green);
+            case MULTICOLOR:
+                return ContextCompat.getDrawable(context, R.drawable.header_multicolor);
+            case COLORLESS:
+            default:
+                return ContextCompat.getDrawable(context, R.drawable.header_colorless);
+        }
     }
 }

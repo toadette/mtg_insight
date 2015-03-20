@@ -18,6 +18,7 @@ import java.util.List;
 
 import de.avalax.mtg_insight.R;
 import de.avalax.mtg_insight.application.representation.CardRepresentation;
+import de.avalax.mtg_insight.application.representation.ConvertedManaCostToString;
 import de.avalax.mtg_insight.domain.model.card.Card;
 import de.avalax.mtg_insight.domain.model.card.Image;
 import de.avalax.mtg_insight.domain.model.mana.Mana;
@@ -80,7 +81,7 @@ public class CardRepresentationToDrawableTest {
                 return null;
             }
         };
-        return new CardRepresentation(card);
+        return new CardRepresentation(card, new ConvertedManaCostToString());
     }
 
     @Before

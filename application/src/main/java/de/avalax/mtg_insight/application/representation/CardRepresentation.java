@@ -5,22 +5,30 @@ import de.avalax.mtg_insight.domain.model.card.permanent.creature.Creature;
 import de.avalax.mtg_insight.domain.model.mana.Mana;
 
 public class CardRepresentation {
+    private String convertedManaCost;
     private Card card;
+    private int count;
 
-    public CardRepresentation(Card card) {
+    public CardRepresentation(Card card, ConvertedManaCostToString convertedManaCostToString) {
         this.card = card;
+        this.count = 1;
+        this.convertedManaCost = convertedManaCostToString.convertToString(card.convertedManaCost());
+    }
+
+    public void setCountOfCard(int count) {
+        this.count = count;
     }
 
     public int count() {
-        return 2;
+        return count;
     }
 
     public String name() {
-        return "fake name";
+        return card.name();
     }
 
     public String convertedManaCost() {
-        return "ABC";
+        return convertedManaCost;
     }
 
     public CardColorRepresentation color() {

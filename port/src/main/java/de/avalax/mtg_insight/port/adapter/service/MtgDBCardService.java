@@ -41,26 +41,46 @@ public class MtgDBCardService implements CardService {
         List<ManaCost> convertedManaCost = new ArrayList<>();
         String manaCost = cardFromJson.get("manaCost").toString();
         char[] manaCostArray = manaCost.toCharArray();
-
-        for (int i = 0; i < manaCostArray.length; i++) {
-            String entry = String.valueOf(manaCostArray[i]);
-
-            if (entry.equals("{")) {
-                //TOOD: handle Multicolored
-            } else {
-                List<Mana> manaList = getMana(entry);
-                if(manaList.size()>1){
-                    for(Mana mana:manaList){
+        if (String.valueOf(manaCostArray[0]).equals("{")) {
+            List<Mana> manaList = new ArrayList<>();
+            for (int i = 1; i < manaCostArray.length; i++) {
+                String entry = String.valueOf(manaCostArray[i]);
+                if (!entry.equals("/") && !entry.equals("{") && !entry.equals("}")) {
+                    manaList.addAll(getMana(entry));
+                }
+                if(entry.equals("}")){
+                    convertedManaCost.add(new ManaCost(manaList));
+                    manaList=new ArrayList<>();
+                }
+            }
+        } else {
+            for (int i = 0; i < manaCostArray.length; i++) {
+                List<Mana> manaList = getMana(String.valueOf(manaCostArray[i]));
+                if (manaList.size() > 1) {
+                    for (Mana mana : manaList) {
                         convertedManaCost.add(new ManaCost(Arrays.asList(mana)));
                     }
-                }else {
+                } else {
                     convertedManaCost.add(new ManaCost(manaList));
                 }
+
             }
         }
 
         System.out.println("Manacost: " + manaCost);
         return convertedManaCost;
+    }
+
+    private List<Mana> handleMultiColored(char[] manaCostArray, int i) {
+        int count = i + 1;
+        List<Mana> manaList = getMana(String.valueOf(manaCostArray[count]));
+        ++count;
+        char currentMana = manaCostArray[count];
+        if (String.valueOf(currentMana).equals("/")) {
+            ++count;
+            manaList.addAll(getMana(String.valueOf(currentMana)));
+        }
+        return manaList;
     }
 
     private List<Mana> getMana(String entry) {

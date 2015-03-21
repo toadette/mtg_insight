@@ -24,6 +24,11 @@ public class MtgDBCardService implements CardService {
 
     public static final String ENCODING = "UTF-8";
     private final String host = "http://api.mtgdb.info/cards/";
+    private ManaTokenizer manaTokenizer;
+
+    public MtgDBCardService(ManaTokenizer manaTokenizer) {
+        this.manaTokenizer = manaTokenizer;
+    }
 
     @Override
     public Card cardFromCardname(String cardname) throws IOException, ParseException {
@@ -39,76 +44,14 @@ public class MtgDBCardService implements CardService {
 
     private List<ManaCost> getConvertedManaCost(JSONObject cardFromJson) {
         List<ManaCost> convertedManaCost = new ArrayList<>();
-        String manaCost = cardFromJson.get("manaCost").toString();
-        char[] manaCostArray = manaCost.toCharArray();
-        if (String.valueOf(manaCostArray[0]).equals("{")) {
-            List<Mana> manaList = new ArrayList<>();
-            for (int i = 1; i < manaCostArray.length; i++) {
-                String entry = String.valueOf(manaCostArray[i]);
-                if (!entry.equals("/") && !entry.equals("{") && !entry.equals("}")) {
-                    manaList.addAll(getMana(entry));
-                }
-                if(entry.equals("}")){
-                    convertedManaCost.add(new ManaCost(manaList));
-                    manaList=new ArrayList<>();
-                }
-            }
-        } else {
-            for (int i = 0; i < manaCostArray.length; i++) {
-                List<Mana> manaList = getMana(String.valueOf(manaCostArray[i]));
-                if (manaList.size() > 1) {
-                    for (Mana mana : manaList) {
-                        convertedManaCost.add(new ManaCost(Arrays.asList(mana)));
-                    }
-                } else {
-                    convertedManaCost.add(new ManaCost(manaList));
-                }
-
-            }
+        for (ManaCostToken token : manaTokenizer.get(cardFromJson.get("manaCost").toString())) {
+            convertedManaCost.addAll(token.manaCost());
         }
-
-        System.out.println("Manacost: " + manaCost);
         return convertedManaCost;
-    }
-
-    private List<Mana> handleMultiColored(char[] manaCostArray, int i) {
-        int count = i + 1;
-        List<Mana> manaList = getMana(String.valueOf(manaCostArray[count]));
-        ++count;
-        char currentMana = manaCostArray[count];
-        if (String.valueOf(currentMana).equals("/")) {
-            ++count;
-            manaList.addAll(getMana(String.valueOf(currentMana)));
-        }
-        return manaList;
-    }
-
-    private List<Mana> getMana(String entry) {
-        if (entry.equals("U")) {
-            return Arrays.asList(Mana.BLUE);
-        }
-        if (entry.equals("R")) {
-            return Arrays.asList(Mana.RED);
-        }
-        if (entry.equals("W")) {
-            return Arrays.asList(Mana.WHITE);
-        }
-        if (entry.equals("B")) {
-            return Arrays.asList(Mana.BLACK);
-        }
-        if (entry.equals("G")) {
-            return Arrays.asList(Mana.GREEN);
-        }
-        List<Mana> manaList = new ArrayList<>();
-        int countOfColorlessMana = Integer.parseInt(entry);
-        for (int i = 0; i < countOfColorlessMana; i++) {
-            manaList.add(Mana.COLORLESS);
-        }
-        return manaList;
-        //TODO:phyrexian parsen: 2 Leben oder Farbe-> nur Farbe wichtig
     }
 
     private URL getCardUrl(String cardname) throws MalformedURLException, UnsupportedEncodingException {
         return new URL(host + URLEncoder.encode(cardname, ENCODING));
     }
+
 }

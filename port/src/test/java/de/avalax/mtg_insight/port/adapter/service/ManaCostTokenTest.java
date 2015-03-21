@@ -48,6 +48,7 @@ public class ManaCostTokenTest {
 
     @Test
     public void colorlessManaToken_shouldReturnManaCostForColorlessNumber() throws Exception {
+        assertMana(new ManaCostToken("0"));
         assertMana(new ManaCostToken("1"), Mana.COLORLESS);
         assertMana(new ManaCostToken("2"), Mana.COLORLESS, Mana.COLORLESS);
         assertMana(new ManaCostToken("9"), Mana.COLORLESS, Mana.COLORLESS, Mana.COLORLESS, Mana.COLORLESS, Mana.COLORLESS, Mana.COLORLESS, Mana.COLORLESS, Mana.COLORLESS, Mana.COLORLESS);

@@ -9,6 +9,7 @@ import java.util.List;
 
 import de.avalax.mtg_insight.domain.model.card.Card;
 import de.avalax.mtg_insight.domain.model.card.Image;
+import de.avalax.mtg_insight.domain.model.color.Color;
 import de.avalax.mtg_insight.domain.model.mana.Mana;
 import de.avalax.mtg_insight.domain.model.mana.ManaCost;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
@@ -20,7 +21,7 @@ import static org.junit.Assert.*;
 public class CardRepresentationTest {
 
     private CardRepresentation cardRepresentation;
-    private List<Mana> colors;
+    private List<Color> colors;
     private String name;
 
     @Before
@@ -38,7 +39,7 @@ public class CardRepresentationTest {
             }
 
             @Override
-            public List<Mana> colorOfCard() {
+            public List<Color> colorOfCard() {
                 return colors;
             }
 
@@ -84,58 +85,44 @@ public class CardRepresentationTest {
         }
 
         @Test
-        public void phyrexianColor_shouldReturnColorColorless() throws Exception {
-            colors.add(Mana.PHYREXIAN);
-
-            assertThat(cardRepresentation.color(), equalTo(CardColorRepresentation.COLORLESS));
-        }
-
-        @Test
-        public void colorlessColor_shouldReturnColorColorless() throws Exception {
-            colors.add(Mana.COLORLESS);
-
-            assertThat(cardRepresentation.color(), equalTo(CardColorRepresentation.COLORLESS));
-        }
-
-        @Test
         public void redColor_shouldReturnColorRed() throws Exception {
-            colors.add(Mana.RED);
+            colors.add(Color.RED);
 
             assertThat(cardRepresentation.color(), equalTo(CardColorRepresentation.RED));
         }
 
         @Test
         public void greenColor_shouldReturnColorGreen() throws Exception {
-            colors.add(Mana.GREEN);
+            colors.add(Color.GREEN);
 
             assertThat(cardRepresentation.color(), equalTo(CardColorRepresentation.GREEN));
         }
 
         @Test
         public void whiteColor_shouldReturnColorWhite() throws Exception {
-            colors.add(Mana.WHITE);
+            colors.add(Color.WHITE);
 
             assertThat(cardRepresentation.color(), equalTo(CardColorRepresentation.WHITE));
         }
 
         @Test
         public void blueColor_shouldReturnColorBlue() throws Exception {
-            colors.add(Mana.BLUE);
+            colors.add(Color.BLUE);
 
             assertThat(cardRepresentation.color(), equalTo(CardColorRepresentation.BLUE));
         }
 
         @Test
         public void blackColor_shouldReturnColorBlack() throws Exception {
-            colors.add(Mana.BLACK);
+            colors.add(Color.BLACK);
 
             assertThat(cardRepresentation.color(), equalTo(CardColorRepresentation.BLACK));
         }
 
         @Test
         public void multicolorColor_shouldReturnMulticolor() throws Exception {
-            colors.add(Mana.RED);
-            colors.add(Mana.GREEN);
+            colors.add(Color.RED);
+            colors.add(Color.GREEN);
 
             assertThat(cardRepresentation.color(), equalTo(CardColorRepresentation.MULTICOLOR));
         }

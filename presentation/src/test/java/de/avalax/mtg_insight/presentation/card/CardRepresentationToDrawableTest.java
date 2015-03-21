@@ -21,6 +21,7 @@ import de.avalax.mtg_insight.application.representation.CardRepresentation;
 import de.avalax.mtg_insight.application.representation.ConvertedManaCostToString;
 import de.avalax.mtg_insight.domain.model.card.Card;
 import de.avalax.mtg_insight.domain.model.card.Image;
+import de.avalax.mtg_insight.domain.model.color.Color;
 import de.avalax.mtg_insight.domain.model.mana.Mana;
 import de.avalax.mtg_insight.domain.model.mana.ManaCost;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
@@ -56,9 +57,9 @@ public class CardRepresentationToDrawableTest {
         return ContextCompat.getDrawable(context, resource);
     }
 
-    private CardRepresentation cardRepresentationFor(Mana... manas) {
-        final List<Mana> colorOfCard = new ArrayList<>();
-        Collections.addAll(colorOfCard, manas);
+    private CardRepresentation cardRepresentationFor(Color... colors) {
+        final List<Color> colorOfCard = new ArrayList<>();
+        Collections.addAll(colorOfCard, colors);
         Card card = new Card() {
 
             @Override
@@ -72,7 +73,7 @@ public class CardRepresentationToDrawableTest {
             }
 
             @Override
-            public List<Mana> colorOfCard() {
+            public List<Color> colorOfCard() {
                 return colorOfCard;
             }
 
@@ -107,13 +108,12 @@ public class CardRepresentationToDrawableTest {
         public void shouldReturnBackground() throws Exception {
             assertThat(cardRepresentationToDrawable.backgroundFrom(null), equalTo(drawable(R.drawable.background_colorless)));
             assertThat(cardRepresentationToDrawable.backgroundFrom(cardRepresentationFor()), equalTo(drawable(R.drawable.background_colorless)));
-            assertThat(cardRepresentationToDrawable.backgroundFrom(cardRepresentationFor(Mana.COLORLESS)), equalTo(drawable(R.drawable.background_colorless)));
-            assertThat(cardRepresentationToDrawable.backgroundFrom(cardRepresentationFor(Mana.GREEN)), equalTo(drawable(R.drawable.background_green)));
-            assertThat(cardRepresentationToDrawable.backgroundFrom(cardRepresentationFor(Mana.BLACK)), equalTo(drawable(R.drawable.background_black)));
-            assertThat(cardRepresentationToDrawable.backgroundFrom(cardRepresentationFor(Mana.WHITE)), equalTo(drawable(R.drawable.background_white)));
-            assertThat(cardRepresentationToDrawable.backgroundFrom(cardRepresentationFor(Mana.BLUE)), equalTo(drawable(R.drawable.background_blue)));
-            assertThat(cardRepresentationToDrawable.backgroundFrom(cardRepresentationFor(Mana.RED)), equalTo(drawable(R.drawable.background_red)));
-            assertThat(cardRepresentationToDrawable.backgroundFrom(cardRepresentationFor(Mana.RED, Mana.BLACK)), equalTo(drawable(R.drawable.background_multicolor)));
+            assertThat(cardRepresentationToDrawable.backgroundFrom(cardRepresentationFor(Color.GREEN)), equalTo(drawable(R.drawable.background_green)));
+            assertThat(cardRepresentationToDrawable.backgroundFrom(cardRepresentationFor(Color.BLACK)), equalTo(drawable(R.drawable.background_black)));
+            assertThat(cardRepresentationToDrawable.backgroundFrom(cardRepresentationFor(Color.WHITE)), equalTo(drawable(R.drawable.background_white)));
+            assertThat(cardRepresentationToDrawable.backgroundFrom(cardRepresentationFor(Color.BLUE)), equalTo(drawable(R.drawable.background_blue)));
+            assertThat(cardRepresentationToDrawable.backgroundFrom(cardRepresentationFor(Color.RED)), equalTo(drawable(R.drawable.background_red)));
+            assertThat(cardRepresentationToDrawable.backgroundFrom(cardRepresentationFor(Color.RED, Color.BLACK)), equalTo(drawable(R.drawable.background_multicolor)));
         }
 
     }
@@ -134,13 +134,12 @@ public class CardRepresentationToDrawableTest {
         public void shouldReturnWindowBackground() throws Exception {
             assertThat(cardRepresentationToDrawable.windowBackgroundFrom(null), equalTo(drawable(R.drawable.window_colorless)));
             assertThat(cardRepresentationToDrawable.windowBackgroundFrom(cardRepresentationFor()), equalTo(drawable(R.drawable.window_colorless)));
-            assertThat(cardRepresentationToDrawable.windowBackgroundFrom(cardRepresentationFor(Mana.COLORLESS)), equalTo(drawable(R.drawable.window_colorless)));
-            assertThat(cardRepresentationToDrawable.windowBackgroundFrom(cardRepresentationFor(Mana.GREEN)), equalTo(drawable(R.drawable.window_green)));
-            assertThat(cardRepresentationToDrawable.windowBackgroundFrom(cardRepresentationFor(Mana.BLACK)), equalTo(drawable(R.drawable.window_black)));
-            assertThat(cardRepresentationToDrawable.windowBackgroundFrom(cardRepresentationFor(Mana.WHITE)), equalTo(drawable(R.drawable.window_white)));
-            assertThat(cardRepresentationToDrawable.windowBackgroundFrom(cardRepresentationFor(Mana.BLUE)), equalTo(drawable(R.drawable.window_blue)));
-            assertThat(cardRepresentationToDrawable.windowBackgroundFrom(cardRepresentationFor(Mana.RED)), equalTo(drawable(R.drawable.window_red)));
-            assertThat(cardRepresentationToDrawable.windowBackgroundFrom(cardRepresentationFor(Mana.RED, Mana.BLACK)), equalTo(drawable(R.drawable.window_multicolor)));
+            assertThat(cardRepresentationToDrawable.windowBackgroundFrom(cardRepresentationFor(Color.GREEN)), equalTo(drawable(R.drawable.window_green)));
+            assertThat(cardRepresentationToDrawable.windowBackgroundFrom(cardRepresentationFor(Color.BLACK)), equalTo(drawable(R.drawable.window_black)));
+            assertThat(cardRepresentationToDrawable.windowBackgroundFrom(cardRepresentationFor(Color.WHITE)), equalTo(drawable(R.drawable.window_white)));
+            assertThat(cardRepresentationToDrawable.windowBackgroundFrom(cardRepresentationFor(Color.BLUE)), equalTo(drawable(R.drawable.window_blue)));
+            assertThat(cardRepresentationToDrawable.windowBackgroundFrom(cardRepresentationFor(Color.RED)), equalTo(drawable(R.drawable.window_red)));
+            assertThat(cardRepresentationToDrawable.windowBackgroundFrom(cardRepresentationFor(Color.RED, Color.BLACK)), equalTo(drawable(R.drawable.window_multicolor)));
         }
     }
 
@@ -160,13 +159,12 @@ public class CardRepresentationToDrawableTest {
         public void shouldReturnBackground() throws Exception {
             assertThat(cardRepresentationToDrawable.cardBackgroundFrom(null), equalTo(drawable(R.drawable.card_background_colorless)));
             assertThat(cardRepresentationToDrawable.cardBackgroundFrom(cardRepresentationFor()), equalTo(drawable(R.drawable.card_background_colorless)));
-            assertThat(cardRepresentationToDrawable.cardBackgroundFrom(cardRepresentationFor(Mana.COLORLESS)), equalTo(drawable(R.drawable.card_background_colorless)));
-            assertThat(cardRepresentationToDrawable.cardBackgroundFrom(cardRepresentationFor(Mana.GREEN)), equalTo(drawable(R.drawable.card_background_green)));
-            assertThat(cardRepresentationToDrawable.cardBackgroundFrom(cardRepresentationFor(Mana.BLACK)), equalTo(drawable(R.drawable.card_background_black)));
-            assertThat(cardRepresentationToDrawable.cardBackgroundFrom(cardRepresentationFor(Mana.WHITE)), equalTo(drawable(R.drawable.card_background_white)));
-            assertThat(cardRepresentationToDrawable.cardBackgroundFrom(cardRepresentationFor(Mana.BLUE)), equalTo(drawable(R.drawable.card_background_blue)));
-            assertThat(cardRepresentationToDrawable.cardBackgroundFrom(cardRepresentationFor(Mana.RED)), equalTo(drawable(R.drawable.card_background_red)));
-            assertThat(cardRepresentationToDrawable.cardBackgroundFrom(cardRepresentationFor(Mana.RED, Mana.BLACK)), equalTo(drawable(R.drawable.card_background_multicolor)));
+            assertThat(cardRepresentationToDrawable.cardBackgroundFrom(cardRepresentationFor(Color.GREEN)), equalTo(drawable(R.drawable.card_background_green)));
+            assertThat(cardRepresentationToDrawable.cardBackgroundFrom(cardRepresentationFor(Color.BLACK)), equalTo(drawable(R.drawable.card_background_black)));
+            assertThat(cardRepresentationToDrawable.cardBackgroundFrom(cardRepresentationFor(Color.WHITE)), equalTo(drawable(R.drawable.card_background_white)));
+            assertThat(cardRepresentationToDrawable.cardBackgroundFrom(cardRepresentationFor(Color.BLUE)), equalTo(drawable(R.drawable.card_background_blue)));
+            assertThat(cardRepresentationToDrawable.cardBackgroundFrom(cardRepresentationFor(Color.RED)), equalTo(drawable(R.drawable.card_background_red)));
+            assertThat(cardRepresentationToDrawable.cardBackgroundFrom(cardRepresentationFor(Color.RED, Color.BLACK)), equalTo(drawable(R.drawable.card_background_multicolor)));
         }
     }
 
@@ -186,13 +184,12 @@ public class CardRepresentationToDrawableTest {
         public void shouldReturnHeaderDrawable() throws Exception {
             assertThat(cardRepresentationToDrawable.headerFrom(null), equalTo(drawable(R.drawable.header_colorless)));
             assertThat(cardRepresentationToDrawable.headerFrom(cardRepresentationFor()), equalTo(drawable(R.drawable.header_colorless)));
-            assertThat(cardRepresentationToDrawable.headerFrom(cardRepresentationFor(Mana.COLORLESS)), equalTo(drawable(R.drawable.header_colorless)));
-            assertThat(cardRepresentationToDrawable.headerFrom(cardRepresentationFor(Mana.GREEN)), equalTo(drawable(R.drawable.header_green)));
-            assertThat(cardRepresentationToDrawable.headerFrom(cardRepresentationFor(Mana.BLACK)), equalTo(drawable(R.drawable.header_black)));
-            assertThat(cardRepresentationToDrawable.headerFrom(cardRepresentationFor(Mana.WHITE)), equalTo(drawable(R.drawable.header_white)));
-            assertThat(cardRepresentationToDrawable.headerFrom(cardRepresentationFor(Mana.BLUE)), equalTo(drawable(R.drawable.header_blue)));
-            assertThat(cardRepresentationToDrawable.headerFrom(cardRepresentationFor(Mana.RED)), equalTo(drawable(R.drawable.header_red)));
-            assertThat(cardRepresentationToDrawable.headerFrom(cardRepresentationFor(Mana.RED, Mana.BLACK)), equalTo(drawable(R.drawable.header_multicolor)));
+            assertThat(cardRepresentationToDrawable.headerFrom(cardRepresentationFor(Color.GREEN)), equalTo(drawable(R.drawable.header_green)));
+            assertThat(cardRepresentationToDrawable.headerFrom(cardRepresentationFor(Color.BLACK)), equalTo(drawable(R.drawable.header_black)));
+            assertThat(cardRepresentationToDrawable.headerFrom(cardRepresentationFor(Color.WHITE)), equalTo(drawable(R.drawable.header_white)));
+            assertThat(cardRepresentationToDrawable.headerFrom(cardRepresentationFor(Color.BLUE)), equalTo(drawable(R.drawable.header_blue)));
+            assertThat(cardRepresentationToDrawable.headerFrom(cardRepresentationFor(Color.RED)), equalTo(drawable(R.drawable.header_red)));
+            assertThat(cardRepresentationToDrawable.headerFrom(cardRepresentationFor(Color.RED, Color.BLACK)), equalTo(drawable(R.drawable.header_multicolor)));
         }
     }
 

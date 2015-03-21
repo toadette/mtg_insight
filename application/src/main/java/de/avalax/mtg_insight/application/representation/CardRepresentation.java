@@ -49,9 +49,7 @@ public class CardRepresentation {
                 return CardColorRepresentation.RED;
             case GREEN:
                 return CardColorRepresentation.GREEN;
-            case COLORLESS:
-            case PHYREXIAN:
-                default:
+            default:
                 return CardColorRepresentation.COLORLESS;
         }
     }

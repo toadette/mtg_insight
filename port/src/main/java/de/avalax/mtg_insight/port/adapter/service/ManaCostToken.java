@@ -29,13 +29,13 @@ public class ManaCostToken {
         List<ManaCost> manaCosts = new ArrayList<>();
         if (manaString.matches(COLORLESS_MANA)) {
             for (int i = 0; i < Integer.parseInt(manaString); i++) {
-                manaCosts.add(new ManaCost(Collections.singletonList(manaCostFromManaString(manaString))));
+                manaCosts.add(new ManaCost(Collections.singletonList(manaCostFromManaString(manaString)), manaString));
             }
         } else if (manaString.matches(HYBRID_MANA)) {
             String[] hybridMana = manaString.split("/");
-            manaCosts.add(new ManaCost(Arrays.asList(hybridManaCostFromManaString(hybridMana[0]), hybridManaCostFromManaString(hybridMana[1]))));
+            manaCosts.add(new ManaCost(Arrays.asList(hybridManaCostFromManaString(hybridMana[0]), hybridManaCostFromManaString(hybridMana[1])), manaString));
         } else {
-            manaCosts.add(new ManaCost(Collections.singletonList(manaCostFromManaString(manaString))));
+            manaCosts.add(new ManaCost(Collections.singletonList(manaCostFromManaString(manaString)),manaString));
         }
         return manaCosts;
     }

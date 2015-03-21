@@ -20,6 +20,7 @@ import de.avalax.mtg_insight.application.representation.CardRepresentation;
 import de.avalax.mtg_insight.application.representation.ConvertedManaCostToString;
 import de.avalax.mtg_insight.domain.model.card.Image;
 import de.avalax.mtg_insight.domain.model.card.permanent.creature.Creature;
+import de.avalax.mtg_insight.domain.model.color.Color;
 import de.avalax.mtg_insight.domain.model.mana.Mana;
 import de.avalax.mtg_insight.domain.model.mana.ManaCost;
 import de.avalax.mtg_insight.presentation.MtgInsightApplication;
@@ -48,9 +49,12 @@ public class CardDemoFragment extends Fragment {
 
     private void addDummyCard() {
         String cardName = "name";
-        List<Mana> cardColors = new ArrayList<>();
-        cardColors.add(Mana.BLUE);
-        List<ManaCost> convertedManaCost = Collections.emptyList();
+        List<Color> cardColors = new ArrayList<>();
+        cardColors.add(Color.BLUE);
+        List<ManaCost> convertedManaCost = new ArrayList<>();
+        convertedManaCost.add(new ManaCost(Collections.<Mana>emptyList(),"U"));
+        convertedManaCost.add(new ManaCost(Collections.<Mana>emptyList(),"U"));
+        convertedManaCost.add(new ManaCost(Collections.<Mana>emptyList(),"3"));
         Image image = null;
         CardRepresentation cardRepresentation = new CardRepresentation(new Creature(cardName, image, cardColors, convertedManaCost), convertedManaCostToString);
         cardRepresentation.setCountOfCard(5);

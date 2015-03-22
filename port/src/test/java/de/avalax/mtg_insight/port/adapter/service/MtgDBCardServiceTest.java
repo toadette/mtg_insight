@@ -1,28 +1,30 @@
 package de.avalax.mtg_insight.port.adapter.service;
 
-import org.hamcrest.Matchers;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.net.URL;
-import java.net.URLEncoder;
-import java.util.Arrays;
-import java.util.List;
 
 import de.avalax.mtg_insight.domain.model.card.Card;
 import de.avalax.mtg_insight.domain.model.card.permanent.creature.Creature;
 import de.avalax.mtg_insight.domain.model.mana.Mana;
-import de.avalax.mtg_insight.domain.model.mana.ManaCost;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
-import static org.junit.Assert.*;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertThat;
 
-/**
- * Created by Melanie on 18.03.2015.
- */
+
 public class MtgDBCardServiceTest {
+
+    private void assertMana(Card card, int manaCostPosition, int manaPosition, Mana mana) {
+        assertThat(card.convertedManaCost().get(manaCostPosition).mana().get(manaPosition), equalTo(mana));
+    }
+
+    private void assertCard(String cardname, Card card, Class<Creature> cardType) {
+        assertThat(card, notNullValue());
+        assertThat(card.name(), equalTo(cardname));
+        assertThat(card, instanceOf(cardType));
+    }
 
     private MtgDBCardService mtgDBCardService;
 
@@ -32,86 +34,81 @@ public class MtgDBCardServiceTest {
     }
 
     @Test
-    public void testCardFromCardname() throws Exception {
-        Card card = mtgDBCardService.cardFromCardname("Narset, Enlightened Master");
-        assertThat(card, notNullValue());
-        assertThat(card.name(), equalTo("Narset, Enlightened Master"));
+    public void cardFromCardname_shouldReturnCreatureWithSingleMana() throws Exception {
+        String cardname = "Narset, Enlightened Master";
+        Card card = mtgDBCardService.cardFromCardname(cardname);
+        assertCard(cardname, card, Creature.class);
         assertThat(card.convertedManaCost(), hasSize(6));
-        assertThat(card.convertedManaCost().get(0).mana().get(0), equalTo(Mana.COLORLESS));
-        assertThat(card.convertedManaCost().get(1).mana().get(0), equalTo(Mana.COLORLESS));
-        assertThat(card.convertedManaCost().get(2).mana().get(0), equalTo(Mana.COLORLESS));
-        assertThat(card.convertedManaCost().get(3).mana().get(0), equalTo(Mana.BLUE));
-        assertThat(card.convertedManaCost().get(4).mana().get(0), equalTo(Mana.RED));
-        assertThat(card.convertedManaCost().get(5).mana().get(0), equalTo(Mana.WHITE));
-        assertThat(card, instanceOf(Creature.class));
+        assertMana(card, 0, 0, Mana.COLORLESS);
+        assertMana(card, 1, 0, Mana.COLORLESS);
+        assertMana(card, 2, 0, Mana.COLORLESS);
+        assertMana(card, 3, 0, Mana.BLUE);
+        assertMana(card, 4, 0, Mana.RED);
+        assertMana(card, 5, 0, Mana.WHITE);
     }
 
     @Test
-    public void testCardFromCardname2() throws Exception {
-        Card card = mtgDBCardService.cardFromCardname("Frostburn Weird");
-        assertThat(card, notNullValue());
-        assertThat(card.name(), equalTo("Frostburn Weird"));
-        assertThat(card.convertedManaCost(), hasSize(2));
-        assertThat(card.convertedManaCost().get(0).mana().get(0), equalTo(Mana.BLUE));
-        assertThat(card.convertedManaCost().get(0).mana().get(1), equalTo(Mana.RED));
-        assertThat(card.convertedManaCost().get(1).mana().get(0), equalTo(Mana.BLUE));
-        assertThat(card.convertedManaCost().get(1).mana().get(1), equalTo(Mana.RED));
-        assertThat(card, instanceOf(Creature.class));
-    }
-
-    @Test
-    public void testCardFromCardname3() throws Exception {
-        Card card = mtgDBCardService.cardFromCardname("Figure of Destiny");
-        assertThat(card, notNullValue());
-        assertThat(card.name(), equalTo("Figure of Destiny"));
-        assertThat(card.convertedManaCost(), hasSize(1));
-        assertThat(card.convertedManaCost().get(0).mana().get(0), equalTo(Mana.RED));
-        assertThat(card.convertedManaCost().get(0).mana().get(1), equalTo(Mana.WHITE));
-        assertThat(card, instanceOf(Creature.class));
-    }
-
-    @Test
-    public void testCardFromCardname4() throws Exception {
-        Card card = mtgDBCardService.cardFromCardname("Brimaz, King of Oreskos");
-        assertThat(card, notNullValue());
-        assertThat(card.name(), equalTo("Brimaz, King of Oreskos"));
+    public void cardFromCardname_ShouldReturnCreatureWithSingleMana2() throws Exception {
+        String cardName = "Brimaz, King of Oreskos";
+        Card card = mtgDBCardService.cardFromCardname(cardName);
+        assertCard(cardName, card, Creature.class);
         assertThat(card.convertedManaCost(), hasSize(3));
-        assertThat(card.convertedManaCost().get(0).mana().get(0), equalTo(Mana.COLORLESS));
-        assertThat(card.convertedManaCost().get(1).mana().get(0), equalTo(Mana.WHITE));
-        assertThat(card.convertedManaCost().get(2).mana().get(0), equalTo(Mana.WHITE));
-        assertThat(card, instanceOf(Creature.class));
+        assertMana(card, 0, 0, Mana.COLORLESS);
+        assertMana(card, 1, 0, Mana.WHITE);
+        assertMana(card, 2, 0, Mana.WHITE);
     }
 
     @Test
-    public void testCardFromCardname5() throws Exception {
-        Card card = mtgDBCardService.cardFromCardname("Reaper King");
-        assertThat(card, notNullValue());
-        assertThat(card.name(), equalTo("Reaper King"));
-        assertThat(card.convertedManaCost(), hasSize(5));
-        assertThat(card.convertedManaCost().get(0).mana().get(0), equalTo(Mana.HYBRID_TWOCOLORLESS));
-        assertThat(card.convertedManaCost().get(0).mana().get(1), equalTo(Mana.WHITE));
-        assertThat(card.convertedManaCost().get(1).mana().get(0), equalTo(Mana.HYBRID_TWOCOLORLESS));
-        assertThat(card.convertedManaCost().get(1).mana().get(1), equalTo(Mana.BLUE));
-        assertThat(card.convertedManaCost().get(2).mana().get(0), equalTo(Mana.HYBRID_TWOCOLORLESS));
-        assertThat(card.convertedManaCost().get(2).mana().get(1), equalTo(Mana.BLACK));
-        assertThat(card.convertedManaCost().get(3).mana().get(0), equalTo(Mana.HYBRID_TWOCOLORLESS));
-        assertThat(card.convertedManaCost().get(3).mana().get(1), equalTo(Mana.RED));
-        assertThat(card.convertedManaCost().get(4).mana().get(0), equalTo(Mana.HYBRID_TWOCOLORLESS));
-        assertThat(card.convertedManaCost().get(4).mana().get(1), equalTo(Mana.GREEN));
-        assertThat(card, instanceOf(Creature.class));
+    public void cardFromCardname_shouldReturnCreatureWithTwoHybridMana() throws Exception {
+        String cardName = "Frostburn Weird";
+        Card card = mtgDBCardService.cardFromCardname(cardName);
+        assertCard(cardName, card, Creature.class);
+        assertThat(card.convertedManaCost(), hasSize(2));
+        assertMana(card, 0, 0, Mana.BLUE);
+        assertMana(card, 0, 1, Mana.RED);
+        assertMana(card, 1, 0, Mana.BLUE);
+        assertMana(card, 1, 1, Mana.RED);
     }
+
     @Test
-    public void testCardFromCardname6() throws Exception {
-        Card card = mtgDBCardService.cardFromCardname("Pith Driller");
-        assertThat(card, notNullValue());
-        assertThat(card.name(), equalTo("Pith Driller"));
+    public void cardFromCardname_ShouldReturnCreatureWithOneHybridMana() throws Exception {
+        String cardName = "Figure of Destiny";
+        Card card = mtgDBCardService.cardFromCardname(cardName);
+        assertCard(cardName, card, Creature.class);
+        assertThat(card.convertedManaCost(), hasSize(1));
+        assertMana(card, 0, 0, Mana.RED);
+        assertMana(card, 0, 1, Mana.WHITE);
+    }
+
+    @Test
+    public void cardFromCardname_ShouldReturnCreatureWithHybridTwoColorlessMana() throws Exception {
+        String cardName = "Reaper King";
+        Card card = mtgDBCardService.cardFromCardname(cardName);
+        assertCard(cardName, card, Creature.class);
         assertThat(card.convertedManaCost(), hasSize(5));
-        assertThat(card.convertedManaCost().get(0).mana().get(0), equalTo(Mana.COLORLESS));
-        assertThat(card.convertedManaCost().get(1).mana().get(0), equalTo(Mana.COLORLESS));
-        assertThat(card.convertedManaCost().get(2).mana().get(0), equalTo(Mana.COLORLESS));
-        assertThat(card.convertedManaCost().get(3).mana().get(0), equalTo(Mana.COLORLESS));
-        assertThat(card.convertedManaCost().get(4).mana().get(0), equalTo(Mana.BLACK));
-        assertThat(card.convertedManaCost().get(4).mana().get(1), equalTo(Mana.PHYREXIAN));
-        assertThat(card, instanceOf(Creature.class));
+        assertMana(card, 0, 0, Mana.HYBRID_TWOCOLORLESS);
+        assertMana(card, 0, 1, Mana.WHITE);
+        assertMana(card, 1, 0, Mana.HYBRID_TWOCOLORLESS);
+        assertMana(card, 1, 1, Mana.BLUE);
+        assertMana(card, 2, 0, Mana.HYBRID_TWOCOLORLESS);
+        assertMana(card, 2, 1, Mana.BLACK);
+        assertMana(card, 3, 0, Mana.HYBRID_TWOCOLORLESS);
+        assertMana(card, 3, 1, Mana.RED);
+        assertMana(card, 4, 0, Mana.HYBRID_TWOCOLORLESS);
+        assertMana(card, 4, 1, Mana.GREEN);
+    }
+
+    @Test
+    public void cardFromCardname_ShouldReturnCreatureWithPhyrexianMana() throws Exception {
+        String cardName = "Pith Driller";
+        Card card = mtgDBCardService.cardFromCardname(cardName);
+        assertCard(cardName,card, Creature.class);
+        assertThat(card.convertedManaCost(), hasSize(5));
+        assertMana(card, 0, 0, Mana.COLORLESS);
+        assertMana(card, 1, 0, Mana.COLORLESS);
+        assertMana(card, 2, 0, Mana.COLORLESS);
+        assertMana(card, 3, 0, Mana.COLORLESS);
+        assertMana(card, 4, 0, Mana.BLACK);
+        assertMana(card, 4, 1, Mana.PHYREXIAN);
     }
 }

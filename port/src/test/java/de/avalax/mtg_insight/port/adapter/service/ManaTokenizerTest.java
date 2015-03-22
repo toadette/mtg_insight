@@ -21,7 +21,7 @@ public class ManaTokenizerTest {
     private void assertToken(String manaCostString, String... expectedManaCostString) {
         List<ManaCostToken> manaCostTokens = manaTokenizer.get(manaCostString);
         assertThat(manaCostTokens, hasSize(expectedManaCostString.length));
-        for(int i=0; i<expectedManaCostString.length;i++) {
+        for (int i = 0; i < expectedManaCostString.length; i++) {
             assertThat(manaCostTokens.get(i).manaString(), equalTo(expectedManaCostString[i]));
         }
     }
@@ -40,7 +40,7 @@ public class ManaTokenizerTest {
     }
 
     @Test
-    public void singleMana_shouldReturnOneToken() throws Exception {
+    public void singleMana_shouldReturnTokenList() throws Exception {
         assertToken("W", "W");
         assertToken("5", "5");
         assertToken("WW", "W", "W");
@@ -48,18 +48,24 @@ public class ManaTokenizerTest {
     }
 
     @Test
-    public void hybridMana_shouldReturnOneTokens() throws Exception {
+    public void hybridMana_shouldReturnTokenList() throws Exception {
         assertToken("{W/R}", "W/R");
-        assertToken("3{W/R}","3","W/R");
-        assertToken("{W/R}3","W/R","3");
-        assertToken("{G/B}{G/B}","G/B","G/B");
-        assertToken("{U/R}{U/R}{W/R}","U/R","U/R","W/R");
+        assertToken("3{W/R}", "3", "W/R");
+        assertToken("{W/R}3", "W/R", "3");
+        assertToken("{G/B}{G/B}", "G/B", "G/B");
+        assertToken("{U/R}{U/R}{W/R}", "U/R", "U/R", "W/R");
         assertToken("{2/R}", "2/R");
     }
 
     @Test
-    public void phyrexianMana_shouldReturnOneToken() throws Exception {
-        assertToken("RP","RP");
-        assertToken("GP","GP");
+    public void phyrexianMana_shouldReturnTokenList() throws Exception {
+        assertToken("{RP}", "RP");
+        assertToken("{GP}", "GP");
+        assertToken("3{UP}", "3", "UP");
+        assertToken("{UP}3", "UP", "3");
+        assertToken("{UP}{WP}", "UP", "WP");
+        assertToken("{W/R}3{WP}", "W/R", "3", "WP");
+
+
     }
 }

@@ -1,5 +1,6 @@
 package de.avalax.mtg_insight.port.adapter.service;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import de.avalax.mtg_insight.domain.model.mana.Mana;
@@ -59,5 +60,11 @@ public class ManaCostTokenTest {
         assertHybridMana(new ManaCostToken("W/R"), Mana.WHITE, Mana.RED);
         assertHybridMana(new ManaCostToken("B/U"), Mana.BLACK, Mana.BLUE);
         assertHybridMana(new ManaCostToken("2/U"), Mana.HYBRID_TWOCOLORLESS, Mana.BLUE);
+    }
+
+    @Test
+    public void phyrexianManaToken_shouldReturnManaCostForPhyrexian() throws Exception {
+        assertHybridMana(new ManaCostToken("RP"), Mana.RED, Mana.PHYREXIAN);
+        assertHybridMana(new ManaCostToken("GP"), Mana.GREEN, Mana.PHYREXIAN);
     }
 }

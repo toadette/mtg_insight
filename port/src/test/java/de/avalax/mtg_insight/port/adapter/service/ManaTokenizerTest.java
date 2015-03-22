@@ -56,4 +56,10 @@ public class ManaTokenizerTest {
         assertToken("{U/R}{U/R}{W/R}","U/R","U/R","W/R");
         assertToken("{2/R}", "2/R");
     }
+
+    @Test
+    public void phyrexianMana_shouldReturnOneToken() throws Exception {
+        assertToken("RP","RP");
+        assertToken("GP","GP");
+    }
 }

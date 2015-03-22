@@ -11,6 +11,7 @@ import de.avalax.mtg_insight.domain.model.mana.ManaCost;
 public class ManaCostToken {
     private static final String COLORLESS_MANA = "^\\d$";
     private static final String HYBRID_MANA = "^[A-Z2]/[A-Z2]$";
+    private static final String PHYREXIAN_MANA = "[A-Z]P";
     private String manaString;
 
     public ManaCostToken(String manaString) {
@@ -34,8 +35,15 @@ public class ManaCostToken {
         } else if (manaString.matches(HYBRID_MANA)) {
             String[] hybridMana = manaString.split("/");
             manaCosts.add(new ManaCost(Arrays.asList(hybridManaCostFromManaString(hybridMana[0]), hybridManaCostFromManaString(hybridMana[1])), manaString));
+        } else if (manaString.matches(PHYREXIAN_MANA)) {
+            Mana mana = manaCostFromManaString(String.valueOf(manaString.charAt(0)));
+            Mana mana2 = manaCostFromManaString(String.valueOf(manaString.charAt(1)));
+            List<Mana> manaList=new ArrayList<>();
+            manaList.add(mana);
+            manaList.add(mana2);
+            manaCosts.add(new ManaCost(manaList,manaString));
         } else {
-            manaCosts.add(new ManaCost(Collections.singletonList(manaCostFromManaString(manaString)),manaString));
+            manaCosts.add(new ManaCost(Collections.singletonList(manaCostFromManaString(manaString)), manaString));
         }
         return manaCosts;
     }
@@ -56,9 +64,13 @@ public class ManaCostToken {
         if ("G".equals(manaString)) {
             return Mana.GREEN;
         }
+        if("P".equals(manaString)){
+            return Mana.PHYREXIAN;
+        }
         return Mana.COLORLESS;
 
     }
+
     private Mana hybridManaCostFromManaString(String manaString) {
         if ("2".equals(manaString)) {
             return Mana.HYBRID_TWOCOLORLESS;

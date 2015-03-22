@@ -5,9 +5,11 @@ import org.junit.Test;
 
 import de.avalax.mtg_insight.domain.model.card.Card;
 import de.avalax.mtg_insight.domain.model.card.permanent.creature.Creature;
+import de.avalax.mtg_insight.domain.model.color.Color;
 import de.avalax.mtg_insight.domain.model.mana.Mana;
 
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.notNullValue;
@@ -26,11 +28,16 @@ public class MtgDBCardServiceTest {
         assertThat(card, instanceOf(cardType));
     }
 
+    private void assertCardColor(Card card, int numberOfCardColors, Color[] cardColors) {
+        assertThat(card.colorOfCard(), hasSize(numberOfCardColors));
+        assertThat(card.colorOfCard(), hasItems(cardColors));
+    }
+
     private MtgDBCardService mtgDBCardService;
 
     @Before
     public void setUp() throws Exception {
-        mtgDBCardService = new MtgDBCardService(new ManaTokenizer());
+        mtgDBCardService = new MtgDBCardService(new ManaTokenizer(),new ColorMatcher());
     }
 
     @Test
@@ -45,6 +52,7 @@ public class MtgDBCardServiceTest {
         assertMana(card, 3, 0, Mana.BLUE);
         assertMana(card, 4, 0, Mana.RED);
         assertMana(card, 5, 0, Mana.WHITE);
+        assertCardColor(card, 3, new Color[]{Color.BLUE, Color.RED, Color.WHITE});
     }
 
     @Test
@@ -56,6 +64,7 @@ public class MtgDBCardServiceTest {
         assertMana(card, 0, 0, Mana.COLORLESS);
         assertMana(card, 1, 0, Mana.WHITE);
         assertMana(card, 2, 0, Mana.WHITE);
+        assertCardColor(card, 1, new Color[]{Color.WHITE});
     }
 
     @Test
@@ -68,6 +77,7 @@ public class MtgDBCardServiceTest {
         assertMana(card, 0, 1, Mana.RED);
         assertMana(card, 1, 0, Mana.BLUE);
         assertMana(card, 1, 1, Mana.RED);
+        assertCardColor(card, 2, new Color[]{Color.RED, Color.BLUE});
     }
 
     @Test
@@ -78,6 +88,7 @@ public class MtgDBCardServiceTest {
         assertThat(card.convertedManaCost(), hasSize(1));
         assertMana(card, 0, 0, Mana.RED);
         assertMana(card, 0, 1, Mana.WHITE);
+        assertCardColor(card, 2, new Color[]{Color.RED,Color.WHITE});
     }
 
     @Test
@@ -96,6 +107,7 @@ public class MtgDBCardServiceTest {
         assertMana(card, 3, 1, Mana.RED);
         assertMana(card, 4, 0, Mana.HYBRID_TWOCOLORLESS);
         assertMana(card, 4, 1, Mana.GREEN);
+        assertCardColor(card, 5, new Color[]{Color.WHITE,Color.BLACK,Color.BLUE,Color.GREEN,Color.RED});
     }
 
     @Test
@@ -110,5 +122,6 @@ public class MtgDBCardServiceTest {
         assertMana(card, 3, 0, Mana.COLORLESS);
         assertMana(card, 4, 0, Mana.BLACK);
         assertMana(card, 4, 1, Mana.PHYREXIAN);
+        assertCardColor(card, 1, new Color[]{Color.BLACK});
     }
 }

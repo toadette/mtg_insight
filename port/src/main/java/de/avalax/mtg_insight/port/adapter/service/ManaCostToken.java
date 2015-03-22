@@ -36,18 +36,15 @@ public class ManaCostToken {
             String[] hybridMana = manaString.split("/");
             manaCosts.add(new ManaCost(Arrays.asList(hybridManaCostFromManaString(hybridMana[0]), hybridManaCostFromManaString(hybridMana[1])), manaString));
         } else if (manaString.matches(PHYREXIAN_MANA)) {
-            Mana mana = manaCostFromManaString(String.valueOf(manaString.charAt(0)));
-            Mana mana2 = manaCostFromManaString(String.valueOf(manaString.charAt(1)));
-            List<Mana> manaList=new ArrayList<>();
-            manaList.add(mana);
-            manaList.add(mana2);
-            manaCosts.add(new ManaCost(manaList,manaString));
+            manaCosts.add(new ManaCost(Arrays.asList(manaCostFromManaChar(manaString.charAt(0)), manaCostFromManaChar(manaString.charAt(1))),manaString));
         } else {
             manaCosts.add(new ManaCost(Collections.singletonList(manaCostFromManaString(manaString)), manaString));
         }
         return manaCosts;
     }
-
+    private Mana manaCostFromManaChar(char manaChar) {
+        return manaCostFromManaString(String.valueOf(manaChar));
+    }
     private Mana manaCostFromManaString(String manaString) {
         if ("W".equals(manaString)) {
             return Mana.WHITE;

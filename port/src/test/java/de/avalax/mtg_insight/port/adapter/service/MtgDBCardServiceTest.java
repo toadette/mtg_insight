@@ -100,4 +100,18 @@ public class MtgDBCardServiceTest {
         assertThat(card.convertedManaCost().get(4).mana().get(1), equalTo(Mana.GREEN));
         assertThat(card, instanceOf(Creature.class));
     }
+    @Test
+    public void testCardFromCardname6() throws Exception {
+        Card card = mtgDBCardService.cardFromCardname("Pith Driller");
+        assertThat(card, notNullValue());
+        assertThat(card.name(), equalTo("Pith Driller"));
+        assertThat(card.convertedManaCost(), hasSize(5));
+        assertThat(card.convertedManaCost().get(0).mana().get(0), equalTo(Mana.COLORLESS));
+        assertThat(card.convertedManaCost().get(1).mana().get(0), equalTo(Mana.COLORLESS));
+        assertThat(card.convertedManaCost().get(2).mana().get(0), equalTo(Mana.COLORLESS));
+        assertThat(card.convertedManaCost().get(3).mana().get(0), equalTo(Mana.COLORLESS));
+        assertThat(card.convertedManaCost().get(4).mana().get(0), equalTo(Mana.BLACK));
+        assertThat(card.convertedManaCost().get(4).mana().get(1), equalTo(Mana.PHYREXIAN));
+        assertThat(card, instanceOf(Creature.class));
+    }
 }

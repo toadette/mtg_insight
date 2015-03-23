@@ -19,7 +19,7 @@ import static org.junit.Assert.assertThat;
 public class MtgDBCardServiceTest {
 
     private void assertMana(Card card, int manaCostPosition, int manaPosition, Mana mana) {
-        assertThat(card.convertedManaCost().get(manaCostPosition).mana().get(manaPosition), equalTo(mana));
+        assertThat(card.convertedManaCost().manaCostAsList().get(manaCostPosition).mana().get(manaPosition), equalTo(mana));
     }
 
     private void assertCard(String cardname, Card card, Class<Creature> cardType) {
@@ -45,7 +45,7 @@ public class MtgDBCardServiceTest {
         String cardname = "Narset, Enlightened Master";
         Card card = mtgDBCardService.cardFromCardname(cardname);
         assertCard(cardname, card, Creature.class);
-        assertThat(card.convertedManaCost(), hasSize(6));
+        assertThat(card.convertedManaCost().manaCostAsList(), hasSize(6));
         assertMana(card, 0, 0, Mana.COLORLESS);
         assertMana(card, 1, 0, Mana.COLORLESS);
         assertMana(card, 2, 0, Mana.COLORLESS);
@@ -60,7 +60,7 @@ public class MtgDBCardServiceTest {
         String cardName = "Brimaz, King of Oreskos";
         Card card = mtgDBCardService.cardFromCardname(cardName);
         assertCard(cardName, card, Creature.class);
-        assertThat(card.convertedManaCost(), hasSize(3));
+        assertThat(card.convertedManaCost().manaCostAsList(), hasSize(3));
         assertMana(card, 0, 0, Mana.COLORLESS);
         assertMana(card, 1, 0, Mana.WHITE);
         assertMana(card, 2, 0, Mana.WHITE);
@@ -72,7 +72,7 @@ public class MtgDBCardServiceTest {
         String cardName = "Frostburn Weird";
         Card card = mtgDBCardService.cardFromCardname(cardName);
         assertCard(cardName, card, Creature.class);
-        assertThat(card.convertedManaCost(), hasSize(2));
+        assertThat(card.convertedManaCost().manaCostAsList(), hasSize(2));
         assertMana(card, 0, 0, Mana.BLUE);
         assertMana(card, 0, 1, Mana.RED);
         assertMana(card, 1, 0, Mana.BLUE);
@@ -85,7 +85,7 @@ public class MtgDBCardServiceTest {
         String cardName = "Figure of Destiny";
         Card card = mtgDBCardService.cardFromCardname(cardName);
         assertCard(cardName, card, Creature.class);
-        assertThat(card.convertedManaCost(), hasSize(1));
+        assertThat(card.convertedManaCost().manaCostAsList(), hasSize(1));
         assertMana(card, 0, 0, Mana.RED);
         assertMana(card, 0, 1, Mana.WHITE);
         assertCardColor(card, 2, new Color[]{Color.RED,Color.WHITE});
@@ -96,7 +96,7 @@ public class MtgDBCardServiceTest {
         String cardName = "Reaper King";
         Card card = mtgDBCardService.cardFromCardname(cardName);
         assertCard(cardName, card, Creature.class);
-        assertThat(card.convertedManaCost(), hasSize(5));
+        assertThat(card.convertedManaCost().manaCostAsList(), hasSize(5));
         assertMana(card, 0, 0, Mana.HYBRID_TWOCOLORLESS);
         assertMana(card, 0, 1, Mana.WHITE);
         assertMana(card, 1, 0, Mana.HYBRID_TWOCOLORLESS);
@@ -115,7 +115,7 @@ public class MtgDBCardServiceTest {
         String cardName = "Pith Driller";
         Card card = mtgDBCardService.cardFromCardname(cardName);
         assertCard(cardName,card, Creature.class);
-        assertThat(card.convertedManaCost(), hasSize(5));
+        assertThat(card.convertedManaCost().manaCostAsList(), hasSize(5));
         assertMana(card, 0, 0, Mana.COLORLESS);
         assertMana(card, 1, 0, Mana.COLORLESS);
         assertMana(card, 2, 0, Mana.COLORLESS);

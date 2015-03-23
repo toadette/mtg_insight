@@ -44,3 +44,10 @@ task jacocoTestReport(type: JacocoReport, dependsOn: test) {
         html.destination = "${project.buildDir}/reports/jacoco/test"
     }
 }
+
+// JUnit tests missing test resources in classpath
+task copyTestResources(type: Copy) {
+    from "${projectDir}/src/test/resources"
+    into "${buildDir}/classes/test"
+}
+check.dependsOn copyTestResources

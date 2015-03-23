@@ -7,30 +7,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import de.avalax.mtg_insight.R;
 import de.avalax.mtg_insight.application.representation.CardRepresentation;
-import de.avalax.mtg_insight.application.representation.ConvertedManaCostToString;
-import de.avalax.mtg_insight.domain.model.card.Image;
-import de.avalax.mtg_insight.domain.model.card.permanent.creature.Creature;
-import de.avalax.mtg_insight.domain.model.color.Color;
-import de.avalax.mtg_insight.domain.model.mana.Mana;
-import de.avalax.mtg_insight.domain.model.mana.ManaCost;
+import de.avalax.mtg_insight.domain.model.card.Card;
+import de.avalax.mtg_insight.domain.model.deck.Deck;
+import de.avalax.mtg_insight.domain.model.deck.DeckService;
 import de.avalax.mtg_insight.presentation.MtgInsightApplication;
+import de.avalax.mtg_insight.presentation.tasks.DeckServiceResponse;
+import de.avalax.mtg_insight.presentation.tasks.DeckServiceTask;
 
-public class CardDemoFragment extends Fragment {
+public class CardDemoFragment extends Fragment implements DeckServiceResponse {
     @InjectView(R.id.cardStage)
     protected LinearLayout cardStage;
 
     @Inject
-    protected ConvertedManaCostToString convertedManaCostToString;
+    protected DeckService deckService;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -48,20 +43,19 @@ public class CardDemoFragment extends Fragment {
     }
 
     private void addDummyCard() {
-        String cardName = "name";
-        List<Color> cardColors = new ArrayList<>();
-        cardColors.add(Color.BLUE);
-        List<ManaCost> convertedManaCost = new ArrayList<>();
-        convertedManaCost.add(new ManaCost(Collections.<Mana>emptyList(),"U"));
-        convertedManaCost.add(new ManaCost(Collections.<Mana>emptyList(),"U"));
-        convertedManaCost.add(new ManaCost(Collections.<Mana>emptyList(),"3"));
-        Image image = null;
-        CardRepresentation cardRepresentation = new CardRepresentation(new Creature(cardName, image, cardColors, convertedManaCost), convertedManaCostToString);
-        cardRepresentation.setCountOfCard(5);
-        CardView cardView = new CardView(getActivity(), cardRepresentation);
-        cardView.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
-        cardStage.addView(cardView);
+        new DeckServiceTask(this,deckService).execute("from-the-grave-to-the-cradle");
+    }
+
+    @Override
+    public void processFinish(Deck deck) {
+        for (Card card :deck.cardsOfDeck()) {
+            CardRepresentation cardRepresentation = new CardRepresentation(card);
+            //TODO: group same cards
+            CardView cardView = new CardView(getActivity(), cardRepresentation);
+            cardView.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT));
+            cardStage.addView(cardView);
+        }
     }
 }

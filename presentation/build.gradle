@@ -116,10 +116,3 @@ task jacocoTestReport(type: JacocoReport, dependsOn: "testDebug") {
         }
     }
 }
-
-// JUnit tests missing test resources in classpath
-task copyTestResources(type: Copy) {
-    from "${projectDir}/src/test/resources"
-    into "${buildDir}/classes/test"
-}
-check.dependsOn copyTestResources

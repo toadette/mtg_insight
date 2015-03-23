@@ -18,12 +18,10 @@ import java.util.List;
 
 import de.avalax.mtg_insight.R;
 import de.avalax.mtg_insight.application.representation.CardRepresentation;
-import de.avalax.mtg_insight.application.representation.ConvertedManaCostToString;
 import de.avalax.mtg_insight.domain.model.card.Card;
 import de.avalax.mtg_insight.domain.model.card.Image;
 import de.avalax.mtg_insight.domain.model.color.Color;
-import de.avalax.mtg_insight.domain.model.mana.Mana;
-import de.avalax.mtg_insight.domain.model.mana.ManaCost;
+import de.avalax.mtg_insight.domain.model.mana.ConvertedManaCost;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
 
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -78,11 +76,11 @@ public class CardRepresentationToDrawableTest {
             }
 
             @Override
-            public List<ManaCost> convertedManaCost() {
+            public ConvertedManaCost convertedManaCost() {
                 return null;
             }
         };
-        return new CardRepresentation(card, new ConvertedManaCostToString());
+        return new CardRepresentation(card);
     }
 
     @Before

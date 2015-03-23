@@ -10,12 +10,11 @@ import java.util.List;
 import de.avalax.mtg_insight.domain.model.card.Card;
 import de.avalax.mtg_insight.domain.model.card.Image;
 import de.avalax.mtg_insight.domain.model.color.Color;
-import de.avalax.mtg_insight.domain.model.mana.Mana;
-import de.avalax.mtg_insight.domain.model.mana.ManaCost;
+import de.avalax.mtg_insight.domain.model.mana.ConvertedManaCost;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
 
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 @RunWith(HierarchicalContextRunner.class)
 public class CardRepresentationTest {
@@ -23,6 +22,7 @@ public class CardRepresentationTest {
     private CardRepresentation cardRepresentation;
     private List<Color> colors;
     private String name;
+    private ConvertedManaCost convertedManaCost;
 
     @Before
     public void setUp() throws Exception {
@@ -44,16 +44,11 @@ public class CardRepresentationTest {
             }
 
             @Override
-            public List<ManaCost> convertedManaCost() {
-                return null;
+            public ConvertedManaCost convertedManaCost() {
+                return convertedManaCost;
             }
         };
-        cardRepresentation = new CardRepresentation(card, new ConvertedManaCostToString() {
-            @Override
-            public String convertToString(List<ManaCost> manaCosts) {
-                return "cmcToString";
-            }
-        });
+        cardRepresentation = new CardRepresentation(card);
     }
 
     @Test
@@ -75,6 +70,7 @@ public class CardRepresentationTest {
 
     @Test
     public void convertedManaCost_shouldReturnConvertedString() throws Exception {
+        convertedManaCost = new ConvertedManaCost("cmcToString", null);
         assertThat(cardRepresentation.convertedManaCost(), equalTo("cmcToString"));
     }
 

@@ -17,6 +17,7 @@ import java.util.List;
 import de.avalax.mtg_insight.domain.model.card.Card;
 import de.avalax.mtg_insight.domain.model.card.permanent.creature.Creature;
 import de.avalax.mtg_insight.domain.model.color.Color;
+import de.avalax.mtg_insight.domain.model.mana.ConvertedManaCost;
 import de.avalax.mtg_insight.domain.model.mana.ManaCost;
 
 public class MtgDBCardService implements CardService {
@@ -52,12 +53,12 @@ public class MtgDBCardService implements CardService {
         return colorMatcher.getColorFromArray(colorArray.toArray());
     }
 
-    private List<ManaCost> getConvertedManaCost(JSONObject cardFromJson) {
+    private ConvertedManaCost getConvertedManaCost(JSONObject cardFromJson) {
         List<ManaCost> convertedManaCost = new ArrayList<>();
         for (ManaCostToken token : manaTokenizer.get(cardFromJson.get("manaCost").toString())) {
             convertedManaCost.addAll(token.manaCost());
         }
-        return convertedManaCost;
+        return new ConvertedManaCost(cardFromJson.get("manaCost").toString(),convertedManaCost);
     }
 
     private URL getCardUrl(String cardname) throws MalformedURLException, UnsupportedEncodingException {

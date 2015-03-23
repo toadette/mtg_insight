@@ -7,7 +7,12 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import de.avalax.mtg_insight.application.launcher.LauncherApplicationService;
-import de.avalax.mtg_insight.application.representation.ConvertedManaCostToString;
+import de.avalax.mtg_insight.domain.model.deck.DeckService;
+import de.avalax.mtg_insight.port.adapter.service.CardService;
+import de.avalax.mtg_insight.port.adapter.service.ColorMatcher;
+import de.avalax.mtg_insight.port.adapter.service.ManaTokenizer;
+import de.avalax.mtg_insight.port.adapter.service.MtgDBCardService;
+import de.avalax.mtg_insight.port.adapter.service.TappedOutDeckService;
 import de.avalax.mtg_insight.presentation.card.CardDemoFragment;
 import de.avalax.mtg_insight.presentation.card.CardHeaderView;
 import de.avalax.mtg_insight.presentation.card.CardRepresentationToDrawable;
@@ -41,8 +46,13 @@ public class MtgInsightModule {
 
     @Provides
     @Singleton
-    ConvertedManaCostToString provideConvertedManaCostToString(){
-        return new ConvertedManaCostToString();
+    DeckService provideDeckService(CardService cardService){
+        return new TappedOutDeckService(cardService);
     }
 
+    @Provides
+    @Singleton
+    CardService provideCardService(){
+        return new MtgDBCardService(new ManaTokenizer(), new ColorMatcher());
+    }
 }

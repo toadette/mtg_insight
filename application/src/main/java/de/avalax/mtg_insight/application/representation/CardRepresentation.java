@@ -1,18 +1,14 @@
 package de.avalax.mtg_insight.application.representation;
 
 import de.avalax.mtg_insight.domain.model.card.Card;
-import de.avalax.mtg_insight.domain.model.card.permanent.creature.Creature;
-import de.avalax.mtg_insight.domain.model.mana.Mana;
 
 public class CardRepresentation {
-    private String convertedManaCost;
     private Card card;
     private int count;
 
-    public CardRepresentation(Card card, ConvertedManaCostToString convertedManaCostToString) {
+    public CardRepresentation(Card card) {
         this.card = card;
         this.count = 1;
-        this.convertedManaCost = convertedManaCostToString.convertToString(card.convertedManaCost());
     }
 
     public void setCountOfCard(int count) {
@@ -28,7 +24,7 @@ public class CardRepresentation {
     }
 
     public String convertedManaCost() {
-        return convertedManaCost;
+        return card.convertedManaCost().toString();
     }
 
     public CardColorRepresentation color() {

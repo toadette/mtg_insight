@@ -3,6 +3,8 @@
     package="de.avalax.mtg_insight"
     android:installLocation="auto" >
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".presentation.MtgInsightApplication"
         android:allowBackup="true"

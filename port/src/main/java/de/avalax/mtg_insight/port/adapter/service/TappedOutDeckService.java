@@ -1,5 +1,7 @@
 package de.avalax.mtg_insight.port.adapter.service;
 
+import org.json.simple.parser.ParseException;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -42,6 +44,8 @@ public class TappedOutDeckService implements DeckService {
                     addCardFromLine(line, cardOfDeck);
                 }
             }
+        } catch (ParseException e) {
+            throw new RuntimeException("Karte konnte nicht geladen werden");
         } finally {
             if (reader != null) {
                 reader.close();
@@ -50,12 +54,12 @@ public class TappedOutDeckService implements DeckService {
         return new StandardDeck(new Deckname(name), cardOfDeck);
     }
 
-    private void addCardFromLine(String line, List<Card> cardOfDeck) {
+    private void addCardFromLine(String line, List<Card> cardOfDeck) throws IOException, ParseException {
         String[] split = line.split("\\t");
         int count = Integer.valueOf(split[0]);
         String name = split[1];
         for (int i = 0; i < count; i++) {
-            cardOfDeck.add(new Creature(name,null,null,null));
+            cardOfDeck.add(cardService.cardFromCardname(name));
         }
     }
 
@@ -65,7 +69,7 @@ public class TappedOutDeckService implements DeckService {
         try {
             deck = readFromFile(deckname.getName());
         } catch (Exception e) {
-            throw new RuntimeException("Error TappedOutDeckService: " + e.getCause().getLocalizedMessage());
+            throw new RuntimeException("Error TappedOutDeckService: " + e);
         }
         return deck;
     }

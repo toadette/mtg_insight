@@ -45,7 +45,7 @@ public class TappedOutDeckService implements DeckService {
                 }
             }
         } catch (ParseException e) {
-            throw new RuntimeException("Karte konnte nicht geladen werden");
+            throw new RuntimeException("Karte konnte nicht geladen werden",e);
         } finally {
             if (reader != null) {
                 reader.close();
@@ -69,7 +69,7 @@ public class TappedOutDeckService implements DeckService {
         try {
             deck = readFromFile(deckname.getName());
         } catch (Exception e) {
-            throw new RuntimeException("Error TappedOutDeckService: " + e);
+            throw new RuntimeException("Error TappedOutDeckService: ",e);
         }
         return deck;
     }

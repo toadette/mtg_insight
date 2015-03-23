@@ -69,7 +69,13 @@ public class CardRepresentationTest {
     }
 
     @Test
-    public void convertedManaCost_shouldReturnConvertedString() throws Exception {
+    public void nullInstance_shouldReturnEmptyConvertedString() throws Exception {
+        convertedManaCost = null;
+        assertThat(cardRepresentation.convertedManaCost(), equalTo(""));
+    }
+
+    @Test
+    public void convertedManaCostWitManaCost_shouldReturnConvertedString() throws Exception {
         convertedManaCost = new ConvertedManaCost("cmcToString", null);
         assertThat(cardRepresentation.convertedManaCost(), equalTo("cmcToString"));
     }

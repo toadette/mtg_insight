@@ -24,6 +24,9 @@ public class CardRepresentation {
     }
 
     public String convertedManaCost() {
+        if (card.convertedManaCost() == null) {
+            return "";
+        }
         return card.convertedManaCost().toString();
     }
 

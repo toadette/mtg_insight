@@ -59,7 +59,8 @@ public class TappedOutDeckService implements DeckService {
         int count = Integer.valueOf(split[0]);
         String name = split[1];
         for (int i = 0; i < count; i++) {
-            cardOfDeck.add(cardService.cardFromCardname(name));
+            cardOfDeck.add(new Creature(name,null,null,null));
+//            cardOfDeck.add(cardService.cardFromCardname(name));
         }
     }
 

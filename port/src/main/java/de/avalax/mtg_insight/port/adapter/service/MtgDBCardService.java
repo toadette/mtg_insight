@@ -38,7 +38,10 @@ public class MtgDBCardService implements CardService {
         JSONArray jsonArray = (JSONArray) new JSONParser().parse(inputStreamReader);
         JSONObject cardFromJson = (JSONObject) jsonArray.get(0);
         Card card = new Creature(cardFromJson.get("name").toString(), null, getColorOfCard(cardFromJson), getConvertedManaCost(cardFromJson));
-//TODO: parse CardType        cardFromJson.get("type");
+        //TODO: parse Type
+        //FIXME: card is null
+        //FIXME: read sideboard
+        Object type = cardFromJson.get("type");
 //TODO: parse Description?    cardFromJson.get("description");
         inputStreamReader.close();
         return card;

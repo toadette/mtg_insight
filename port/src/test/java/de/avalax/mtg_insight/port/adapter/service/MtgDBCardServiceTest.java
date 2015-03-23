@@ -124,4 +124,10 @@ public class MtgDBCardServiceTest {
         assertMana(card, 4, 1, Mana.PHYREXIAN);
         assertCardColor(card, 1, new Color[]{Color.BLACK});
     }
+
+    @Test
+    public void cardFromCardname_ShouldReturn() throws Exception {
+
+
+    }
 }

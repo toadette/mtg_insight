@@ -22,13 +22,15 @@ public class TappedOutDeckService implements DeckService {
     private List<Deckname> decknames;
     private final String host = "http://tappedout.net/mtg-decks/";
     private final String format = "/?fmt=txt";
+    private CardService cardService;
 
-    public TappedOutDeckService(String deckname, CardService cardService) {
+    public TappedOutDeckService(CardService cardService) {
+        this.cardService = cardService;
         decknames = new ArrayList<>();
-        decknames.add(new Deckname(deckname));
     }
 
     private Deck readFromFile(String name) throws IOException {
+        decknames.add(new Deckname(name));
         URL url = new URL(host + name + format);
         BufferedReader reader = null;
         List<Card> cardOfDeck = new ArrayList<>();

@@ -6,6 +6,7 @@ import org.junit.Test;
 import de.avalax.mtg_insight.domain.model.card.Card;
 import de.avalax.mtg_insight.domain.model.card.permanent.creature.Creature;
 import de.avalax.mtg_insight.domain.model.color.Color;
+import de.avalax.mtg_insight.domain.model.exception.CardNotFoundException;
 import de.avalax.mtg_insight.domain.model.mana.Mana;
 
 import static org.hamcrest.Matchers.equalTo;
@@ -125,9 +126,9 @@ public class MtgDBCardServiceTest {
         assertCardColor(card, 1, new Color[]{Color.BLACK});
     }
 
-    @Test
-    public void cardFromCardname_ShouldReturn() throws Exception {
-
+    @Test(expected = CardNotFoundException.class)
+    public void cardFromCardname_ShouldCardNotFoundException() throws Exception {
+        mtgDBCardService.cardFromCardname("hahahakeineKarte");
 
     }
 }

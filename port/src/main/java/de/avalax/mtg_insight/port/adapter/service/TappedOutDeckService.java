@@ -18,6 +18,8 @@ import de.avalax.mtg_insight.domain.model.deck.Deck;
 import de.avalax.mtg_insight.domain.model.deck.DeckService;
 import de.avalax.mtg_insight.domain.model.deck.Deckname;
 import de.avalax.mtg_insight.domain.model.deck.StandardDeck;
+import de.avalax.mtg_insight.domain.model.exception.CardNotFoundException;
+import de.avalax.mtg_insight.domain.model.exception.DeckNotFoundException;
 
 public class TappedOutDeckService implements DeckService {
 
@@ -31,47 +33,42 @@ public class TappedOutDeckService implements DeckService {
         decknames = new ArrayList<>();
     }
 
-    private Deck readFromFile(String name) throws IOException {
+    private Deck readFromFile(String name) throws DeckNotFoundException {
         decknames.add(new Deckname(name));
-        URL url = new URL(host + name + format);
-        BufferedReader reader = null;
         List<Card> cardOfDeck = new ArrayList<>();
-        try {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new URL(host + name + format).openStream()))) {
             String line = null;
-            reader = new BufferedReader(new InputStreamReader(url.openStream()));
             while ((line = reader.readLine()) != null) {
                 if (line.length() > 0) {
                     addCardFromLine(line, cardOfDeck);
                 }
             }
-        } catch (ParseException e) {
-            throw new RuntimeException("Karte konnte nicht geladen werden",e);
-        } finally {
-            if (reader != null) {
-                reader.close();
-            }
+        } catch (FileNotFoundException e) {
+            throw new DeckNotFoundException();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
         return new StandardDeck(new Deckname(name), cardOfDeck);
     }
 
-    private void addCardFromLine(String line, List<Card> cardOfDeck) throws IOException, ParseException {
+    private void addCardFromLine(String line, List<Card> cardOfDeck) {
         String[] split = line.split("\\t");
         int count = Integer.valueOf(split[0]);
         String name = split[1];
         for (int i = 0; i < count; i++) {
-            cardOfDeck.add(cardService.cardFromCardname(name));
+            Card card = new Creature(name, null, null, null);
+            try {
+                card = cardService.cardFromCardname(name);
+            } catch (CardNotFoundException e) {
+            }
+            cardOfDeck.add(card);
         }
     }
 
     @Override
-    public Deck deckFromDeckname(Deckname deckname) {
-        Deck deck;
-        try {
-            deck = readFromFile(deckname.getName());
-        } catch (Exception e) {
-            throw new RuntimeException("Error TappedOutDeckService: ",e);
-        }
-        return deck;
+    public Deck deckFromDeckname(Deckname deckname) throws DeckNotFoundException {
+        return readFromFile(deckname.getName());
     }
 
     @Override

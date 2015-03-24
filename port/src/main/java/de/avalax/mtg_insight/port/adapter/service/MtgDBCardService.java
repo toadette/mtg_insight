@@ -17,6 +17,7 @@ import java.util.List;
 import de.avalax.mtg_insight.domain.model.card.Card;
 import de.avalax.mtg_insight.domain.model.card.permanent.creature.Creature;
 import de.avalax.mtg_insight.domain.model.color.Color;
+import de.avalax.mtg_insight.domain.model.exception.CardNotFoundException;
 import de.avalax.mtg_insight.domain.model.mana.ConvertedManaCost;
 import de.avalax.mtg_insight.domain.model.mana.ManaCost;
 
@@ -34,22 +35,29 @@ public class MtgDBCardService implements CardService {
     }
 
     @Override
-    public Card cardFromCardname(String cardname) throws IOException, ParseException {
-        InputStreamReader inputStreamReader = new InputStreamReader(getCardUrl(cardname).openStream());
-        JSONArray jsonArray = (JSONArray) new JSONParser().parse(inputStreamReader);
-        JSONObject cardFromJson = (JSONObject) jsonArray.get(0);
-        Card card = new Creature(cardFromJson.get("name").toString(), null, getColorOfCard(cardFromJson), getConvertedManaCost(cardFromJson));
-        //TODO: parse Type
-        //FIXME: card is null
-        //FIXME: read sideboard
-        Object type = cardFromJson.get("type");
+    public Card cardFromCardname(String cardname) throws CardNotFoundException {
+        try {
+            InputStreamReader inputStreamReader = new InputStreamReader(getCardUrl(cardname).openStream());
+            JSONArray jsonArray = (JSONArray) new JSONParser().parse(inputStreamReader);
+            if (jsonArray == null | jsonArray.size() == 0) {
+                throw new CardNotFoundException();
+            }
+            JSONObject cardFromJson = (JSONObject) jsonArray.get(0);
+            Card card = new Creature(cardFromJson.get("name").toString(), null, getColorOfCard(cardFromJson), getConvertedManaCost(cardFromJson));
+            //TODO: parse Type
+            //FIXME: card is null
+            //FIXME: read sideboard
+            Object type = cardFromJson.get("type");
 //TODO: parse Description?    cardFromJson.get("description");
-        inputStreamReader.close();
-        return card;
+            inputStreamReader.close();
+            return card;
+        } catch (Exception e) {
+            throw new CardNotFoundException();
+        }
     }
 
     private List<Color> getColorOfCard(JSONObject cardFromJson) {
-        JSONArray colorArray= (JSONArray) cardFromJson.get("colors");
+        JSONArray colorArray = (JSONArray) cardFromJson.get("colors");
         return colorMatcher.getColorFromArray(colorArray.toArray());
     }
 
@@ -58,7 +66,7 @@ public class MtgDBCardService implements CardService {
         for (ManaCostToken token : manaTokenizer.get(cardFromJson.get("manaCost").toString())) {
             convertedManaCost.addAll(token.manaCost());
         }
-        return new ConvertedManaCost(cardFromJson.get("manaCost").toString(),convertedManaCost);
+        return new ConvertedManaCost(cardFromJson.get("manaCost").toString(), convertedManaCost);
     }
 
     private URL getCardUrl(String cardname) throws MalformedURLException, UnsupportedEncodingException {

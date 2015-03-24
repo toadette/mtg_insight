@@ -40,7 +40,7 @@ public class MtgDBCardService implements CardService {
             InputStreamReader inputStreamReader = new InputStreamReader(getCardUrl(cardname).openStream());
             JSONArray jsonArray = (JSONArray) new JSONParser().parse(inputStreamReader);
             if (jsonArray == null | jsonArray.size() == 0) {
-                throw new CardNotFoundException();
+                throw new CardNotFoundException(new Exception("Card not found"));
             }
             JSONObject cardFromJson = (JSONObject) jsonArray.get(0);
             Card card = new Creature(cardFromJson.get("name").toString(), null, getColorOfCard(cardFromJson), getConvertedManaCost(cardFromJson));
@@ -52,7 +52,7 @@ public class MtgDBCardService implements CardService {
             inputStreamReader.close();
             return card;
         } catch (Exception e) {
-            throw new CardNotFoundException();
+            throw new CardNotFoundException(new Exception("Card not found"));
         }
     }
 

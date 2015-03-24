@@ -43,10 +43,8 @@ public class TappedOutDeckService implements DeckService {
                     addCardFromLine(line, cardOfDeck);
                 }
             }
-        } catch (FileNotFoundException e) {
-            throw new DeckNotFoundException();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new DeckNotFoundException(e);
         }
 
         return new StandardDeck(new Deckname(name), cardOfDeck);
@@ -57,10 +55,11 @@ public class TappedOutDeckService implements DeckService {
         int count = Integer.valueOf(split[0]);
         String name = split[1];
         for (int i = 0; i < count; i++) {
-            Card card = new Creature(name, null, null, null);
+            Card card;
             try {
                 card = cardService.cardFromCardname(name);
-            } catch (CardNotFoundException e) {
+            } catch (CardNotFoundException ignored) {
+                card = new Creature(name, null, null, null);
             }
             cardOfDeck.add(card);
         }

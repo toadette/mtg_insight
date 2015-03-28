@@ -1,4 +1,4 @@
-package de.avalax.mtg_insight.port.adapter.service;
+package de.avalax.mtg_insight.port.adapter.service.card;
 
 import org.json.simple.parser.ParseException;
 

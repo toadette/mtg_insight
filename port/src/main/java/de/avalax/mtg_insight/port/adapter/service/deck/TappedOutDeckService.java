@@ -1,13 +1,8 @@
-package de.avalax.mtg_insight.port.adapter.service;
-
-import org.json.simple.parser.ParseException;
+package de.avalax.mtg_insight.port.adapter.service.deck;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +15,7 @@ import de.avalax.mtg_insight.domain.model.deck.Deckname;
 import de.avalax.mtg_insight.domain.model.deck.StandardDeck;
 import de.avalax.mtg_insight.domain.model.exception.CardNotFoundException;
 import de.avalax.mtg_insight.domain.model.exception.DeckNotFoundException;
+import de.avalax.mtg_insight.port.adapter.service.card.CardService;
 
 public class TappedOutDeckService implements DeckService {
 

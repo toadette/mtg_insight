@@ -1,4 +1,4 @@
-package de.avalax.mtg_insight.port.adapter.service;
+package de.avalax.mtg_insight.port.adapter.service.manaCost;
 
 import java.util.ArrayList;
 import java.util.Arrays;

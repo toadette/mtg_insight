@@ -1,18 +1,19 @@
-package de.avalax.mtg_insight.port.adapter.service;
+package de.avalax.mtg_insight.port.adapter.service.deck;
 
-import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.io.FileReader;
 import java.util.List;
 
-import de.avalax.mtg_insight.domain.model.card.Card;
 import de.avalax.mtg_insight.domain.model.deck.Deck;
 import de.avalax.mtg_insight.domain.model.deck.Deckname;
 import de.avalax.mtg_insight.domain.model.exception.DeckNotFoundException;
+import de.avalax.mtg_insight.port.adapter.service.card.MtgDBCardService;
+import de.avalax.mtg_insight.port.adapter.service.color.ColorMatcher;
+import de.avalax.mtg_insight.port.adapter.service.deck.TappedOutDeckService;
+import de.avalax.mtg_insight.port.adapter.service.manaCost.ManaTokenizer;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.nullValue;

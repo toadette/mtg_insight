@@ -1,12 +1,12 @@
-package de.avalax.mtg_insight.port.adapter.service;
+package de.avalax.mtg_insight.port.adapter.service.color;
 
 
 import org.junit.Test;
 
-import java.lang.reflect.Array;
 import java.util.List;
 
 import de.avalax.mtg_insight.domain.model.color.Color;
+import de.avalax.mtg_insight.port.adapter.service.color.ColorMatcher;
 
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;

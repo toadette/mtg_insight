@@ -1,11 +1,9 @@
-package de.avalax.mtg_insight.port.adapter.service;
+package de.avalax.mtg_insight.port.adapter.service.card;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
@@ -15,11 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.avalax.mtg_insight.domain.model.card.Card;
-import de.avalax.mtg_insight.domain.model.card.permanent.creature.Creature;
 import de.avalax.mtg_insight.domain.model.color.Color;
 import de.avalax.mtg_insight.domain.model.exception.CardNotFoundException;
 import de.avalax.mtg_insight.domain.model.mana.ConvertedManaCost;
 import de.avalax.mtg_insight.domain.model.mana.ManaCost;
+import de.avalax.mtg_insight.port.adapter.service.color.ColorMatcher;
+import de.avalax.mtg_insight.port.adapter.service.manaCost.ManaCostToken;
+import de.avalax.mtg_insight.port.adapter.service.manaCost.ManaTokenizer;
 
 public class MtgDBCardService implements CardService {
 
@@ -43,10 +43,10 @@ public class MtgDBCardService implements CardService {
                 throw new CardNotFoundException(new Exception("Card not found"));
             }
             JSONObject cardFromJson = (JSONObject) jsonArray.get(0);
-            Card card = new Creature(cardFromJson.get("name").toString(), getColorOfCard(cardFromJson), getConvertedManaCost(cardFromJson));
+//            Card card = new Creature(cardFromJson.get("name").toString(), getColorOfCard(cardFromJson), getConvertedManaCost(cardFromJson));
+            Card card = new CardBuilder().createCardFromType(cardFromJson.get("type").toString(),cardFromJson.get("name").toString(),getColorOfCard(cardFromJson),getConvertedManaCost(cardFromJson));
             //TODO: parse Type
             //FIXME: read sideboard
-            Object type = cardFromJson.get("type");
 //TODO: parse Description?    cardFromJson.get("description");
             inputStreamReader.close();
             return card;

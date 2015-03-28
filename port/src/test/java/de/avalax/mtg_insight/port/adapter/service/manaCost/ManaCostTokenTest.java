@@ -1,10 +1,10 @@
-package de.avalax.mtg_insight.port.adapter.service;
+package de.avalax.mtg_insight.port.adapter.service.manaCost;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import de.avalax.mtg_insight.domain.model.mana.Mana;
 import de.avalax.mtg_insight.domain.model.mana.ManaCost;
+import de.avalax.mtg_insight.port.adapter.service.manaCost.ManaCostToken;
 
 import static org.hamcrest.Matchers.emptyCollectionOf;
 import static org.hamcrest.Matchers.hasSize;

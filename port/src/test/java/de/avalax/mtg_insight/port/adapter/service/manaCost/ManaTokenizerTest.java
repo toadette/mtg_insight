@@ -1,9 +1,12 @@
-package de.avalax.mtg_insight.port.adapter.service;
+package de.avalax.mtg_insight.port.adapter.service.manaCost;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
+
+import de.avalax.mtg_insight.port.adapter.service.manaCost.ManaCostToken;
+import de.avalax.mtg_insight.port.adapter.service.manaCost.ManaTokenizer;
 
 import static org.hamcrest.Matchers.emptyCollectionOf;
 import static org.hamcrest.Matchers.equalTo;

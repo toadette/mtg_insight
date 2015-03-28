@@ -1,4 +1,4 @@
-package de.avalax.mtg_insight.port.adapter.service;
+package de.avalax.mtg_insight.port.adapter.service.card;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -8,6 +8,8 @@ import de.avalax.mtg_insight.domain.model.card.permanent.creature.Creature;
 import de.avalax.mtg_insight.domain.model.color.Color;
 import de.avalax.mtg_insight.domain.model.exception.CardNotFoundException;
 import de.avalax.mtg_insight.domain.model.mana.Mana;
+import de.avalax.mtg_insight.port.adapter.service.color.ColorMatcher;
+import de.avalax.mtg_insight.port.adapter.service.manaCost.ManaTokenizer;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;

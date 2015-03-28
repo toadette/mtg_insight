@@ -8,11 +8,13 @@ import de.avalax.mtg_insight.domain.model.card.Card;
 public class BasicDeck implements Deck {
 
     private Deckname name;
-    private List<Card> cardsOfDeck;
+    private List<Card> deck;
+    private List<Card> sideboard;
 
-    public BasicDeck(Deckname name, List<Card> cardsOfDeck) {
+    public BasicDeck(Deckname name, List<Card> deck,List<Card> sideboard) {
         this.name = name;
-        this.cardsOfDeck = cardsOfDeck;
+        this.deck = deck;
+        this.sideboard = sideboard;
     }
 
     @Override
@@ -21,7 +23,12 @@ public class BasicDeck implements Deck {
     }
 
     @Override
-    public List<Card> cardsOfDeck() {
-        return cardsOfDeck;
+    public List<Card> deck() {
+        return deck;
+    }
+
+    @Override
+    public List<Card> sideboard() {
+        return sideboard;
     }
 }

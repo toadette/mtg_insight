@@ -42,8 +42,8 @@ public class TappedOutDeckService implements DeckService {
         } catch (IOException e) {
             throw new DeckNotFoundException(e);
         }
-
-        return new StandardDeck(new Deckname(name), cardOfDeck);
+//FIXME:add Sideboard
+        return new StandardDeck(new Deckname(name), cardOfDeck,null);
     }
 
     private void addCardFromLine(String line, List<Card> cardOfDeck) {

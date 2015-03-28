@@ -48,7 +48,7 @@ public class CardDemoFragment extends Fragment implements DeckServiceResponse {
 
     @Override
     public void processFinish(Deck deck) {
-        for (Card card :deck.cardsOfDeck()) {
+        for (Card card :deck.deck()) {
             CardRepresentation cardRepresentation = new CardRepresentation(card);
             //TODO: group same cards
             CardView cardView = new CardView(getActivity(), cardRepresentation);

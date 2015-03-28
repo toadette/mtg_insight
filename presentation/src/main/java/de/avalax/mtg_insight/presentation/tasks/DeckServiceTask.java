@@ -30,7 +30,7 @@ public class DeckServiceTask extends AsyncTask<String, Void, Deck> {
             return deckService.deckFromDeckname(new Deckname(params[0]));
         } catch (DeckNotFoundException e) {
             Log.d("deck not found",e.getMessage(),e);
-            return new BasicDeck(new Deckname(e.getMessage()),Collections.<Card>emptyList());
+            return new BasicDeck(new Deckname(e.getMessage()),Collections.<Card>emptyList(),Collections.<Card>emptyList());
         }
     }
 

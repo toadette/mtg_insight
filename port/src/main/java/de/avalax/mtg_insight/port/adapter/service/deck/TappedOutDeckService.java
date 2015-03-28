@@ -31,19 +31,28 @@ public class TappedOutDeckService implements DeckService {
 
     private Deck readFromFile(String name) throws DeckNotFoundException {
         decknames.add(new Deckname(name));
-        List<Card> cardOfDeck = new ArrayList<>();
+        List<Card> deck = new ArrayList<>();
+        List<Card> sideboard = new ArrayList<>();
+        boolean readSideBoard = false;
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(new URL(host + name + format).openStream()))) {
-            String line = null;
+            String line;
             while ((line = reader.readLine()) != null) {
                 if (line.length() > 0) {
-                    addCardFromLine(line, cardOfDeck);
+                    if (line.startsWith("Sideboard")) {
+                        readSideBoard = true;
+                    } else {
+                        if (readSideBoard) {
+                            addCardFromLine(line, sideboard);
+                        } else {
+                            addCardFromLine(line, deck);
+                        }
+                    }
                 }
             }
         } catch (IOException e) {
             throw new DeckNotFoundException(e);
         }
-//FIXME:add Sideboard
-        return new StandardDeck(new Deckname(name), cardOfDeck,null);
+        return new StandardDeck(new Deckname(name), deck, sideboard);
     }
 
     private void addCardFromLine(String line, List<Card> cardOfDeck) {

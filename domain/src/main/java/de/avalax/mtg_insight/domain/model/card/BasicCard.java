@@ -10,14 +10,12 @@ import de.avalax.mtg_insight.domain.model.mana.ManaCost;
 public class BasicCard implements Card {
 
     private final String name;
-    private final Image image;
     private final List<Color> cardColors;
     private final ConvertedManaCost convertedManaCost;
 
-    public BasicCard(String name, Image image, List<Color> cardColors, ConvertedManaCost convertedManaCost) {
+    public BasicCard(String name, List<Color> cardColors, ConvertedManaCost convertedManaCost) {
 
         this.name = name;
-        this.image = image;
         this.cardColors = cardColors;
         this.convertedManaCost = convertedManaCost;
     }
@@ -25,11 +23,6 @@ public class BasicCard implements Card {
     @Override
     public String name() {
         return name;
-    }
-
-    @Override
-    public Image image() {
-        return image;
     }
 
     @Override

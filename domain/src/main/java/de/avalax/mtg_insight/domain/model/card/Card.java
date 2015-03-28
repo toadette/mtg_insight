@@ -10,8 +10,6 @@ import de.avalax.mtg_insight.domain.model.mana.ManaCost;
 public interface Card {
     String name();
 
-    Image image();
-
     List<Color> colorOfCard();
 
     ConvertedManaCost convertedManaCost();

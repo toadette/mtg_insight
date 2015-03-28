@@ -59,7 +59,7 @@ public class TappedOutDeckService implements DeckService {
             try {
                 card = cardService.cardFromCardname(name);
             } catch (CardNotFoundException ignored) {
-                card = new Creature(name, null, null, null);
+                card = new Creature(name, null, null);
             }
             cardOfDeck.add(card);
         }

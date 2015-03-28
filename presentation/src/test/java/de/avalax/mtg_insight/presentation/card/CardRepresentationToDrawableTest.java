@@ -19,7 +19,6 @@ import java.util.List;
 import de.avalax.mtg_insight.R;
 import de.avalax.mtg_insight.application.representation.CardRepresentation;
 import de.avalax.mtg_insight.domain.model.card.Card;
-import de.avalax.mtg_insight.domain.model.card.Image;
 import de.avalax.mtg_insight.domain.model.color.Color;
 import de.avalax.mtg_insight.domain.model.mana.ConvertedManaCost;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
@@ -62,11 +61,6 @@ public class CardRepresentationToDrawableTest {
 
             @Override
             public String name() {
-                return null;
-            }
-
-            @Override
-            public Image image() {
                 return null;
             }
 

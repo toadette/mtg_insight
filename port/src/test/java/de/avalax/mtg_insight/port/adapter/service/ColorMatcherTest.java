@@ -10,6 +10,7 @@ import de.avalax.mtg_insight.domain.model.color.Color;
 
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
@@ -31,5 +32,11 @@ public class ColorMatcherTest {
     public void getColorFromColorString_shouldReturnTwoColors() throws Exception {
         List<Color> color = new ColorMatcher().getColorFromArray(new String[]{"white", "blue"});
         assertColors(color,2,Color.WHITE,Color.BLUE);
+    }
+
+    @Test
+    public void getNoneFromColorString_shouldReturnEmptyList() throws Exception {
+        List<Color> color=new ColorMatcher().getColorFromArray(new String[]{"none"});
+        assertThat(color.size(),is(0));
     }
 }

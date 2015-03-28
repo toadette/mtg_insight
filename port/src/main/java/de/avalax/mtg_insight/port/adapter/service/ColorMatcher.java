@@ -10,7 +10,10 @@ public class ColorMatcher {
     public List<Color> getColorFromArray(Object[] colorArray) {
         List<Color> colorList = new ArrayList<>();
         for (Object color : colorArray) {
-            colorList.add(getColor(color.toString()));
+            Color newColor = getColor(color.toString());
+            if (newColor != null) {
+                colorList.add(newColor);
+            }
         }
         return Collections.unmodifiableList(colorList);
     }
@@ -28,6 +31,9 @@ public class ColorMatcher {
         if (colorString.equals("green")) {
             return Color.GREEN;
         }
-        return Color.RED;
+        if (colorString.equals("red")) {
+            return Color.RED;
+        }
+        return null;
     }
 }

@@ -43,9 +43,7 @@ public class MtgDBCardService implements CardService {
                 throw new CardNotFoundException(new Exception("Card not found"));
             }
             JSONObject cardFromJson = (JSONObject) jsonArray.get(0);
-            //FIXME: read sideboard
             Card card = new CardBuilder().createCardFromType(cardFromJson.get("type").toString(),cardFromJson.get("name").toString(),getColorOfCard(cardFromJson),getConvertedManaCost(cardFromJson));
-
 //TODO: parse Description?    cardFromJson.get("description");
             inputStreamReader.close();
             return card;

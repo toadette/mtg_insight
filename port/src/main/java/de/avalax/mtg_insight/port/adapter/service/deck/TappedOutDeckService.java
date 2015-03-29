@@ -38,15 +38,17 @@ public class TappedOutDeckService implements DeckService {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (line.length() > 0) {
+                    //TODO: read Card from line
                     if (line.startsWith("Sideboard")) {
                         readSideBoard = true;
-                    } else {
-                        if (readSideBoard) {
-                            addCardFromLine(line, sideboard);
-                        } else {
-                            addCardFromLine(line, deck);
-                        }
+                        continue;
                     }
+                    if (readSideBoard) {
+                        addCardFromLine(line, sideboard);
+                    } else {
+                        addCardFromLine(line, deck);
+                    }
+
                 }
             }
         } catch (IOException e) {

@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import de.avalax.mtg_insight.domain.model.card.Card;
-import de.avalax.mtg_insight.domain.model.card.permanent.creature.Creature;
+import de.avalax.mtg_insight.domain.model.card.Creature;
 import de.avalax.mtg_insight.domain.model.color.Color;
 import de.avalax.mtg_insight.domain.model.exception.CardNotFoundException;
 import de.avalax.mtg_insight.domain.model.mana.Mana;

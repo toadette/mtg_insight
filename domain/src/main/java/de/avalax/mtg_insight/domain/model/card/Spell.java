@@ -1,9 +1,9 @@
-package de.avalax.mtg_insight.domain.model.card.spell;
+package de.avalax.mtg_insight.domain.model.card;
 
 import de.avalax.mtg_insight.domain.model.card.GenericCard;
 
 public class Spell extends GenericCard {
-    protected Spell(String name) {
+    Spell(String name) {
         super(name);
     }
 }

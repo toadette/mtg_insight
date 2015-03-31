@@ -14,7 +14,7 @@ public class GenericCard implements Card {
     private List<Color> cardColors;
     private ConvertedManaCost convertedManaCost;
 
-    protected GenericCard(String name) {
+    GenericCard(String name) {
         this.name = name;
         this.cardColors = new ArrayList<>();
         this.convertedManaCost = new ConvertedManaCost("", Collections.<ManaCost>emptyList());

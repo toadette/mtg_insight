@@ -3,14 +3,6 @@ package de.avalax.mtg_insight.domain.model.card;
 import java.util.Collections;
 import java.util.List;
 
-import de.avalax.mtg_insight.domain.model.card.permanent.artifact.Artifact;
-import de.avalax.mtg_insight.domain.model.card.permanent.creature.Creature;
-import de.avalax.mtg_insight.domain.model.card.permanent.creature.CreatureBody;
-import de.avalax.mtg_insight.domain.model.card.permanent.enchantment.Enchantment;
-import de.avalax.mtg_insight.domain.model.card.permanent.land.Land;
-import de.avalax.mtg_insight.domain.model.card.permanent.planeswalker.Planeswalker;
-import de.avalax.mtg_insight.domain.model.card.spell.instant.Instant;
-import de.avalax.mtg_insight.domain.model.card.spell.sorcery.Sorcery;
 import de.avalax.mtg_insight.domain.model.color.Color;
 import de.avalax.mtg_insight.domain.model.mana.ConvertedManaCost;
 

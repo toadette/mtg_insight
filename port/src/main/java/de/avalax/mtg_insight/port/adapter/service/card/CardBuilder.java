@@ -5,7 +5,7 @@ import java.util.List;
 
 import de.avalax.mtg_insight.domain.model.card.Card;
 import de.avalax.mtg_insight.domain.model.card.LoyaltyPoints;
-import de.avalax.mtg_insight.domain.model.card.permanent.creature.CreatureBody;
+import de.avalax.mtg_insight.domain.model.card.CreatureBody;
 import de.avalax.mtg_insight.domain.model.color.Color;
 import de.avalax.mtg_insight.domain.model.mana.ConvertedManaCost;
 

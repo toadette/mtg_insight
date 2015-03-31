@@ -1,5 +1,7 @@
 package de.avalax.mtg_insight.domain.model.card;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import de.avalax.mtg_insight.domain.model.color.Color;
@@ -7,14 +9,20 @@ import de.avalax.mtg_insight.domain.model.mana.ConvertedManaCost;
 import de.avalax.mtg_insight.domain.model.mana.Mana;
 import de.avalax.mtg_insight.domain.model.mana.ManaCost;
 
-public class BasicCard implements Card {
+public class GenericCard implements Card {
 
     private final String name;
-    private final List<Color> cardColors;
-    private final ConvertedManaCost convertedManaCost;
+    private List<Color> cardColors;
+    private ConvertedManaCost convertedManaCost;
 
-    public BasicCard(String name, List<Color> cardColors, ConvertedManaCost convertedManaCost) {
+    GenericCard(String name) {
+        this.name = name;
+        this.cardColors = new ArrayList<>();
+        this.convertedManaCost = new ConvertedManaCost("", Collections.<ManaCost>emptyList());
+    }
 
+    @Deprecated
+    public GenericCard(String name, List<Color> cardColors, ConvertedManaCost convertedManaCost) {
         this.name = name;
         this.cardColors = cardColors;
         this.convertedManaCost = convertedManaCost;
@@ -33,5 +41,13 @@ public class BasicCard implements Card {
     @Override
     public ConvertedManaCost convertedManaCost() {
         return convertedManaCost;
+    }
+
+    void colorOfCard(List<Color> cardColors) {
+        this.cardColors = cardColors;
+    }
+
+    void convertedManaCost(ConvertedManaCost convertedManaCost) {
+        this.convertedManaCost = convertedManaCost;
     }
 }

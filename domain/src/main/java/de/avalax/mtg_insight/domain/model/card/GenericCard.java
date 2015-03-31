@@ -6,7 +6,6 @@ import java.util.List;
 
 import de.avalax.mtg_insight.domain.model.color.Color;
 import de.avalax.mtg_insight.domain.model.mana.ConvertedManaCost;
-import de.avalax.mtg_insight.domain.model.mana.Mana;
 import de.avalax.mtg_insight.domain.model.mana.ManaCost;
 
 public class GenericCard implements Card {
@@ -15,17 +14,10 @@ public class GenericCard implements Card {
     private List<Color> cardColors;
     private ConvertedManaCost convertedManaCost;
 
-    GenericCard(String name) {
+    protected GenericCard(String name) {
         this.name = name;
         this.cardColors = new ArrayList<>();
         this.convertedManaCost = new ConvertedManaCost("", Collections.<ManaCost>emptyList());
-    }
-
-    @Deprecated
-    public GenericCard(String name, List<Color> cardColors, ConvertedManaCost convertedManaCost) {
-        this.name = name;
-        this.cardColors = cardColors;
-        this.convertedManaCost = convertedManaCost;
     }
 
     @Override

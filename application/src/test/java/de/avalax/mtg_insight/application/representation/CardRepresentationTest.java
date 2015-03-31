@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.avalax.mtg_insight.domain.model.card.Card;
-import de.avalax.mtg_insight.domain.model.card.Image;
 import de.avalax.mtg_insight.domain.model.color.Color;
 import de.avalax.mtg_insight.domain.model.mana.ConvertedManaCost;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
@@ -31,11 +30,6 @@ public class CardRepresentationTest {
             @Override
             public String name() {
                 return name;
-            }
-
-            @Override
-            public Image image() {
-                return null;
             }
 
             @Override

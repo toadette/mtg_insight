@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.avalax.mtg_insight.domain.model.card.Card;
-import de.avalax.mtg_insight.domain.model.card.permanent.creature.Creature;
+import de.avalax.mtg_insight.domain.model.card.CardBuilder;
 import de.avalax.mtg_insight.domain.model.deck.Deck;
 import de.avalax.mtg_insight.domain.model.deck.DeckService;
 import de.avalax.mtg_insight.domain.model.deck.Deckname;
@@ -66,7 +66,7 @@ public class TappedOutDeckService implements DeckService {
             try {
                 card = cardService.cardFromCardname(name);
             } catch (CardNotFoundException ignored) {
-                card = new Creature(name, null, null);
+                card = new CardBuilder(name).build();
             }
             cardOfDeck.add(card);
         }

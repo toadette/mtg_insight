@@ -1,13 +1,10 @@
 package de.avalax.mtg_insight.domain.model.card.permanent.creature;
 
-import java.util.List;
-
 import de.avalax.mtg_insight.domain.model.card.permanent.Permanent;
-import de.avalax.mtg_insight.domain.model.color.Color;
-import de.avalax.mtg_insight.domain.model.mana.ConvertedManaCost;
 
 public class Creature extends Permanent {
-    public Creature(String name, List<Color> cardColors, ConvertedManaCost convertedManaCost) {
-        super(name, cardColors, convertedManaCost);
+
+    public Creature(String name) {
+        super(name);
     }
 }

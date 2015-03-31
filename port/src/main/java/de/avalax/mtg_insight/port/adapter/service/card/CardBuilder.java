@@ -4,13 +4,8 @@ package de.avalax.mtg_insight.port.adapter.service.card;
 import java.util.List;
 
 import de.avalax.mtg_insight.domain.model.card.Card;
-import de.avalax.mtg_insight.domain.model.card.permanent.artifact.Artifact;
-import de.avalax.mtg_insight.domain.model.card.permanent.creature.Creature;
-import de.avalax.mtg_insight.domain.model.card.permanent.enchantment.Enchantment;
-import de.avalax.mtg_insight.domain.model.card.permanent.land.Land;
-import de.avalax.mtg_insight.domain.model.card.permanent.planeswalker.Planeswalker;
-import de.avalax.mtg_insight.domain.model.card.spell.instant.Instant;
-import de.avalax.mtg_insight.domain.model.card.spell.sorcery.Sorcery;
+import de.avalax.mtg_insight.domain.model.card.LoyaltyPoints;
+import de.avalax.mtg_insight.domain.model.card.permanent.creature.CreatureBody;
 import de.avalax.mtg_insight.domain.model.color.Color;
 import de.avalax.mtg_insight.domain.model.mana.ConvertedManaCost;
 
@@ -25,31 +20,39 @@ public class CardBuilder {
 
 
     public Card createCardFromType(String type, String name, List<Color> cardColors, ConvertedManaCost convertedManaCost) {
+        de.avalax.mtg_insight.domain.model.card.CardBuilder cardBuilder = new de.avalax.mtg_insight.domain.model.card.CardBuilder(name);
+        cardBuilder.convertedManaCost(convertedManaCost);
+        cardBuilder.cardColors(cardColors);
         if (isCardFromType(type, CARD_TYPE_CREATURE)) {
-            return new Creature(name, cardColors, convertedManaCost);
+            //TODO: creatureBody
+            CreatureBody creatureBody = new CreatureBody() {
+            };
+            return cardBuilder.creatureCard(creatureBody).build();
         }
         if (isCardFromType(type, CARD_TYPE_ARTIFACT)) {
-            return new Artifact(name, cardColors, convertedManaCost);
+            return cardBuilder.artifactCard().build();
         }
         if (isCardFromType(type, CARD_TYPE_LAND)) {
-            return new Land(name, cardColors, convertedManaCost);
+            return cardBuilder.landCard().build();
         }
         if (isCardFromType(type, CARD_TYPE_ENCHANTMENT)) {
-            return new Enchantment(name, cardColors, convertedManaCost);
+            return cardBuilder.enchantmentCard().build();
         }
-        if(isCardFromType(type,CARD_TYPE_PLANESWALKER)){
-            return new Planeswalker(name,cardColors,convertedManaCost);
+        if (isCardFromType(type, CARD_TYPE_PLANESWALKER)) {
+            LoyaltyPoints loyaltyPoints = new LoyaltyPoints() {
+            };
+            return cardBuilder.planeswalkerCard(loyaltyPoints).build();
         }
-        if(isCardFromType(type,CARD_TYPE_INSTANT)){
-            return new Instant(name,cardColors,convertedManaCost);
+        if (isCardFromType(type, CARD_TYPE_INSTANT)) {
+            return cardBuilder.instantCard().build();
         }
-        if(isCardFromType(type,CARD_TYPE_SORCERY)){
-            return new Sorcery(name,cardColors,convertedManaCost);
+        if (isCardFromType(type, CARD_TYPE_SORCERY)) {
+            return cardBuilder.sorceryCard().build();
         }
-        return null;
+        return cardBuilder.build();
     }
 
     private boolean isCardFromType(String cardType, String type) {
-        return cardType.equals(type) | cardType.contains(type);
+        return cardType != null && (cardType.equals(type) || cardType.contains(type));
     }
 }

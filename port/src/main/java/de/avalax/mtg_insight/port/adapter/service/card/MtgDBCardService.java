@@ -43,8 +43,10 @@ public class MtgDBCardService implements CardService {
                 throw new CardNotFoundException(new Exception("Card not found"));
             }
             JSONObject cardFromJson = (JSONObject) jsonArray.get(0);
-            Card card = new CardBuilder().createCardFromType(cardFromJson.get("type").toString(),cardFromJson.get("name").toString(),getColorOfCard(cardFromJson),getConvertedManaCost(cardFromJson));
-//TODO: parse Description?    cardFromJson.get("description");
+            String type= cardFromJson.get("type").toString();
+            String name=cardFromJson.get("name").toString();
+            //TODO: parse Description?    cardFromJson.get("description");
+            Card card = new CardCreator().createCardFromType(cardFromJson.get("type").toString(),cardFromJson.get("name").toString(),getColorOfCard(cardFromJson),getConvertedManaCost(cardFromJson));
             inputStreamReader.close();
             return card;
         } catch (Exception e) {

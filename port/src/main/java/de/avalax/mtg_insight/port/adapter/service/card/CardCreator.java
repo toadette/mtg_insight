@@ -1,6 +1,8 @@
 package de.avalax.mtg_insight.port.adapter.service.card;
 
 
+import org.json.simple.JSONObject;
+
 import java.util.List;
 
 import de.avalax.mtg_insight.domain.model.card.Card;
@@ -9,7 +11,7 @@ import de.avalax.mtg_insight.domain.model.card.CreatureBody;
 import de.avalax.mtg_insight.domain.model.color.Color;
 import de.avalax.mtg_insight.domain.model.mana.ConvertedManaCost;
 
-public class CardBuilder {
+public class CardCreator {
     private static final String CARD_TYPE_ARTIFACT = "Artifact";
     private static final String CARD_TYPE_CREATURE = "Creature";
     private static final String CARD_TYPE_ENCHANTMENT = "Enchantment";

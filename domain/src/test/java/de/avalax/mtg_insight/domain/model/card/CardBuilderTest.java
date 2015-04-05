@@ -59,6 +59,15 @@ public class CardBuilderTest {
     @Test
     public void creatureGiven_shouldBuildCreatureCard() throws Exception {
         CreatureBody creatureBody = new CreatureBody() {
+            @Override
+            public int power() {
+                return 0;
+            }
+
+            @Override
+            public int toughness() {
+                return 0;
+            }
         };
         CardBuilder sameCardBuilder = cardBuilder.creatureCard(creatureBody);
 

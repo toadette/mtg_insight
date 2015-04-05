@@ -1,5 +1,6 @@
 package de.avalax.mtg_insight.port.adapter.service.card;
 
+import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -7,6 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 import de.avalax.mtg_insight.domain.model.card.Card;
+import de.avalax.mtg_insight.domain.model.card.CreatureBody;
 import de.avalax.mtg_insight.domain.model.card.GenericCard;
 import de.avalax.mtg_insight.domain.model.card.Artifact;
 import de.avalax.mtg_insight.domain.model.card.Creature;
@@ -20,6 +22,7 @@ import de.avalax.mtg_insight.domain.model.mana.ConvertedManaCost;
 import de.avalax.mtg_insight.domain.model.mana.ManaCost;
 
 import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
 
@@ -32,6 +35,13 @@ public class CardCreatorTest {
         assertThat(cardFromType, instanceOf(type));
         assertThat(cardFromType.convertedManaCost(), equalTo(convertedManaCost));
         assertThat(cardFromType.colorOfCard(), equalTo(cardColors));
+    }
+
+    private void assertCreature(Card cardFromType, int power, int toughness) {
+        Creature creature = (Creature) cardFromType;
+        CreatureBody creatureBody = creature.creatureBody();
+        assertThat(creatureBody.power(), equalTo(power));
+        assertThat(creatureBody.toughness(), equalTo(toughness));
     }
 
     @Before
@@ -49,14 +59,16 @@ public class CardCreatorTest {
 
     @Test
     public void createCardFromTypeCreature_shouldReturnCreature() throws Exception {
-        Card cardFromType = cardBuilder.createCardFromType("Creature", "Kartenname", cardColors, convertedManaCost, "0", "0", "0");
+        Card cardFromType = cardBuilder.createCardFromType("Creature", "Kartenname", cardColors, convertedManaCost, "3", "2", "0");
         assertCard(cardFromType, Creature.class, convertedManaCost, cardColors);
+        assertCreature(cardFromType, 3, 2);
     }
 
     @Test
     public void createCardFromTypeLegendaryCreature_shouldReturnCreature() throws Exception {
-        Card cardFromType = cardBuilder.createCardFromType("Legendary Creature", "Kartenname", cardColors, convertedManaCost, "0", "0", "0");
+        Card cardFromType = cardBuilder.createCardFromType("Legendary Creature", "Kartenname", cardColors, convertedManaCost, "0", "3", "0");
         assertCard(cardFromType, Creature.class, convertedManaCost, cardColors);
+        assertCreature(cardFromType, 0, 3);
     }
 
     @Test
@@ -67,20 +79,21 @@ public class CardCreatorTest {
 
     @Test
     public void createCardFromTypeEnchantment_shouldReturnEnchantment() throws Exception {
-        Card cardFromType = cardBuilder.createCardFromType("Enchantment", "Kartenname",cardColors, convertedManaCost, "0", "0", "0");
+        Card cardFromType = cardBuilder.createCardFromType("Enchantment", "Kartenname", cardColors, convertedManaCost, "0", "0", "0");
         assertCard(cardFromType, Enchantment.class, convertedManaCost, cardColors);
     }
 
     @Test
     public void createCardFromTypeLegendaryEnchantmentArtifact_shouldReturnArtifact() throws Exception {
-        Card cardFromType = cardBuilder.createCardFromType("Legendary Enchantment Artifact", "Kartenname",cardColors, convertedManaCost, "0", "0", "0");
+        Card cardFromType = cardBuilder.createCardFromType("Legendary Enchantment Artifact", "Kartenname", cardColors, convertedManaCost, "0", "0", "0");
         assertCard(cardFromType, Artifact.class, convertedManaCost, cardColors);
     }
 
     @Test
     public void createCardFromTypeEnchantmentCreature_shouldReturnCreature() throws Exception {
-        Card cardFromType = cardBuilder.createCardFromType("Enchantment Creature", "Kartenname", cardColors, convertedManaCost, "0", "0", "0");
+        Card cardFromType = cardBuilder.createCardFromType("Enchantment Creature", "Kartenname", cardColors, convertedManaCost, "3", "0", "0");
         assertCard(cardFromType, Creature.class, convertedManaCost, cardColors);
+        assertCreature(cardFromType, 3, 0);
     }
 
     @Test

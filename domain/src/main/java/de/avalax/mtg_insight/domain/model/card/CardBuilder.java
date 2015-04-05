@@ -23,8 +23,7 @@ public class CardBuilder {
     public Card build() {
         GenericCard card;
         if (cardType.equals(Creature.class)) {
-            card = new Creature(cardName);
-            //TODO: set CreatureBody
+            card = new Creature(cardName, creatureBody);
         } else if (cardType.equals(Artifact.class)) {
             card = new Artifact(cardName);
         } else if (cardType.equals(Land.class)) {

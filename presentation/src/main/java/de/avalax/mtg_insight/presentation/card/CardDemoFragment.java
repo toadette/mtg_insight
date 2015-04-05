@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 import android.widget.LinearLayout;
 
 import javax.inject.Inject;
@@ -22,7 +23,7 @@ import de.avalax.mtg_insight.presentation.tasks.DeckServiceTask;
 
 public class CardDemoFragment extends Fragment implements DeckServiceResponse {
     @InjectView(R.id.cardStage)
-    protected LinearLayout cardStage;
+    protected GridView cardStage;
 
     @Inject
     protected DeckService deckService;
@@ -43,20 +44,12 @@ public class CardDemoFragment extends Fragment implements DeckServiceResponse {
     }
 
     private void addDummyCard() {
-        new DeckServiceTask(this,deckService).execute("from-the-grave-to-the-cradle");
+        new DeckServiceTask(this, deckService).execute("from-the-grave-to-the-cradle");
     }
 
     @Override
     public void processFinish(Deck deck) {
-        for (Card card :deck.deck()) {
-            CardRepresentation cardRepresentation = new CardRepresentation(card);
-            //TODO: group same cards
-            CardView cardView = new CardView(getActivity(), cardRepresentation);
-            cardView.setLayoutParams(new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT));
-            cardStage.addView(cardView);
-        }
+        cardStage.setAdapter(new DeckAdapter(getActivity(), deck));
         getActivity().setTitle(deck.name().getName());
     }
 }

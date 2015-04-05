@@ -34,11 +34,16 @@ public class TappedOutDeckServiceTest {
         tappedOutDeckService = new TappedOutDeckService(new MtgDBCardService(new ManaTokenizer(), new ColorMatcher()));
     }
 
+    public void setUp3() throws Exception {
+        deckname = "you-do-not-defy-ojutai-uw-control";
+        tappedOutDeckService = new TappedOutDeckService(new MtgDBCardService(new ManaTokenizer(), new ColorMatcher()));
+    }
+
     @Test
     public void testDeckFromDeckname() throws Exception {
         setUp1();
-        Deck deck = tappedOutDeckService.deckFromDeckname(new Deckname("from-the-grave-to-the-cradle"));
-        assertThat(deck.name().getName(), equalTo("from-the-grave-to-the-cradle"));
+        Deck deck = tappedOutDeckService.deckFromDeckname(new Deckname(deckname));
+        assertThat(deck.name().getName(), equalTo("From the Grave, to the Cradle"));
         assertThat(deck.deck(), hasSize(61));
         assertThat(deck.deck().get(0).name(), equalTo("Boneyard Wurm"));
         assertThat(deck.deck().get(1).name(), equalTo("Boneyard Wurm"));
@@ -54,8 +59,8 @@ public class TappedOutDeckServiceTest {
     @Test
     public void testDeckFromDeckname_shouldReturnSideboard() throws Exception {
         setUp2();
-        Deck deck = tappedOutDeckService.deckFromDeckname(new Deckname("dudes-with-swords"));
-        assertThat(deck.name().getName(), equalTo("dudes-with-swords"));
+        Deck deck = tappedOutDeckService.deckFromDeckname(new Deckname(deckname));
+        assertThat(deck.name().getName(), equalTo("Lotus Blade [Modern]"));
         assertThat(deck.deck(), hasSize(60));
         assertThat(deck.sideboard(),hasSize(15));
         assertThat(deck.sideboard().get(0).name(), equalTo("Celestial Purge"));
@@ -65,4 +70,11 @@ public class TappedOutDeckServiceTest {
         assertThat(deck.sideboard().get(14).name(), equalTo("Stony Silence"));
     }
 
+    @Test
+    public void testDeckFromDeckname_shouldReturnPrintableName() throws Exception {
+        setUp3();
+        Deck deck = tappedOutDeckService.deckFromDeckname(new Deckname(deckname));
+        assertThat(deck.name().getName(),equalTo("You do not defy Ojutai! (U/W Control)"));
+
+    }
 }

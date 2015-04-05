@@ -19,9 +19,11 @@ import de.avalax.mtg_insight.port.adapter.service.card.CardService;
 
 public class TappedOutDeckService implements DeckService {
 
+    //TODO: format von txt auf Markdown?
     private List<Deckname> decknames;
     private final String host = "http://tappedout.net/mtg-decks/";
     private final String format = "/?fmt=txt";
+    private final String format_printable="?fmt=markdown";
     private CardService cardService;
 
     public TappedOutDeckService(CardService cardService) {
@@ -29,16 +31,36 @@ public class TappedOutDeckService implements DeckService {
         decknames = new ArrayList<>();
     }
 
-    private Deck readFromFile(String name) throws DeckNotFoundException {
+    private Deck readFromTextFile(String name) throws DeckNotFoundException {
         decknames.add(new Deckname(name));
         List<Card> deck = new ArrayList<>();
         List<Card> sideboard = new ArrayList<>();
+        readCardsFromDeck(name, deck, sideboard);
+        name = readPrintableDeckname(name);
+        return new StandardDeck(new Deckname(name), deck, sideboard);
+    }
+
+    private String readPrintableDeckname(String name) throws DeckNotFoundException {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new URL(host + name + format_printable).openStream()))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.length() > 0) {
+                    name= line.substring(line.indexOf("[")+1, line.lastIndexOf("]"));
+                    break;
+                }
+            }
+        } catch (IOException e) {
+            throw new DeckNotFoundException(e);
+        }
+        return name;
+    }
+
+    private void readCardsFromDeck(String name, List<Card> deck, List<Card> sideboard) throws DeckNotFoundException {
         boolean readSideBoard = false;
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(new URL(host + name + format).openStream()))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (line.length() > 0) {
-                    //TODO: read Card from line
                     if (line.startsWith("Sideboard")) {
                         readSideBoard = true;
                         continue;
@@ -54,7 +76,6 @@ public class TappedOutDeckService implements DeckService {
         } catch (IOException e) {
             throw new DeckNotFoundException(e);
         }
-        return new StandardDeck(new Deckname(name), deck, sideboard);
     }
 
     private void addCardFromLine(String line, List<Card> cardOfDeck) {
@@ -74,7 +95,7 @@ public class TappedOutDeckService implements DeckService {
 
     @Override
     public Deck deckFromDeckname(Deckname deckname) throws DeckNotFoundException {
-        return readFromFile(deckname.getName());
+        return readFromTextFile(deckname.getName());
     }
 
     @Override

@@ -21,7 +21,7 @@ public class CardCreator {
     private static final String CARD_TYPE_SORCERY = "Sorcery";
 
 
-    public Card createCardFromType(String type, String name, List<Color> cardColors, ConvertedManaCost convertedManaCost) {
+    public Card createCardFromType(String type, String name, List<Color> cardColors, ConvertedManaCost convertedManaCost, String power, String toughness, String loyalty) {
         de.avalax.mtg_insight.domain.model.card.CardBuilder cardBuilder = new de.avalax.mtg_insight.domain.model.card.CardBuilder(name);
         cardBuilder.convertedManaCost(convertedManaCost);
         cardBuilder.cardColors(cardColors);

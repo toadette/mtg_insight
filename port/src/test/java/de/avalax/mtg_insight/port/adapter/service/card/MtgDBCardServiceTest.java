@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import de.avalax.mtg_insight.domain.model.card.Card;
 import de.avalax.mtg_insight.domain.model.card.Creature;
+import de.avalax.mtg_insight.domain.model.card.Instant;
 import de.avalax.mtg_insight.domain.model.color.Color;
 import de.avalax.mtg_insight.domain.model.exception.CardNotFoundException;
 import de.avalax.mtg_insight.domain.model.mana.Mana;
@@ -25,7 +26,7 @@ public class MtgDBCardServiceTest {
         assertThat(card.convertedManaCost().manaCostAsList().get(manaCostPosition).mana().get(manaPosition), equalTo(mana));
     }
 
-    private void assertCard(String cardname, Card card, Class<Creature> cardType) {
+    private void assertCard(String cardname, Card card, Class<?> cardType) {
         assertThat(card, notNullValue());
         assertThat(card.name(), equalTo(cardname));
         assertThat(card, instanceOf(cardType));
@@ -40,7 +41,7 @@ public class MtgDBCardServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        mtgDBCardService = new MtgDBCardService(new ManaTokenizer(),new ColorMatcher());
+        mtgDBCardService = new MtgDBCardService(new ManaTokenizer(), new ColorMatcher());
     }
 
     @Test
@@ -91,7 +92,7 @@ public class MtgDBCardServiceTest {
         assertThat(card.convertedManaCost().manaCostAsList(), hasSize(1));
         assertMana(card, 0, 0, Mana.RED);
         assertMana(card, 0, 1, Mana.WHITE);
-        assertCardColor(card, 2, new Color[]{Color.RED,Color.WHITE});
+        assertCardColor(card, 2, new Color[]{Color.RED, Color.WHITE});
     }
 
     @Test
@@ -110,14 +111,14 @@ public class MtgDBCardServiceTest {
         assertMana(card, 3, 1, Mana.RED);
         assertMana(card, 4, 0, Mana.HYBRID_TWOCOLORLESS);
         assertMana(card, 4, 1, Mana.GREEN);
-        assertCardColor(card, 5, new Color[]{Color.WHITE,Color.BLACK,Color.BLUE,Color.GREEN,Color.RED});
+        assertCardColor(card, 5, new Color[]{Color.WHITE, Color.BLACK, Color.BLUE, Color.GREEN, Color.RED});
     }
 
     @Test
     public void cardFromCardname_ShouldReturnCreatureWithPhyrexianMana() throws Exception {
         String cardName = "Pith Driller";
         Card card = mtgDBCardService.cardFromCardname(cardName);
-        assertCard(cardName,card, Creature.class);
+        assertCard(cardName, card, Creature.class);
         assertThat(card.convertedManaCost().manaCostAsList(), hasSize(5));
         assertMana(card, 0, 0, Mana.COLORLESS);
         assertMana(card, 1, 0, Mana.COLORLESS);
@@ -131,6 +132,17 @@ public class MtgDBCardServiceTest {
     @Test(expected = CardNotFoundException.class)
     public void cardFromCardname_ShouldCardNotFoundException() throws Exception {
         mtgDBCardService.cardFromCardname("hahahakeineKarte");
-
     }
+
+    @Test
+    public void cardFromCardname_ShouldReturnInstantWithSingleMana() throws Exception {
+        String cardName = "Lightning Strike";
+        Card card = mtgDBCardService.cardFromCardname(cardName);
+        assertCard(cardName, card, Instant.class);
+        assertThat(card.convertedManaCost().manaCostAsList(), hasSize(2));
+        assertMana(card, 0, 0, Mana.COLORLESS);
+        assertMana(card, 1, 0, Mana.RED);
+        assertCardColor(card, 1, new Color[]{Color.RED});
+    }
+
 }

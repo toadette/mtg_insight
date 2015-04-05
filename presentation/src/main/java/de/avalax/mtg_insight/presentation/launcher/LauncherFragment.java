@@ -39,6 +39,13 @@ public class LauncherFragment extends Fragment {
     @OnClick(R.id.cardDemo)
     protected void cardDemo() {
         Intent intent = new Intent(getActivity(), CardStageActivity.class);
+        intent.putExtra("CARD_DEMO", true);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.stageDemo)
+    protected void stageDemo() {
+        Intent intent = new Intent(getActivity(), CardStageActivity.class);
         startActivity(intent);
     }
 }

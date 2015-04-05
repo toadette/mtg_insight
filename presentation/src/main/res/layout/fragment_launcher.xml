@@ -7,8 +7,15 @@
     android:orientation="horizontal">
 
     <Button
+        android:id="@+id/stageDemo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="stageDemo" />
+
+    <Button
         android:id="@+id/cardDemo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="cardDemo" />
+
 </LinearLayout>

@@ -14,7 +14,10 @@ public class CardStageActivity extends FragmentActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card_stage);
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, new CardDemoFragment()).commit();
+        Bundle extras = getIntent().getExtras();
+        if (extras != null && extras.getBoolean("CARD_DEMO")) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, new CardDemoFragment()).commit();
+        }
     }
 }

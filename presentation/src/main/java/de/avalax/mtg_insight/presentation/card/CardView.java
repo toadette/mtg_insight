@@ -63,20 +63,20 @@ public class CardView extends LinearLayout {
     @Deprecated
     private void attributs(AttributeSet attrs) {
         TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.CardView);
-        if (a.getString(R.styleable.CardView_name) != null) {
-            name.setText(a.getString(R.styleable.CardView_name));
+        if (a.getString(R.styleable.MtgInsightCard_name) != null) {
+            name.setText(a.getString(R.styleable.MtgInsightCard_name));
         }
-        if (a.getString(R.styleable.CardView_converted_mana_cost) != null) {
-            convertedManaCost.setText(a.getString(R.styleable.CardView_converted_mana_cost));
+        if (a.getString(R.styleable.MtgInsightCard_converted_mana_cost) != null) {
+            convertedManaCost.setText(a.getString(R.styleable.MtgInsightCard_converted_mana_cost));
         }
-        if (a.getDrawable(R.styleable.CardView_background) != null) {
-            background.setBackground(a.getDrawable(R.styleable.CardView_background));
+        if (a.getDrawable(R.styleable.MtgInsightCard_card_header) != null) {
+            background.setBackground(a.getDrawable(R.styleable.MtgInsightCard_card_header));
         }
-        if (a.getDrawable(R.styleable.CardView_window) != null) {
-            window.setBackground(a.getDrawable(R.styleable.CardView_window));
+        if (a.getDrawable(R.styleable.MtgInsightCard_window) != null) {
+            window.setBackground(a.getDrawable(R.styleable.MtgInsightCard_window));
         }
-        count = a.getInteger(R.styleable.CardView_count, 1);
-        if (count > 1 && a.getDrawable(R.styleable.CardView_card_background) != null) {
+        count = a.getInteger(R.styleable.MtgInsightCard_count, 1);
+        if (count > 1 && a.getDrawable(R.styleable.MtgInsightCard_card_background) != null) {
             setBackground(cardRepresentationToDrawable.cardBackgroundFrom(null));
         }
         a.recycle();

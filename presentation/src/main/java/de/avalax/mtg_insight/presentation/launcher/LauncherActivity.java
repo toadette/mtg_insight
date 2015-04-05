@@ -1,11 +1,11 @@
 package de.avalax.mtg_insight.presentation.launcher;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBarActivity;
 
 import de.avalax.mtg_insight.R;
 
-public class LauncherActivity extends FragmentActivity {
+public class LauncherActivity extends ActionBarActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

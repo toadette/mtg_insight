@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="CardView">
+    <declare-styleable name="MtgInsightCard">
         <attr name="name" format="string" />
         <attr name="count" format="integer" />
         <attr name="converted_mana_cost" format="string" />
         <attr name="window" format="color" />
-        <attr name="background" format="color" />
+        <attr name="card_header" format="color" />
         <attr name="card_background" format="color" />
     </declare-styleable>
 </resources>

@@ -50,13 +50,13 @@ public class CardHeaderView extends LinearLayout {
     @Deprecated
     private void attributs(AttributeSet attrs) {
         TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.CardView);
-        if (a.getString(R.styleable.CardView_name) != null) {
-            name.setText(a.getString(R.styleable.CardView_name));
+        if (a.getString(R.styleable.MtgInsightCard_name) != null) {
+            name.setText(a.getString(R.styleable.MtgInsightCard_name));
         }
-        if (a.getString(R.styleable.CardView_converted_mana_cost) != null) {
-            convertedManaCost.setText(a.getString(R.styleable.CardView_converted_mana_cost));
+        if (a.getString(R.styleable.MtgInsightCard_converted_mana_cost) != null) {
+            convertedManaCost.setText(a.getString(R.styleable.MtgInsightCard_converted_mana_cost));
         }
-        if (a.getDrawable(R.styleable.CardView_background) != null) {
+        if (a.getDrawable(R.styleable.MtgInsightCard_card_header) != null) {
             background.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.header_multicolor));
         }
         if (headerNumber > 1) {

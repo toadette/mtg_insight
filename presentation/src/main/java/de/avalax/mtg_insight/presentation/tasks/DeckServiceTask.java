@@ -3,7 +3,6 @@ package de.avalax.mtg_insight.presentation.tasks;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import java.util.Collection;
 import java.util.Collections;
 
 import de.avalax.mtg_insight.domain.model.card.Card;

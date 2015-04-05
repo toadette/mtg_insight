@@ -58,9 +58,3 @@
 -dontwarn dagger.internal.codegen.**
 -dontwarn javax.annotation.**
 -keep public class de.avalax.mtg_insight.presentation.** { *; }
-
-# Otto
--keepclassmembers class ** {
-    @com.squareup.otto.Subscribe public *;
-    @com.squareup.otto.Produce public *;
-}

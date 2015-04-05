@@ -10,12 +10,14 @@
         android:id="@+id/stageDemo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        style="?android:attr/buttonBarButtonStyle"
         android:text="stageDemo" />
 
     <Button
         android:id="@+id/cardDemo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        style="?android:attr/buttonBarButtonStyle"
         android:text="cardDemo" />
 
 </LinearLayout>

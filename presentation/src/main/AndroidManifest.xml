@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.avalax.mtg_insight"
-    android:installLocation="auto" >
+    android:installLocation="auto">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".presentation.MtgInsightApplication"
         android:allowBackup="true"
+        android:supportsRtl="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
-        <activity android:name=".presentation.launcher.LauncherActivity" >
+        android:theme="@style/AppTheme">
+        <activity android:name=".presentation.launcher.LauncherActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,8 +21,7 @@
         </activity>
         <activity
             android:name=".presentation.card.CardStageActivity"
-            android:label="@string/title_activity_card_demo" >
-        </activity>
+            android:label="@string/title_activity_card_demo" />
     </application>
 
 </manifest>

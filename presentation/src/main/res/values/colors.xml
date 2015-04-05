@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="stage_background">#ffffff</color>
     <color name="stroke">#000000</color>
     <color name="primary_colorless">#5C6063</color>
     <color name="primary_artifact">#92B0BC</color>

@@ -31,8 +31,7 @@ public class CardBuilder {
         } else if (cardType.equals(Enchantment.class)) {
             card = new Enchantment(cardName);
         } else if (cardType.equals(Planeswalker.class)) {
-            card = new Planeswalker(cardName);
-            //TODO: set LoyaltyPoints
+            card = new Planeswalker(cardName,loyaltyPoints);
         } else if (cardType.equals(Instant.class)) {
             card = new Instant(cardName);
         } else if (cardType.equals(Sorcery.class)) {

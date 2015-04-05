@@ -6,6 +6,7 @@ import org.junit.Test;
 import de.avalax.mtg_insight.domain.model.card.Card;
 import de.avalax.mtg_insight.domain.model.card.Creature;
 import de.avalax.mtg_insight.domain.model.card.Instant;
+import de.avalax.mtg_insight.domain.model.card.Planeswalker;
 import de.avalax.mtg_insight.domain.model.color.Color;
 import de.avalax.mtg_insight.domain.model.exception.CardNotFoundException;
 import de.avalax.mtg_insight.domain.model.mana.Mana;
@@ -37,6 +38,15 @@ public class MtgDBCardServiceTest {
         assertThat(card.colorOfCard(), hasItems(cardColors));
     }
 
+    private void assertCreature(Creature creature, int power, int toughness) {
+        assertThat(creature.creatureBody().power(), equalTo(power));
+        assertThat(creature.creatureBody().toughness(), equalTo(toughness));
+    }
+
+    private void assertPlaneswalker(Planeswalker card, int loyalty) {
+        assertThat(card.loyaltyPoints().loyaltyPoints(),equalTo(loyalty));
+    }
+
     private MtgDBCardService mtgDBCardService;
 
     @Before
@@ -57,6 +67,7 @@ public class MtgDBCardServiceTest {
         assertMana(card, 4, 0, Mana.RED);
         assertMana(card, 5, 0, Mana.WHITE);
         assertCardColor(card, 3, new Color[]{Color.BLUE, Color.RED, Color.WHITE});
+        assertCreature((Creature) card, 3, 2);
     }
 
     @Test
@@ -69,6 +80,7 @@ public class MtgDBCardServiceTest {
         assertMana(card, 1, 0, Mana.WHITE);
         assertMana(card, 2, 0, Mana.WHITE);
         assertCardColor(card, 1, new Color[]{Color.WHITE});
+        assertCreature((Creature) card, 3, 4);
     }
 
     @Test
@@ -82,6 +94,7 @@ public class MtgDBCardServiceTest {
         assertMana(card, 1, 0, Mana.BLUE);
         assertMana(card, 1, 1, Mana.RED);
         assertCardColor(card, 2, new Color[]{Color.RED, Color.BLUE});
+        assertCreature((Creature) card, 1, 4);
     }
 
     @Test
@@ -93,6 +106,7 @@ public class MtgDBCardServiceTest {
         assertMana(card, 0, 0, Mana.RED);
         assertMana(card, 0, 1, Mana.WHITE);
         assertCardColor(card, 2, new Color[]{Color.RED, Color.WHITE});
+        assertCreature((Creature) card, 1, 1);
     }
 
     @Test
@@ -112,6 +126,7 @@ public class MtgDBCardServiceTest {
         assertMana(card, 4, 0, Mana.HYBRID_TWOCOLORLESS);
         assertMana(card, 4, 1, Mana.GREEN);
         assertCardColor(card, 5, new Color[]{Color.WHITE, Color.BLACK, Color.BLUE, Color.GREEN, Color.RED});
+        assertCreature((Creature) card, 6, 6);
     }
 
     @Test
@@ -127,6 +142,7 @@ public class MtgDBCardServiceTest {
         assertMana(card, 4, 0, Mana.BLACK);
         assertMana(card, 4, 1, Mana.PHYREXIAN);
         assertCardColor(card, 1, new Color[]{Color.BLACK});
+        assertCreature((Creature) card, 2, 4);
     }
 
     @Test(expected = CardNotFoundException.class)
@@ -143,6 +159,40 @@ public class MtgDBCardServiceTest {
         assertMana(card, 0, 0, Mana.COLORLESS);
         assertMana(card, 1, 0, Mana.RED);
         assertCardColor(card, 1, new Color[]{Color.RED});
+    }
+
+    @Test
+    public void cardFromCardname_ShouldReturnPlanesWalkerWithSingleManaAndLoyaltyPoints() throws Exception {
+        String cardName = "Elspeth, Sun's Champion";
+        Card card = mtgDBCardService.cardFromCardname(cardName);
+        assertCard(cardName, card, Planeswalker.class);
+        assertThat(card.convertedManaCost().manaCostAsList(), hasSize(6));
+        assertMana(card, 0, 0, Mana.COLORLESS);
+        assertMana(card, 1, 0, Mana.COLORLESS);
+        assertMana(card, 2, 0, Mana.COLORLESS);
+        assertMana(card, 3, 0, Mana.COLORLESS);
+        assertMana(card, 4, 0, Mana.WHITE);
+        assertMana(card, 5, 0, Mana.WHITE);
+        assertCardColor(card, 1, new Color[]{Color.WHITE});
+        assertPlaneswalker((Planeswalker) card, 4);
+    }
+
+    @Test
+    public void cardFromCardname_ShouldReturnPlanesWalkerWithColorlessManaAndLoyaltyPoints() throws Exception {
+        String cardName = "Ugin, the Spirit Dragon";
+        Card card = mtgDBCardService.cardFromCardname(cardName);
+        assertCard(cardName, card, Planeswalker.class);
+        assertThat(card.convertedManaCost().manaCostAsList(), hasSize(8));
+        assertMana(card, 0, 0, Mana.COLORLESS);
+        assertMana(card, 1, 0, Mana.COLORLESS);
+        assertMana(card, 2, 0, Mana.COLORLESS);
+        assertMana(card, 3, 0, Mana.COLORLESS);
+        assertMana(card, 4, 0, Mana.COLORLESS);
+        assertMana(card, 5, 0, Mana.COLORLESS);
+        assertMana(card, 6, 0, Mana.COLORLESS);
+        assertMana(card, 7, 0, Mana.COLORLESS);
+        assertCardColor(card, 0, new Color[]{});
+        assertPlaneswalker((Planeswalker) card, 7);
     }
 
 }

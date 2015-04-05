@@ -43,6 +43,10 @@ public class CardCreatorTest {
         assertThat(creatureBody.power(), equalTo(power));
         assertThat(creatureBody.toughness(), equalTo(toughness));
     }
+    private void assertPlaneswalker(Card cardFromType, int loyality) {
+        Planeswalker planeswalker = (Planeswalker) cardFromType;
+        assertThat(planeswalker.loyaltyPoints().loyaltyPoints(), equalTo(loyality));
+    }
 
     @Before
     public void setUp() throws Exception {
@@ -110,8 +114,9 @@ public class CardCreatorTest {
 
     @Test
     public void createCardFromTypePlaneswalker_shouldReturnPlaneswalker() throws Exception {
-        Card cardFromType = cardBuilder.createCardFromType("Planeswalker", "Kartenname", cardColors, convertedManaCost, "0", "0", "0");
+        Card cardFromType = cardBuilder.createCardFromType("Planeswalker", "Kartenname", cardColors, convertedManaCost, "0", "0", "6");
         assertCard(cardFromType, Planeswalker.class, convertedManaCost, cardColors);
+        assertPlaneswalker(cardFromType,6);
     }
 
     @Test

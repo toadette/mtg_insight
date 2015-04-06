@@ -1,0 +1,7 @@
+    <com.etsy.android.grid.StaggeredGridView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/cardStage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:column_count="4"
+        app:item_margin="4dp" />

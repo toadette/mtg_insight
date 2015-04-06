@@ -34,7 +34,7 @@ public class CardStageActivity extends ActionBarActivity {
         mDrawerToggle.syncState();
 
         Bundle extras = getIntent().getExtras();
-        if (extras != null && extras.getBoolean("CARD_DEMO")) {
+        if (savedInstanceState == null && extras != null && extras.getBoolean("CARD_DEMO")) {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, new CardDemoFragment()).commit();
         }

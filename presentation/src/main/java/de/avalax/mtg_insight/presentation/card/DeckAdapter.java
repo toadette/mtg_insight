@@ -52,10 +52,6 @@ public class DeckAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        CardView cardView = new CardView(context, cards.get(position));
-        cardView.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
-        return cardView;
+        return new CardView(context, cards.get(position));
     }
 }

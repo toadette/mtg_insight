@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -48,6 +49,9 @@ public class CardView extends LinearLayout {
         window = findViewById(R.id.cardWindow);
         name = (TextView) findViewById(R.id.name);
         convertedManaCost = (TextView) findViewById(R.id.converted_mana_cost);
+        setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
     }
 
     private void attributes(CardRepresentation cardRepresentation) {

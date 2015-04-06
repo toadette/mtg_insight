@@ -5,16 +5,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
-import android.widget.LinearLayout;
+
+import com.etsy.android.grid.StaggeredGridView;
 
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import de.avalax.mtg_insight.R;
-import de.avalax.mtg_insight.application.representation.CardRepresentation;
-import de.avalax.mtg_insight.domain.model.card.Card;
 import de.avalax.mtg_insight.domain.model.deck.Deck;
 import de.avalax.mtg_insight.domain.model.deck.DeckService;
 import de.avalax.mtg_insight.presentation.MtgInsightApplication;
@@ -23,7 +21,7 @@ import de.avalax.mtg_insight.presentation.tasks.DeckServiceTask;
 
 public class CardDemoFragment extends Fragment implements DeckServiceResponse {
     @InjectView(R.id.cardStage)
-    protected GridView cardStage;
+    protected StaggeredGridView cardStage;
 
     @Inject
     protected DeckService deckService;

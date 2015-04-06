@@ -13,6 +13,7 @@ public class CardBuilder {
     private CreatureBody creatureBody;
     private Class<?> cardType;
     private LoyaltyPoints loyaltyPoints;
+    private List<Ability> abilities;
 
     public CardBuilder(String cardName) {
         this.cardName = cardName;
@@ -23,7 +24,7 @@ public class CardBuilder {
     public Card build() {
         GenericCard card;
         if (cardType.equals(Creature.class)) {
-            card = new Creature(cardName, creatureBody);
+            card = new Creature(cardName, creatureBody,abilities);
         } else if (cardType.equals(Artifact.class)) {
             card = new Artifact(cardName);
         } else if (cardType.equals(Land.class)) {
@@ -55,7 +56,8 @@ public class CardBuilder {
         return this;
     }
 
-    public CardBuilder creatureCard(CreatureBody creatureBody) {
+    public CardBuilder creatureCard(CreatureBody creatureBody, List<Ability> abilities) {
+        this.abilities = abilities;
         this.cardType = Creature.class;
         this.creatureBody = creatureBody;
         return this;

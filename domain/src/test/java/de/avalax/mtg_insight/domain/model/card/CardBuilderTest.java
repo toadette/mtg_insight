@@ -3,6 +3,8 @@ package de.avalax.mtg_insight.domain.model.card;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -69,7 +71,8 @@ public class CardBuilderTest {
                 return 3;
             }
         };
-        CardBuilder sameCardBuilder = cardBuilder.creatureCard(creatureBody);
+        List<Ability>abilities= Arrays.asList(Ability.DOUBLE_STRIKE,Ability.DEATHTOUCH);
+        CardBuilder sameCardBuilder = cardBuilder.creatureCard(creatureBody, abilities);
 
         Card card = cardBuilder.build();
 
@@ -78,6 +81,9 @@ public class CardBuilderTest {
         Creature creatureCard=(Creature)card;
         assertThat(creatureCard.creatureBody().power()).isEqualTo(9);
         assertThat(creatureCard.creatureBody().toughness()).isEqualTo(3);
+        assertThat(creatureCard.abilities()).hasSize(2);
+        assertThat(creatureCard.abilities().get(0)).isEqualTo(Ability.DOUBLE_STRIKE);
+        assertThat(creatureCard.abilities().get(1)).isEqualTo(Ability.DEATHTOUCH);
     }
 
     @Test

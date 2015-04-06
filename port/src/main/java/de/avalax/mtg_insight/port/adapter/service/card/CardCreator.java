@@ -5,6 +5,7 @@ import org.json.simple.JSONObject;
 
 import java.util.List;
 
+import de.avalax.mtg_insight.domain.model.card.Ability;
 import de.avalax.mtg_insight.domain.model.card.Card;
 import de.avalax.mtg_insight.domain.model.card.LoyaltyPoints;
 import de.avalax.mtg_insight.domain.model.card.CreatureBody;
@@ -21,7 +22,7 @@ public class CardCreator {
     private static final String CARD_TYPE_SORCERY = "Sorcery";
 
 
-    public Card createCardFromType(String type, String name, List<Color> cardColors, ConvertedManaCost convertedManaCost, final String power, final String toughness, final String loyalty) {
+    public Card createCardFromType(String type, String name, List<Color> cardColors, ConvertedManaCost convertedManaCost, final String power, final String toughness, final String loyalty, List<Ability> abilities) {
         de.avalax.mtg_insight.domain.model.card.CardBuilder cardBuilder = new de.avalax.mtg_insight.domain.model.card.CardBuilder(name);
         cardBuilder.convertedManaCost(convertedManaCost);
         cardBuilder.cardColors(cardColors);
@@ -36,7 +37,7 @@ public class CardCreator {
                     return Integer.valueOf(toughness);
                 }
             };
-            return cardBuilder.creatureCard(creatureBody).build();
+            return cardBuilder.creatureCard(creatureBody,abilities).build();
         }
         if (isCardFromType(type, CARD_TYPE_ARTIFACT)) {
             return cardBuilder.artifactCard().build();

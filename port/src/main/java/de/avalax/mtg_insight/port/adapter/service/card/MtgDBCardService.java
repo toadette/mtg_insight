@@ -51,7 +51,7 @@ public class MtgDBCardService implements CardService {
             String name = cardFromJson.get("name").toString();
             List<Color> colorOfCard = getColorOfCard(cardFromJson);
             ConvertedManaCost convertedManaCost = getConvertedManaCost(cardFromJson);
-            Card card = new CardCreator().createCardFromType(type, name, colorOfCard, convertedManaCost,power,toughness,loyalty);
+            Card card = new CardCreator().createCardFromType(type, name, colorOfCard, convertedManaCost,power,toughness,loyalty, null);
             inputStreamReader.close();
             return card;
         } catch (Exception e) {

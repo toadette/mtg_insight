@@ -12,6 +12,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.avalax.mtg_insight.domain.model.card.Ability;
 import de.avalax.mtg_insight.domain.model.card.Card;
 import de.avalax.mtg_insight.domain.model.color.Color;
 import de.avalax.mtg_insight.domain.model.exception.CardNotFoundException;
@@ -27,11 +28,13 @@ public class MtgDBCardService implements CardService {
     private final String host = "http://api.mtgdb.info/cards/";
     private ManaTokenizer manaTokenizer;
     private ColorMatcher colorMatcher;
+    private AbilityTokenizer abilityTokenizer;
 
 
-    public MtgDBCardService(ManaTokenizer manaTokenizer, ColorMatcher colorMatcher) {
+    public MtgDBCardService(ManaTokenizer manaTokenizer, ColorMatcher colorMatcher, AbilityTokenizer abilityTokenizer) {
         this.manaTokenizer = manaTokenizer;
         this.colorMatcher = colorMatcher;
+        this.abilityTokenizer = abilityTokenizer;
     }
 
     @Override
@@ -43,20 +46,25 @@ public class MtgDBCardService implements CardService {
                 throw new CardNotFoundException(new Exception("Card not found"));
             }
             JSONObject cardFromJson = (JSONObject) jsonArray.get(0);
-            //TODO: parse Description?    cardFromJson.get("description");
             String power=cardFromJson.get("power").toString();;
             String toughness=cardFromJson.get("toughness").toString();;
             String loyalty=cardFromJson.get("loyalty").toString();;
             String type = cardFromJson.get("type").toString();
             String name = cardFromJson.get("name").toString();
+            String description= cardFromJson.get("description").toString();
             List<Color> colorOfCard = getColorOfCard(cardFromJson);
             ConvertedManaCost convertedManaCost = getConvertedManaCost(cardFromJson);
-            Card card = new CardCreator().createCardFromType(type, name, colorOfCard, convertedManaCost,power,toughness,loyalty, null);
+            List<Ability> abilities= getAbilities(description);
+            Card card = new CardCreator().createCardFromType(type, name, colorOfCard, convertedManaCost,power,toughness,loyalty, abilities);
             inputStreamReader.close();
             return card;
         } catch (Exception e) {
             throw new CardNotFoundException(new Exception("Card not found"));
         }
+    }
+
+    private List<Ability> getAbilities(String description) {
+        return abilityTokenizer.getAbilitiesFromDescription(description);
     }
 
     private List<Color> getColorOfCard(JSONObject cardFromJson) {

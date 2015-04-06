@@ -10,6 +10,7 @@ import java.util.List;
 import de.avalax.mtg_insight.domain.model.deck.Deck;
 import de.avalax.mtg_insight.domain.model.deck.Deckname;
 import de.avalax.mtg_insight.domain.model.exception.DeckNotFoundException;
+import de.avalax.mtg_insight.port.adapter.service.card.AbilityTokenizer;
 import de.avalax.mtg_insight.port.adapter.service.card.MtgDBCardService;
 import de.avalax.mtg_insight.port.adapter.service.color.ColorMatcher;
 import de.avalax.mtg_insight.port.adapter.service.manaCost.ManaTokenizer;
@@ -26,17 +27,17 @@ public class TappedOutDeckServiceTest {
 
     public void setUp1() throws Exception {
         deckname = "from-the-grave-to-the-cradle";
-        tappedOutDeckService = new TappedOutDeckService(new MtgDBCardService(new ManaTokenizer(), new ColorMatcher()));
+        tappedOutDeckService = new TappedOutDeckService(new MtgDBCardService(new ManaTokenizer(), new ColorMatcher(),new AbilityTokenizer()));
     }
 
     public void setUp2() throws Exception {
         deckname = "dudes-with-swords";
-        tappedOutDeckService = new TappedOutDeckService(new MtgDBCardService(new ManaTokenizer(), new ColorMatcher()));
+        tappedOutDeckService = new TappedOutDeckService(new MtgDBCardService(new ManaTokenizer(), new ColorMatcher(),new AbilityTokenizer()));
     }
 
     public void setUp3() throws Exception {
         deckname = "you-do-not-defy-ojutai-uw-control";
-        tappedOutDeckService = new TappedOutDeckService(new MtgDBCardService(new ManaTokenizer(), new ColorMatcher()));
+        tappedOutDeckService = new TappedOutDeckService(new MtgDBCardService(new ManaTokenizer(), new ColorMatcher(),new AbilityTokenizer()));
     }
 
     @Test

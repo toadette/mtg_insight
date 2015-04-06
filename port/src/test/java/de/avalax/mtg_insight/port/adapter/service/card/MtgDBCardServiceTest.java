@@ -51,7 +51,7 @@ public class MtgDBCardServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        mtgDBCardService = new MtgDBCardService(new ManaTokenizer(), new ColorMatcher());
+        mtgDBCardService = new MtgDBCardService(new ManaTokenizer(), new ColorMatcher(),new AbilityTokenizer());
     }
 
     @Test

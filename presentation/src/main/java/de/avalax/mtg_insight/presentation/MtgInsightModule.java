@@ -10,6 +10,7 @@ import de.avalax.mtg_insight.application.launcher.LauncherApplicationService;
 import de.avalax.mtg_insight.domain.model.deck.DeckService;
 import de.avalax.mtg_insight.port.adapter.service.card.AbilityTokenizer;
 import de.avalax.mtg_insight.port.adapter.service.card.CardService;
+import de.avalax.mtg_insight.port.adapter.service.card.GathererCardService;
 import de.avalax.mtg_insight.port.adapter.service.color.ColorMatcher;
 import de.avalax.mtg_insight.port.adapter.service.manaCost.ManaTokenizer;
 import de.avalax.mtg_insight.port.adapter.service.card.MtgDBCardService;
@@ -35,25 +36,25 @@ public class MtgInsightModule {
 
     @Provides
     @Singleton
-    LauncherApplicationService provideManageWorkout() {
+    LauncherApplicationService provideManageWorkout(){
         return new LauncherApplicationService();
     }
 
     @Provides
     @Singleton
-    CardRepresentationToDrawable provideCardRepresentationToDrawable() {
+    CardRepresentationToDrawable provideCardRepresentationToDrawable(){
         return new CardRepresentationToDrawable(context);
     }
 
     @Provides
     @Singleton
-    DeckService provideDeckService(CardService cardService) {
+    DeckService provideDeckService(CardService cardService){
         return new TappedOutDeckService(cardService);
     }
 
     @Provides
     @Singleton
-    CardService provideCardService() {
-        return new MtgDBCardService(new ManaTokenizer(), new ColorMatcher(), new AbilityTokenizer());
+    CardService provideCardService(){
+        return new GathererCardService(new ManaTokenizer(),new ColorMatcher(),new AbilityTokenizer());
     }
 }

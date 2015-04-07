@@ -19,19 +19,19 @@ public class ColorMatcher {
     }
 
     private Color getColor(String colorString) {
-        if (colorString.equals("white")) {
+        if (colorString.equalsIgnoreCase("white")) {
             return Color.WHITE;
         }
-        if (colorString.equals("blue")) {
+        if (colorString.equalsIgnoreCase("blue")) {
             return Color.BLUE;
         }
-        if (colorString.equals("black")) {
+        if (colorString.equalsIgnoreCase("black")) {
             return Color.BLACK;
         }
-        if (colorString.equals("green")) {
+        if (colorString.equalsIgnoreCase("green")) {
             return Color.GREEN;
         }
-        if (colorString.equals("red")) {
+        if (colorString.equalsIgnoreCase("red")) {
             return Color.RED;
         }
         return null;

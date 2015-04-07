@@ -1,9 +1,7 @@
 package de.avalax.mtg_insight.presentation.card;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.TypedArray;
-import android.support.v4.content.ContextCompat;
-import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -15,6 +13,7 @@ import de.avalax.mtg_insight.application.representation.CardRepresentation;
 import de.avalax.mtg_insight.presentation.MtgInsightApplication;
 
 
+@SuppressLint("ViewConstructor")
 public class CardHeaderView extends LinearLayout {
     @Inject
     protected CardRepresentationToDrawable cardRepresentationToDrawable;
@@ -24,20 +23,12 @@ public class CardHeaderView extends LinearLayout {
     private TextView name;
     private TextView convertedManaCost;
 
-    @Deprecated
-    public CardHeaderView(Context context, AttributeSet attrs, int headerNumber) {
-        super(context, attrs);
-        this.headerNumber = headerNumber;
-        init(context);
-        attributs(attrs);
-    }
-
     public CardHeaderView(Context context, CardRepresentation cardRepresentation, int headerNumber) {
         super(context);
         ((MtgInsightApplication) context.getApplicationContext()).inject(this);
         this.headerNumber = headerNumber;
         init(context);
-        attributs(cardRepresentation);
+        attributes(cardRepresentation);
     }
 
     private void init(Context context) {
@@ -47,30 +38,11 @@ public class CardHeaderView extends LinearLayout {
         convertedManaCost = (TextView) findViewById(R.id.converted_mana_cost);
     }
 
-    @Deprecated
-    private void attributs(AttributeSet attrs) {
-        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.CardView);
-        if (a.getString(R.styleable.MtgInsightCard_name) != null) {
-            name.setText(a.getString(R.styleable.MtgInsightCard_name));
-        }
-        if (a.getString(R.styleable.MtgInsightCard_converted_mana_cost) != null) {
-            convertedManaCost.setText(a.getString(R.styleable.MtgInsightCard_converted_mana_cost));
-        }
-        if (a.getDrawable(R.styleable.MtgInsightCard_card_header) != null) {
-            background.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.header_multicolor));
-        }
-        if (headerNumber > 1) {
-            setBackground(ContextCompat.getDrawable(getContext(),R.drawable.card_background_colorless));
-        }
-        a.recycle();
-    }
-
-    private void attributs(CardRepresentation cardRepresentation) {
+    private void attributes(CardRepresentation cardRepresentation) {
         name.setText(cardRepresentation.name());
         convertedManaCost.setText(cardRepresentation.convertedManaCost());
-        background.setBackground(cardRepresentationToDrawable.headerFrom(cardRepresentation));
         if (headerNumber > 1) {
-            setBackground(cardRepresentationToDrawable.cardBackgroundFrom(cardRepresentation));
+            background.setBackground(cardRepresentationToDrawable.headerFrom(cardRepresentation));
         }
     }
 }

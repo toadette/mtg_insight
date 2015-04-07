@@ -8,11 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.avalax.mtg_insight.domain.model.card.Card;
+import de.avalax.mtg_insight.domain.model.card.CardBuilder;
+import de.avalax.mtg_insight.domain.model.card.CreatureBody;
 import de.avalax.mtg_insight.domain.model.color.Color;
 import de.avalax.mtg_insight.domain.model.mana.ConvertedManaCost;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
 
 import static org.hamcrest.core.IsEqual.equalTo;
+import static org.hamcrest.core.IsNull.nullValue;
 import static org.junit.Assert.assertThat;
 
 @RunWith(HierarchicalContextRunner.class)
@@ -74,6 +77,24 @@ public class CardRepresentationTest {
         assertThat(cardRepresentation.convertedManaCost(), equalTo("cmcToString"));
     }
 
+    @Test
+    public void genericCard_shouldBeNoCreature() throws Exception {
+        boolean isCreature = cardRepresentation.isCreature();
+        assertThat(isCreature, equalTo(Boolean.FALSE));
+    }
+
+    @Test
+    public void genericCard_shouldReturnNullPower() throws Exception {
+        String creatureBody = cardRepresentation.power();
+        assertThat(creatureBody, nullValue());
+    }
+
+    @Test
+    public void genericCard_shouldReturnNullToughness() throws Exception {
+        String creatureBody = cardRepresentation.toughness();
+        assertThat(creatureBody, nullValue());
+    }
+
     public class color {
         @Test
         public void noColor_shouldReturnColorColorless() throws Exception {
@@ -122,5 +143,49 @@ public class CardRepresentationTest {
 
             assertThat(cardRepresentation.color(), equalTo(CardColorRepresentation.MULTICOLOR));
         }
+    }
+
+    public class creatureRepresentation {
+        public static final int CREATURE_POWER = 42;
+        public static final int CREATURE_TOUGHNESS = 21;
+        private CardBuilder cardBuilder;
+        private CreatureBody creatureBody;
+
+        @Before
+        public void setUp() throws Exception {
+            cardBuilder = new CardBuilder("creature");
+            creatureBody = new CreatureBody() {
+                @Override
+                public int power() {
+                    return CREATURE_POWER;
+                }
+
+                @Override
+                public int toughness() {
+                    return CREATURE_TOUGHNESS;
+                }
+            };
+            Card creature = cardBuilder.creatureCard(creatureBody, null).build();
+            cardRepresentation = new CardRepresentation(creature);
+        }
+
+        @Test
+        public void creatureRepresentation_shouldBeACreature() throws Exception {
+            boolean isCreature = cardRepresentation.isCreature();
+            assertThat(isCreature, equalTo(Boolean.TRUE));
+        }
+
+        @Test
+        public void creatureRepresentation_shouldReturnCreaturePower() throws Exception {
+            String creatureBodyFromRepresentation = cardRepresentation.power();
+            assertThat(creatureBodyFromRepresentation, equalTo(String.valueOf(CREATURE_POWER)));
+        }
+
+        @Test
+        public void creatureRepresentation_shouldReturnCreatureToughness() throws Exception {
+            String creatureBodyFromRepresentation = cardRepresentation.toughness();
+            assertThat(creatureBodyFromRepresentation, equalTo(String.valueOf(CREATURE_TOUGHNESS)));
+        }
+
     }
 }

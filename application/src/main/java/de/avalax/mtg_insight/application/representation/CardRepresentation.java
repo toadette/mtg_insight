@@ -1,6 +1,8 @@
 package de.avalax.mtg_insight.application.representation;
 
 import de.avalax.mtg_insight.domain.model.card.Card;
+import de.avalax.mtg_insight.domain.model.card.Creature;
+import de.avalax.mtg_insight.domain.model.card.CreatureBody;
 
 public class CardRepresentation {
     private Card card;
@@ -51,5 +53,21 @@ public class CardRepresentation {
             default:
                 return CardColorRepresentation.COLORLESS;
         }
+    }
+
+    public boolean isCreature() {
+        return card instanceof Creature;
+    }
+
+    public String power() {
+        return isCreature() ? String.valueOf(creatureBody().power()) : null;
+    }
+
+    public String toughness() {
+        return isCreature() ? String.valueOf(creatureBody().toughness()) : null;
+    }
+
+    private CreatureBody creatureBody() {
+        return ((Creature) card).creatureBody();
     }
 }

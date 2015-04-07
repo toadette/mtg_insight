@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -23,6 +22,7 @@ public class CardView extends LinearLayout {
     private View window;
     private TextView name;
     private TextView convertedManaCost;
+    private TextView creatureBody;
     private int count;
 
     public CardView(Context context, CardRepresentation cardRepresentation) {
@@ -49,6 +49,7 @@ public class CardView extends LinearLayout {
         window = findViewById(R.id.cardWindow);
         name = (TextView) findViewById(R.id.name);
         convertedManaCost = (TextView) findViewById(R.id.converted_mana_cost);
+        creatureBody = (TextView) findViewById(R.id.creatureBody);
         setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -61,6 +62,11 @@ public class CardView extends LinearLayout {
         window.setBackground(cardRepresentationToDrawable.windowBackgroundFrom(cardRepresentation));
         if (cardRepresentation.count() > 1) {
             setBackground(cardRepresentationToDrawable.cardBackgroundFrom(cardRepresentation));
+        }
+        if (cardRepresentation.isCreature()) {
+            creatureBody.setText(cardRepresentation.power() + " / " + cardRepresentation.toughness());
+        } else {
+            creatureBody.setVisibility(INVISIBLE);
         }
     }
 

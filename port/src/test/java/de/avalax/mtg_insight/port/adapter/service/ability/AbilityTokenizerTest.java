@@ -1,4 +1,4 @@
-package de.avalax.mtg_insight.port.adapter.service.card;
+package de.avalax.mtg_insight.port.adapter.service.ability;
 
 import org.junit.Test;
 

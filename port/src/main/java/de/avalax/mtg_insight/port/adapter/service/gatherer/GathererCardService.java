@@ -45,14 +45,22 @@ public class GathererCardService implements CardService {
             String name = doc.body().getElementById(GathererConstants.NAME).children().get(1).text();
             String description = doc.body().getElementById(GathererConstants.DESCRIPTION_TEXT).children().get(1).toString();
             Element manaRow = doc.body().getElementById(GathererConstants.MANA).children().get(1);
-            List<Color> colorOfCard = getColorOfCard(manaRow);
-            ConvertedManaCost convertedManaCost = getConvertedManaCost(manaRow);
-            List<Ability> abilities = getAbilities(description);
-            Card card = new CardCreator().createCardFromType(type, name, colorOfCard, convertedManaCost, "0", "0", "0", abilities);
-            return card;
+            List<String> mana = getManaFromElement(manaRow);
+            GathererHelper gathererHelper = new GathererHelper(abilityTokenizer, colorMatcher, manaTokenizer);
+            return gathererHelper.getCard(type, name, description, mana);
         } catch (Exception e) {
             throw new CardNotFoundException(new Exception("Card not found"));
         }
+    }
+
+    private List<String> getManaFromElement(Element manaRow) {
+        List<String> manaList=new ArrayList<>();
+        for (int i = 0; i < manaRow.children().size(); i++) {
+            String alt = manaRow.children().get(i).attr("alt");
+            manaList.add(alt);
+            System.out.println(alt);
+        }
+        return manaList;
     }
 
     private String getCardNameForSearch(String cardname) {
@@ -66,39 +74,5 @@ public class GathererCardService implements CardService {
         return result;
     }
 
-    private List<Ability> getAbilities(String description) {
-        return abilityTokenizer.getAbilitiesFromDescription(description);
-    }
 
-    private List<Color> getColorOfCard(Element manaRow) {
-        HashMap<String, Integer> colorMap = new HashMap<>();
-        for (int i = 0; i < manaRow.children().size(); i++) {
-            String token = manaRow.children().get(i).attr("alt");
-            if (colorMap.get(token) == null && !token.matches("\\d")) {
-                colorMap.put(token, i);
-            }
-        }
-        return colorMatcher.getColorFromArray(colorMap.keySet().toArray());
-    }
-
-    private ConvertedManaCost getConvertedManaCost(Element manaRow) {
-        String cmc = new String();
-        for (int i = 0; i < manaRow.children().size(); i++) {
-            String token = manaRow.children().get(i).attr("alt");
-            if (token.matches("\\d")) {
-                cmc += token;
-            } else {
-                if (token.equalsIgnoreCase("blue")) {
-                    cmc += "U";
-                } else {
-                    cmc += token.substring(0, 1).toUpperCase();
-                }
-            }
-        }
-        List<ManaCost> convertedManaCost = new ArrayList<>();
-        for (ManaCostToken token : manaTokenizer.get(cmc)) {
-            convertedManaCost.addAll(token.manaCost());
-        }
-        return new ConvertedManaCost(cmc, convertedManaCost);
-    }
 }

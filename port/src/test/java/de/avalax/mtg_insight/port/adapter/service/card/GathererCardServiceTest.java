@@ -1,6 +1,7 @@
 package de.avalax.mtg_insight.port.adapter.service.card;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import de.avalax.mtg_insight.domain.model.card.Card;
@@ -44,14 +45,14 @@ public class GathererCardServiceTest {
     }
 
     private void assertPlaneswalker(Planeswalker card, int loyalty) {
-        assertThat(card.loyaltyPoints().loyaltyPoints(),equalTo(loyalty));
+        assertThat(card.loyaltyPoints().loyaltyPoints(), equalTo(loyalty));
     }
 
-    private GathererCardService cardService;
+    private de.avalax.mtg_insight.port.adapter.service.gatherer.GathererCardService cardService;
 
     @Before
     public void setUp() throws Exception {
-        cardService = new GathererCardService(new ManaTokenizer(), new ColorMatcher(),new AbilityTokenizer());
+        cardService = new de.avalax.mtg_insight.port.adapter.service.gatherer.GathererCardService(new ManaTokenizer(), new ColorMatcher(), new de.avalax.mtg_insight.port.adapter.service.ability.AbilityTokenizer());
     }
 
     @Test
@@ -59,14 +60,14 @@ public class GathererCardServiceTest {
         String cardname = "Narset, Enlightened Master";
         Card card = cardService.cardFromCardname(cardname);
         assertCard(cardname, card, Creature.class);
-//        assertThat(card.convertedManaCost().manaCostAsList(), hasSize(6));
-//        assertMana(card, 0, 0, Mana.COLORLESS);
-//        assertMana(card, 1, 0, Mana.COLORLESS);
-//        assertMana(card, 2, 0, Mana.COLORLESS);
-//        assertMana(card, 3, 0, Mana.BLUE);
-//        assertMana(card, 4, 0, Mana.RED);
-//        assertMana(card, 5, 0, Mana.WHITE);
-//        assertCardColor(card, 3, new Color[]{Color.BLUE, Color.RED, Color.WHITE});
+        assertThat(card.convertedManaCost().manaCostAsList(), hasSize(6));
+        assertMana(card, 0, 0, Mana.COLORLESS);
+        assertMana(card, 1, 0, Mana.COLORLESS);
+        assertMana(card, 2, 0, Mana.COLORLESS);
+        assertMana(card, 3, 0, Mana.BLUE);
+        assertMana(card, 4, 0, Mana.RED);
+        assertMana(card, 5, 0, Mana.WHITE);
+        assertCardColor(card, 3, new Color[]{Color.BLUE, Color.RED, Color.WHITE});
 //        assertCreature((Creature) card, 3, 2);
     }
 
@@ -75,124 +76,127 @@ public class GathererCardServiceTest {
         String cardName = "Brimaz, King of Oreskos";
         Card card = cardService.cardFromCardname(cardName);
         assertCard(cardName, card, Creature.class);
-//        assertThat(card.convertedManaCost().manaCostAsList(), hasSize(3));
-//        assertMana(card, 0, 0, Mana.COLORLESS);
-//        assertMana(card, 1, 0, Mana.WHITE);
-//        assertMana(card, 2, 0, Mana.WHITE);
-//        assertCardColor(card, 1, new Color[]{Color.WHITE});
+        assertThat(card.convertedManaCost().manaCostAsList(), hasSize(3));
+        assertMana(card, 0, 0, Mana.COLORLESS);
+        assertMana(card, 1, 0, Mana.WHITE);
+        assertMana(card, 2, 0, Mana.WHITE);
+        assertCardColor(card, 1, new Color[]{Color.WHITE});
 //        assertCreature((Creature) card, 3, 4);
     }
-//
+    @Ignore
     @Test
     public void cardFromCardname_shouldReturnCreatureWithTwoHybridMana() throws Exception {
         String cardName = "Frostburn Weird";
         Card card = cardService.cardFromCardname(cardName);
         assertCard(cardName, card, Creature.class);
-//        assertThat(card.convertedManaCost().manaCostAsList(), hasSize(2));
-//        assertMana(card, 0, 0, Mana.BLUE);
-//        assertMana(card, 0, 1, Mana.RED);
-//        assertMana(card, 1, 0, Mana.BLUE);
-//        assertMana(card, 1, 1, Mana.RED);
-//        assertCardColor(card, 2, new Color[]{Color.RED, Color.BLUE});
-//        assertCreature((Creature) card, 1, 4);
+        assertThat(card.convertedManaCost().manaCostAsList(), hasSize(2));
+        assertMana(card, 0, 0, Mana.BLUE);
+        assertMana(card, 0, 1, Mana.RED);
+        assertMana(card, 1, 0, Mana.BLUE);
+        assertMana(card, 1, 1, Mana.RED);
+        assertCardColor(card, 2, new Color[]{Color.RED, Color.BLUE});
+        assertCreature((Creature) card, 1, 4);
     }
-
+    @Ignore
     @Test
     public void cardFromCardname_ShouldReturnCreatureWithOneHybridMana() throws Exception {
         String cardName = "Figure of Destiny";
         Card card = cardService.cardFromCardname(cardName);
         assertCard(cardName, card, Creature.class);
-//        assertThat(card.convertedManaCost().manaCostAsList(), hasSize(1));
-//        assertMana(card, 0, 0, Mana.RED);
-//        assertMana(card, 0, 1, Mana.WHITE);
-//        assertCardColor(card, 2, new Color[]{Color.RED, Color.WHITE});
-//        assertCreature((Creature) card, 1, 1);
+        assertThat(card.convertedManaCost().manaCostAsList(), hasSize(1));
+        assertMana(card, 0, 0, Mana.RED);
+        assertMana(card, 0, 1, Mana.WHITE);
+        assertCardColor(card, 2, new Color[]{Color.RED, Color.WHITE});
+        assertCreature((Creature) card, 1, 1);
     }
-
+    @Ignore
     @Test
     public void cardFromCardname_ShouldReturnCreatureWithHybridTwoColorlessMana() throws Exception {
         String cardName = "Reaper King";
         Card card = cardService.cardFromCardname(cardName);
         assertCard(cardName, card, Creature.class);
-//        assertThat(card.convertedManaCost().manaCostAsList(), hasSize(5));
-//        assertMana(card, 0, 0, Mana.HYBRID_TWOCOLORLESS);
-//        assertMana(card, 0, 1, Mana.WHITE);
-//        assertMana(card, 1, 0, Mana.HYBRID_TWOCOLORLESS);
-//        assertMana(card, 1, 1, Mana.BLUE);
-//        assertMana(card, 2, 0, Mana.HYBRID_TWOCOLORLESS);
-//        assertMana(card, 2, 1, Mana.BLACK);
-//        assertMana(card, 3, 0, Mana.HYBRID_TWOCOLORLESS);
-//        assertMana(card, 3, 1, Mana.RED);
-//        assertMana(card, 4, 0, Mana.HYBRID_TWOCOLORLESS);
-//        assertMana(card, 4, 1, Mana.GREEN);
-//        assertCardColor(card, 5, new Color[]{Color.WHITE, Color.BLACK, Color.BLUE, Color.GREEN, Color.RED});
-//        assertCreature((Creature) card, 6, 6);
+        assertThat(card.convertedManaCost().manaCostAsList(), hasSize(5));
+        assertMana(card, 0, 0, Mana.HYBRID_TWOCOLORLESS);
+        assertMana(card, 0, 1, Mana.WHITE);
+        assertMana(card, 1, 0, Mana.HYBRID_TWOCOLORLESS);
+        assertMana(card, 1, 1, Mana.BLUE);
+        assertMana(card, 2, 0, Mana.HYBRID_TWOCOLORLESS);
+        assertMana(card, 2, 1, Mana.BLACK);
+        assertMana(card, 3, 0, Mana.HYBRID_TWOCOLORLESS);
+        assertMana(card, 3, 1, Mana.RED);
+        assertMana(card, 4, 0, Mana.HYBRID_TWOCOLORLESS);
+        assertMana(card, 4, 1, Mana.GREEN);
+        assertCardColor(card, 5, new Color[]{Color.WHITE, Color.BLACK, Color.BLUE, Color.GREEN, Color.RED});
+        assertCreature((Creature) card, 6, 6);
     }
-
+    @Ignore
     @Test
     public void cardFromCardname_ShouldReturnCreatureWithPhyrexianMana() throws Exception {
         String cardName = "Pith Driller";
         Card card = cardService.cardFromCardname(cardName);
         assertCard(cardName, card, Creature.class);
-//        assertThat(card.convertedManaCost().manaCostAsList(), hasSize(5));
-//        assertMana(card, 0, 0, Mana.COLORLESS);
-//        assertMana(card, 1, 0, Mana.COLORLESS);
-//        assertMana(card, 2, 0, Mana.COLORLESS);
-//        assertMana(card, 3, 0, Mana.COLORLESS);
-//        assertMana(card, 4, 0, Mana.BLACK);
-//        assertMana(card, 4, 1, Mana.PHYREXIAN);
-//        assertCardColor(card, 1, new Color[]{Color.BLACK});
-//        assertCreature((Creature) card, 2, 4);
+        assertThat(card.convertedManaCost().manaCostAsList(), hasSize(5));
+        assertMana(card, 0, 0, Mana.COLORLESS);
+        assertMana(card, 1, 0, Mana.COLORLESS);
+        assertMana(card, 2, 0, Mana.COLORLESS);
+        assertMana(card, 3, 0, Mana.COLORLESS);
+        assertMana(card, 4, 0, Mana.BLACK);
+        assertMana(card, 4, 1, Mana.PHYREXIAN);
+        assertCardColor(card, 1, new Color[]{Color.BLACK});
+        assertCreature((Creature) card, 2, 4);
     }
-
+    @Ignore
     @Test(expected = CardNotFoundException.class)
     public void cardFromCardname_ShouldCardNotFoundException() throws Exception {
         cardService.cardFromCardname("hahahakeineKarte");
     }
 
+    @Ignore
     @Test
     public void cardFromCardname_ShouldReturnInstantWithSingleMana() throws Exception {
         String cardName = "Lightning Strike";
         Card card = cardService.cardFromCardname(cardName);
         assertCard(cardName, card, Instant.class);
-//        assertThat(card.convertedManaCost().manaCostAsList(), hasSize(2));
-//        assertMana(card, 0, 0, Mana.COLORLESS);
-//        assertMana(card, 1, 0, Mana.RED);
-//        assertCardColor(card, 1, new Color[]{Color.RED});
+        assertThat(card.convertedManaCost().manaCostAsList(), hasSize(2));
+        assertMana(card, 0, 0, Mana.COLORLESS);
+        assertMana(card, 1, 0, Mana.RED);
+        assertCardColor(card, 1, new Color[]{Color.RED});
     }
 
+    @Ignore
     @Test
     public void cardFromCardname_ShouldReturnPlanesWalkerWithSingleManaAndLoyaltyPoints() throws Exception {
         String cardName = "Elspeth, Sun's Champion";
         Card card = cardService.cardFromCardname(cardName);
         assertCard(cardName, card, Planeswalker.class);
-//        assertThat(card.convertedManaCost().manaCostAsList(), hasSize(6));
-//        assertMana(card, 0, 0, Mana.COLORLESS);
-//        assertMana(card, 1, 0, Mana.COLORLESS);
-//        assertMana(card, 2, 0, Mana.COLORLESS);
-//        assertMana(card, 3, 0, Mana.COLORLESS);
-//        assertMana(card, 4, 0, Mana.WHITE);
-//        assertMana(card, 5, 0, Mana.WHITE);
-//        assertCardColor(card, 1, new Color[]{Color.WHITE});
-//        assertPlaneswalker((Planeswalker) card, 4);
+        assertThat(card.convertedManaCost().manaCostAsList(), hasSize(6));
+        assertMana(card, 0, 0, Mana.COLORLESS);
+        assertMana(card, 1, 0, Mana.COLORLESS);
+        assertMana(card, 2, 0, Mana.COLORLESS);
+        assertMana(card, 3, 0, Mana.COLORLESS);
+        assertMana(card, 4, 0, Mana.WHITE);
+        assertMana(card, 5, 0, Mana.WHITE);
+        assertCardColor(card, 1, new Color[]{Color.WHITE});
+        assertPlaneswalker((Planeswalker) card, 4);
     }
 
+    @Ignore
     @Test
     public void cardFromCardname_ShouldReturnPlanesWalkerWithColorlessManaAndLoyaltyPoints() throws Exception {
         String cardName = "Ugin, the Spirit Dragon";
         Card card = cardService.cardFromCardname(cardName);
         assertCard(cardName, card, Planeswalker.class);
-//        assertThat(card.convertedManaCost().manaCostAsList(), hasSize(8));
-//        assertMana(card, 0, 0, Mana.COLORLESS);
-//        assertMana(card, 1, 0, Mana.COLORLESS);
-//        assertMana(card, 2, 0, Mana.COLORLESS);
-//        assertMana(card, 3, 0, Mana.COLORLESS);
-//        assertMana(card, 4, 0, Mana.COLORLESS);
-//        assertMana(card, 5, 0, Mana.COLORLESS);
-//        assertMana(card, 6, 0, Mana.COLORLESS);
-//        assertMana(card, 7, 0, Mana.COLORLESS);
-//        assertCardColor(card, 0, new Color[]{});
-//        assertPlaneswalker((Planeswalker) card, 7);
+        assertThat(card.convertedManaCost().manaCostAsList(), hasSize(8));
+        assertMana(card, 0, 0, Mana.COLORLESS);
+        assertMana(card, 1, 0, Mana.COLORLESS);
+        assertMana(card, 2, 0, Mana.COLORLESS);
+        assertMana(card, 3, 0, Mana.COLORLESS);
+        assertMana(card, 4, 0, Mana.COLORLESS);
+        assertMana(card, 5, 0, Mana.COLORLESS);
+        assertMana(card, 6, 0, Mana.COLORLESS);
+        assertMana(card, 7, 0, Mana.COLORLESS);
+        assertCardColor(card, 0, new Color[]{});
+        assertPlaneswalker((Planeswalker) card, 7);
     }
 
 }

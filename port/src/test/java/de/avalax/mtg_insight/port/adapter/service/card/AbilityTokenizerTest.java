@@ -16,7 +16,7 @@ public class AbilityTokenizerTest {
 
     @Test
     public void getAbilitiesFromDescription_ShouldReturnEmptyList() throws Exception {
-        AbilityTokenizer abilityTokenizer=new AbilityTokenizer();
+        de.avalax.mtg_insight.port.adapter.service.ability.AbilityTokenizer abilityTokenizer=new de.avalax.mtg_insight.port.adapter.service.ability.AbilityTokenizer();
         List<Ability> abilitiesFromDescription = abilityTokenizer.getAbilitiesFromDescription("");
         assertThat(abilitiesFromDescription,hasSize(0));
 

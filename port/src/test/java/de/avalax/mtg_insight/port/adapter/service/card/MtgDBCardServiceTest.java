@@ -47,11 +47,11 @@ public class MtgDBCardServiceTest {
         assertThat(card.loyaltyPoints().loyaltyPoints(),equalTo(loyalty));
     }
 
-    private MtgDBCardService mtgDBCardService;
+    private de.avalax.mtg_insight.port.adapter.service.mtgdb.MtgDBCardService mtgDBCardService;
 
     @Before
     public void setUp() throws Exception {
-        mtgDBCardService = new MtgDBCardService(new ManaTokenizer(), new ColorMatcher(),new AbilityTokenizer());
+        mtgDBCardService = new de.avalax.mtg_insight.port.adapter.service.mtgdb.MtgDBCardService(new ManaTokenizer(), new ColorMatcher(),new de.avalax.mtg_insight.port.adapter.service.ability.AbilityTokenizer());
     }
 
     @Test

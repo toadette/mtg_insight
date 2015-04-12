@@ -1,29 +1,22 @@
-package de.avalax.mtg_insight.port.adapter.service.card;
+package de.avalax.mtg_insight.port.adapter.service.gatherer;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
 import de.avalax.mtg_insight.domain.model.card.Ability;
 import de.avalax.mtg_insight.domain.model.card.Card;
-import de.avalax.mtg_insight.domain.model.card.CardBuilder;
-import de.avalax.mtg_insight.domain.model.card.GenericCard;
 import de.avalax.mtg_insight.domain.model.color.Color;
 import de.avalax.mtg_insight.domain.model.exception.CardNotFoundException;
 import de.avalax.mtg_insight.domain.model.mana.ConvertedManaCost;
 import de.avalax.mtg_insight.domain.model.mana.ManaCost;
+import de.avalax.mtg_insight.port.adapter.service.card.CardCreator;
+import de.avalax.mtg_insight.port.adapter.service.card.CardService;
 import de.avalax.mtg_insight.port.adapter.service.color.ColorMatcher;
 import de.avalax.mtg_insight.port.adapter.service.manaCost.ManaCostToken;
 import de.avalax.mtg_insight.port.adapter.service.manaCost.ManaTokenizer;
@@ -34,9 +27,9 @@ public class GathererCardService implements CardService {
     private final String host = "http://api.mtgdb.info/cards/";
     private final ManaTokenizer manaTokenizer;
     private final ColorMatcher colorMatcher;
-    private final AbilityTokenizer abilityTokenizer;
+    private final de.avalax.mtg_insight.port.adapter.service.ability.AbilityTokenizer abilityTokenizer;
 
-    public GathererCardService(ManaTokenizer manaTokenizer, ColorMatcher colorMatcher, AbilityTokenizer abilityTokenizer) {
+    public GathererCardService(ManaTokenizer manaTokenizer, ColorMatcher colorMatcher, de.avalax.mtg_insight.port.adapter.service.ability.AbilityTokenizer abilityTokenizer) {
 
         this.manaTokenizer = manaTokenizer;
         this.colorMatcher = colorMatcher;
@@ -104,7 +97,6 @@ public class GathererCardService implements CardService {
         for (int i = 0; i < manaRow.children().size(); i++) {
             String token = manaRow.children().get(i).attr("alt");
             if (colorMap.get(token) == null && !token.matches("\\d")) {
-                if(token.matches(""))
                 colorMap.put(token, i);
             }
         }
@@ -118,13 +110,17 @@ public class GathererCardService implements CardService {
             if (token.matches("\\d")) {
                 cmc += token;
             } else {
-                cmc += token.substring(0, 1).toUpperCase();
+                if (token.equalsIgnoreCase("blue")) {
+                    cmc += "U";
+                } else {
+                    cmc += token.substring(0, 1).toUpperCase();
+                }
             }
         }
         List<ManaCost> convertedManaCost = new ArrayList<>();
         for (ManaCostToken token : manaTokenizer.get(cmc)) {
             convertedManaCost.addAll(token.manaCost());
         }
-        return new ConvertedManaCost(cmc, Collections.EMPTY_LIST);
+        return new ConvertedManaCost(cmc, convertedManaCost);
     }
 }

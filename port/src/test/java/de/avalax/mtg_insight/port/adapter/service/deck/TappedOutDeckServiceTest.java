@@ -1,17 +1,12 @@
 package de.avalax.mtg_insight.port.adapter.service.deck;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-
-import java.util.List;
 
 import de.avalax.mtg_insight.domain.model.deck.Deck;
 import de.avalax.mtg_insight.domain.model.deck.Deckname;
 import de.avalax.mtg_insight.domain.model.exception.DeckNotFoundException;
-import de.avalax.mtg_insight.port.adapter.service.card.AbilityTokenizer;
-import de.avalax.mtg_insight.port.adapter.service.card.MtgDBCardService;
+import de.avalax.mtg_insight.port.adapter.service.ability.AbilityTokenizer;
+import de.avalax.mtg_insight.port.adapter.service.mtgdb.MtgDBCardService;
 import de.avalax.mtg_insight.port.adapter.service.color.ColorMatcher;
 import de.avalax.mtg_insight.port.adapter.service.manaCost.ManaTokenizer;
 

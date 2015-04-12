@@ -1,4 +1,4 @@
-package de.avalax.mtg_insight.port.adapter.service.card;
+package de.avalax.mtg_insight.port.adapter.service.mtgdb;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -18,6 +18,8 @@ import de.avalax.mtg_insight.domain.model.color.Color;
 import de.avalax.mtg_insight.domain.model.exception.CardNotFoundException;
 import de.avalax.mtg_insight.domain.model.mana.ConvertedManaCost;
 import de.avalax.mtg_insight.domain.model.mana.ManaCost;
+import de.avalax.mtg_insight.port.adapter.service.card.CardCreator;
+import de.avalax.mtg_insight.port.adapter.service.card.CardService;
 import de.avalax.mtg_insight.port.adapter.service.color.ColorMatcher;
 import de.avalax.mtg_insight.port.adapter.service.manaCost.ManaCostToken;
 import de.avalax.mtg_insight.port.adapter.service.manaCost.ManaTokenizer;
@@ -28,10 +30,10 @@ public class MtgDBCardService implements CardService {
     private final String host = "http://api.mtgdb.info/cards/";
     private ManaTokenizer manaTokenizer;
     private ColorMatcher colorMatcher;
-    private AbilityTokenizer abilityTokenizer;
+    private de.avalax.mtg_insight.port.adapter.service.ability.AbilityTokenizer abilityTokenizer;
 
 
-    public MtgDBCardService(ManaTokenizer manaTokenizer, ColorMatcher colorMatcher, AbilityTokenizer abilityTokenizer) {
+    public MtgDBCardService(ManaTokenizer manaTokenizer, ColorMatcher colorMatcher, de.avalax.mtg_insight.port.adapter.service.ability.AbilityTokenizer abilityTokenizer) {
         this.manaTokenizer = manaTokenizer;
         this.colorMatcher = colorMatcher;
         this.abilityTokenizer = abilityTokenizer;

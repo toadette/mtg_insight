@@ -30,34 +30,30 @@ public class GathererHelper {
         this.manaTokenizer = manaTokenizer;
     }
 
+    public Card getCard(String type, String name, String description, List<String> manaRow) {
+        List<Color> colorOfCard = getColorOfCard(manaRow);
+        ConvertedManaCost convertedManaCost = getConvertedManaCost(manaRow);
+        List<Ability> abilities = null;
+        return new CardCreator().createCardFromType(type, name, colorOfCard, convertedManaCost, "0", "0", "0", abilities);
+    }
+
     private List<Ability> getAbilities(String description) {
         return abilityTokenizer.getAbilitiesFromDescription(description);
     }
 
-    private List<Color> getColorOfCard(Element manaRow) {
-        HashMap<String, Integer> colorMap = new HashMap<>();
-        for (int i = 0; i < manaRow.children().size(); i++) {
-            String token = manaRow.children().get(i).attr("alt");
-            if (colorMap.get(token) == null && !token.matches("\\d")) {
-                colorMap.put(token, i);
-            }
-        }
-        return colorMatcher.getColorFromArray(colorMap.keySet().toArray());
+    private List<Color> getColorOfCard(List<String> mana) {
+        return colorMatcher.getColorFromArray(mana.toArray());
     }
 
-    private ConvertedManaCost getConvertedManaCost(Element manaRow) {
+    private ConvertedManaCost getConvertedManaCost(List<String> manaRow) {
         String cmc = new String();
         List<ManaCost> convertedManaCost = new ArrayList<>();
-        for (ManaCostToken token : manaTokenizer.get(cmc)) {
-            convertedManaCost.addAll(token.manaCost());
+        for (String mana : manaRow) {
+            for (ManaCostToken token : manaTokenizer.get(mana)) {
+                convertedManaCost.addAll(token.manaCost());
+            }
+            cmc+=mana;
         }
         return new ConvertedManaCost(cmc, convertedManaCost);
-    }
-
-    public Card getCard(String type, String name, String description, List<String> manaRow) {
-        List<Color> colorOfCard = null;
-        ConvertedManaCost convertedManaCost = null;
-        List<Ability> abilities = null;
-        return new CardCreator().createCardFromType(type, name, colorOfCard, convertedManaCost, "0", "0", "0", abilities);
     }
 }

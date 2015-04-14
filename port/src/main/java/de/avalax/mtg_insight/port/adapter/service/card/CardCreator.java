@@ -31,11 +31,17 @@ public class CardCreator {
             CreatureBody creatureBody = new CreatureBody() {
                 @Override
                 public int power() {
+                    if (power.equals("*")) {
+                        return -1;
+                    }
                     return Integer.valueOf(power);
                 }
 
                 @Override
                 public int toughness() {
+                    if (toughness.equals("*")) {
+                        return -1;
+                    }
                     return Integer.valueOf(toughness);
                 }
             };

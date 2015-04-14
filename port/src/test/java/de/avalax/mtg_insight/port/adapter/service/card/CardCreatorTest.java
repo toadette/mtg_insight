@@ -1,6 +1,5 @@
 package de.avalax.mtg_insight.port.adapter.service.card;
 
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -9,26 +8,22 @@ import java.util.Collections;
 import java.util.List;
 
 import de.avalax.mtg_insight.domain.model.card.Ability;
-import de.avalax.mtg_insight.domain.model.card.Card;
-import de.avalax.mtg_insight.domain.model.card.CreatureBody;
-import de.avalax.mtg_insight.domain.model.card.GenericCard;
 import de.avalax.mtg_insight.domain.model.card.Artifact;
+import de.avalax.mtg_insight.domain.model.card.Card;
 import de.avalax.mtg_insight.domain.model.card.Creature;
+import de.avalax.mtg_insight.domain.model.card.CreatureBody;
 import de.avalax.mtg_insight.domain.model.card.Enchantment;
+import de.avalax.mtg_insight.domain.model.card.GenericCard;
+import de.avalax.mtg_insight.domain.model.card.Instant;
 import de.avalax.mtg_insight.domain.model.card.Land;
 import de.avalax.mtg_insight.domain.model.card.Planeswalker;
-import de.avalax.mtg_insight.domain.model.card.Instant;
 import de.avalax.mtg_insight.domain.model.card.Sorcery;
 import de.avalax.mtg_insight.domain.model.color.Color;
 import de.avalax.mtg_insight.domain.model.mana.ConvertedManaCost;
 import de.avalax.mtg_insight.domain.model.mana.ManaCost;
 
-import static org.hamcrest.Matchers.hasItemInArray;
-import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.isIn;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
 
@@ -65,7 +60,7 @@ public class CardCreatorTest {
     public void setUp() throws Exception {
         cardBuilder = new CardCreator();
         convertedManaCost = new ConvertedManaCost(null, Collections.<ManaCost>emptyList());
-        cardColors = Collections.<Color>emptyList();
+        cardColors = Collections.emptyList();
         abilities = new ArrayList<>();
     }
 
@@ -83,7 +78,15 @@ public class CardCreatorTest {
         abilities.add(Ability.HEXPROOF);
         assertCreature(cardFromType, 3, 2, abilities);
     }
-
+    @Test
+    public void createCardFromTypeCreature_shouldReturnCreatureWithUndefiniedMana() throws Exception {
+        Card cardFromType = cardBuilder.createCardFromType("Creature", "Kartenname", cardColors, convertedManaCost, "*", "*", "0", abilities);
+        assertCard(cardFromType, Creature.class, convertedManaCost, cardColors);
+        Creature creature = (Creature) cardFromType;
+        CreatureBody creatureBody = creature.creatureBody();
+        assertThat(creatureBody.power(), equalTo(-1));
+        assertThat(creatureBody.toughness(), equalTo(-1));
+    }
     @Test
     public void createCardFromTypeLegendaryCreature_shouldReturnCreature() throws Exception {
         Card cardFromType = cardBuilder.createCardFromType("Legendary Creature", "Kartenname", cardColors, convertedManaCost, "0", "3", "0", abilities);

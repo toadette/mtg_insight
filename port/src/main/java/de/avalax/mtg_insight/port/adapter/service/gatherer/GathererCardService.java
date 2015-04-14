@@ -16,7 +16,6 @@ import de.avalax.mtg_insight.port.adapter.service.manaCost.ManaTokenizer;
 
 public class GathererCardService implements CardService {
 
-    public static final String ENCODING = "UTF-8";
     private final String host = "http://gatherer.wizards.com/Pages/Search/Default.aspx?name=";
     private final ManaTokenizer manaTokenizer;
     private final ColorMatcher colorMatcher;
@@ -32,27 +31,42 @@ public class GathererCardService implements CardService {
     @Override
     public Card cardFromCardname(String cardname) throws CardNotFoundException {
         try {
-            Document doc;
-            doc = Jsoup.connect(host + getCardNameForSearch(cardname)).get();
-            String type = doc.body().getElementById(GathererConstants.TYPE).children().get(1).text();
-            String name = doc.body().getElementById(GathererConstants.NAME).children().get(1).text();
-            String description = doc.body().getElementById(GathererConstants.DESCRIPTION_TEXT).children().get(1).toString();
-            String powerToughness = doc.body().getElementById(GathererConstants.POWER_TOUGHNESS).children().get(1).text();
-            Element manaRow = doc.body().getElementById(GathererConstants.MANA).children().get(1);
-            List<String> mana = getManaFromElement(manaRow);
+            Document doc = Jsoup.connect(host + getCardNameForSearch(cardname)).get();
             GathererHelper gathererHelper = new GathererHelper(abilityTokenizer, colorMatcher, manaTokenizer);
-            return gathererHelper.getCard(type, name, description, mana, powerToughness);
+            return gathererHelper.getCard(getType(doc), getName(doc), getDescription(doc), getManaFromElement(getMana(doc)), getPowerToughness(doc));
         } catch (Exception e) {
             throw new CardNotFoundException(new Exception("Card not found"));
         }
     }
 
+    private Element getElementById(Document doc, String id) {
+        return doc.body().getElementById(id).children().get(1);
+    }
+
+    private Element getMana(Document doc) {
+        return getElementById(doc, GathererConstants.MANA);
+    }
+
+    private String getPowerToughness(Document doc) {
+        return getElementById(doc, GathererConstants.POWER_TOUGHNESS).text();
+    }
+
+    private String getDescription(Document doc) {
+        return getElementById(doc, GathererConstants.DESCRIPTION_TEXT).toString();
+    }
+
+    private String getName(Document doc) {
+        return getElementById(doc, GathererConstants.NAME).text();
+    }
+
+    private String getType(Document doc) {
+        return getElementById(doc, GathererConstants.TYPE).text();
+    }
+
     private List<String> getManaFromElement(Element manaRow) {
         List<String> manaList = new ArrayList<>();
         for (int i = 0; i < manaRow.children().size(); i++) {
-            String alt = manaRow.children().get(i).attr("alt");
-            manaList.add(alt);
-            System.out.println(alt);
+            manaList.add(manaRow.children().get(i).attr("alt"));
         }
         return manaList;
     }

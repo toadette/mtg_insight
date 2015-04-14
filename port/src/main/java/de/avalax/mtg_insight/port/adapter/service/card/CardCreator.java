@@ -7,6 +7,7 @@ import java.util.List;
 
 import de.avalax.mtg_insight.domain.model.card.Ability;
 import de.avalax.mtg_insight.domain.model.card.Card;
+import de.avalax.mtg_insight.domain.model.card.CardBuilder;
 import de.avalax.mtg_insight.domain.model.card.LoyaltyPoints;
 import de.avalax.mtg_insight.domain.model.card.CreatureBody;
 import de.avalax.mtg_insight.domain.model.color.Color;
@@ -23,7 +24,7 @@ public class CardCreator {
 
 
     public Card createCardFromType(String type, String name, List<Color> cardColors, ConvertedManaCost convertedManaCost, final String power, final String toughness, final String loyalty, List<Ability> abilities) {
-        de.avalax.mtg_insight.domain.model.card.CardBuilder cardBuilder = new de.avalax.mtg_insight.domain.model.card.CardBuilder(name);
+        CardBuilder cardBuilder = new CardBuilder(name);
         cardBuilder.convertedManaCost(convertedManaCost);
         cardBuilder.cardColors(cardColors);
         if (isCardFromType(type, CARD_TYPE_CREATURE)) {
@@ -32,12 +33,13 @@ public class CardCreator {
                 public int power() {
                     return Integer.valueOf(power);
                 }
+
                 @Override
                 public int toughness() {
                     return Integer.valueOf(toughness);
                 }
             };
-            return cardBuilder.creatureCard(creatureBody,abilities).build();
+            return cardBuilder.creatureCard(creatureBody, abilities).build();
         }
         if (isCardFromType(type, CARD_TYPE_ARTIFACT)) {
             return cardBuilder.artifactCard().build();

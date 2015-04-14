@@ -1,6 +1,7 @@
 package de.avalax.mtg_insight.port.adapter.service.gatherer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import de.avalax.mtg_insight.domain.model.card.Ability;
@@ -35,7 +36,7 @@ public class GathererHelper {
         String power = getPowerFromString(powerToughness);
         String toughness = getToughnessFromString(powerToughness);
         List<Ability> abilities = null;
-        return new CardCreator().createCardFromType(type, name, colorOfCard, convertedManaCost, power, toughness, "0", abilities);
+        return new CardCreator().createCardFromType(type, name, colorOfCard, convertedManaCost, power, toughness, powerToughness, abilities);
     }
 
     private String getToughnessFromString(String powerToughness) {
@@ -57,19 +58,26 @@ public class GathererHelper {
 
     private Object[] getColorArray(List<String> mana) {
         List<String> colorList = new ArrayList<>();
+        HashMap<String, String> colorMap = new HashMap<>();
         for (int i = 0; i < mana.size(); i++) {
             String manaStr = mana.get(i);
             if (manaStr.matches(".*or.*")) {
                 int index = manaStr.indexOf("or");
                 String mana1 = manaStr.substring(0, index - 1).trim();
                 String mana2 = manaStr.substring(index + 2, manaStr.length()).trim();
-                colorList.add(mana1);
-                colorList.add(mana2);
+                if (colorMap.get(mana1) == null) {
+                    colorMap.put(mana1, mana1);
+                }
+                if (colorMap.get(mana2) == null) {
+                    colorMap.put(mana2, mana2);
+                }
             } else {
-                colorList.add(manaStr);
+                if (colorMap.get(manaStr) == null) {
+                    colorMap.put(manaStr, manaStr);
+                }
             }
         }
-        return colorList.toArray();
+        return colorMap.keySet().toArray();
     }
 
     private ConvertedManaCost getConvertedManaCost(List<String> manaRow) {

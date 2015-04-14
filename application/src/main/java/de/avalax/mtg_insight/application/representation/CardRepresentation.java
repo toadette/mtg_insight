@@ -5,6 +5,7 @@ import de.avalax.mtg_insight.domain.model.card.Creature;
 import de.avalax.mtg_insight.domain.model.card.CreatureBody;
 
 public class CardRepresentation {
+    private static final String STAR_PT = "*";
     private Card card;
     private int count;
 
@@ -60,11 +61,21 @@ public class CardRepresentation {
     }
 
     public String power() {
-        return isCreature() ? String.valueOf(creatureBody().power()) : null;
+        if (!isCreature()) {
+            return null;
+        }
+        return bodyAttributeStringFrom(creatureBody().power());
     }
 
     public String toughness() {
-        return isCreature() ? String.valueOf(creatureBody().toughness()) : null;
+        if (!isCreature()) {
+            return null;
+        }
+        return bodyAttributeStringFrom(creatureBody().toughness());
+    }
+
+    private String bodyAttributeStringFrom(int power) {
+        return power == -1 ? STAR_PT : String.valueOf(power);
     }
 
     private CreatureBody creatureBody() {

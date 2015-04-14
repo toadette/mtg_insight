@@ -186,6 +186,48 @@ public class CardRepresentationTest {
             String creatureBodyFromRepresentation = cardRepresentation.toughness();
             assertThat(creatureBodyFromRepresentation, equalTo(String.valueOf(CREATURE_TOUGHNESS)));
         }
+    }
 
+    public class creatureRepresentationWithStarPowerToughness {
+        public static final int CREATURE_POWER = -1;
+        public static final int CREATURE_TOUGHNESS = -1;
+        private CardBuilder cardBuilder;
+        private CreatureBody creatureBody;
+
+        @Before
+        public void setUp() throws Exception {
+            cardBuilder = new CardBuilder("creature");
+            creatureBody = new CreatureBody() {
+                @Override
+                public int power() {
+                    return CREATURE_POWER;
+                }
+
+                @Override
+                public int toughness() {
+                    return CREATURE_TOUGHNESS;
+                }
+            };
+            Card creature = cardBuilder.creatureCard(creatureBody, null).build();
+            cardRepresentation = new CardRepresentation(creature);
+        }
+
+        @Test
+        public void creatureRepresentation_shouldBeACreature() throws Exception {
+            boolean isCreature = cardRepresentation.isCreature();
+            assertThat(isCreature, equalTo(Boolean.TRUE));
+        }
+
+        @Test
+        public void creatureRepresentation_shouldReturnCreatureStarPower() throws Exception {
+            String creatureBodyFromRepresentation = cardRepresentation.power();
+            assertThat(creatureBodyFromRepresentation, equalTo("*"));
+        }
+
+        @Test
+        public void creatureRepresentation_shouldReturnCreatureStartToughness() throws Exception {
+            String creatureBodyFromRepresentation = cardRepresentation.toughness();
+            assertThat(creatureBodyFromRepresentation, equalTo("*"));
+        }
     }
 }

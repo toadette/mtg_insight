@@ -5,20 +5,13 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-import de.avalax.mtg_insight.domain.model.card.Ability;
 import de.avalax.mtg_insight.domain.model.card.Card;
-import de.avalax.mtg_insight.domain.model.color.Color;
 import de.avalax.mtg_insight.domain.model.exception.CardNotFoundException;
-import de.avalax.mtg_insight.domain.model.mana.ConvertedManaCost;
-import de.avalax.mtg_insight.domain.model.mana.ManaCost;
 import de.avalax.mtg_insight.port.adapter.service.ability.AbilityTokenizer;
-import de.avalax.mtg_insight.port.adapter.service.card.CardCreator;
 import de.avalax.mtg_insight.port.adapter.service.card.CardService;
 import de.avalax.mtg_insight.port.adapter.service.color.ColorMatcher;
-import de.avalax.mtg_insight.port.adapter.service.manaCost.ManaCostToken;
 import de.avalax.mtg_insight.port.adapter.service.manaCost.ManaTokenizer;
 
 public class GathererCardService implements CardService {
@@ -44,17 +37,18 @@ public class GathererCardService implements CardService {
             String type = doc.body().getElementById(GathererConstants.TYPE).children().get(1).text();
             String name = doc.body().getElementById(GathererConstants.NAME).children().get(1).text();
             String description = doc.body().getElementById(GathererConstants.DESCRIPTION_TEXT).children().get(1).toString();
+            String powerToughness = doc.body().getElementById(GathererConstants.POWER_TOUGHNESS).children().get(1).text();
             Element manaRow = doc.body().getElementById(GathererConstants.MANA).children().get(1);
             List<String> mana = getManaFromElement(manaRow);
             GathererHelper gathererHelper = new GathererHelper(abilityTokenizer, colorMatcher, manaTokenizer);
-            return gathererHelper.getCard(type, name, description, mana);
+            return gathererHelper.getCard(type, name, description, mana, powerToughness);
         } catch (Exception e) {
             throw new CardNotFoundException(new Exception("Card not found"));
         }
     }
 
     private List<String> getManaFromElement(Element manaRow) {
-        List<String> manaList=new ArrayList<>();
+        List<String> manaList = new ArrayList<>();
         for (int i = 0; i < manaRow.children().size(); i++) {
             String alt = manaRow.children().get(i).attr("alt");
             manaList.add(alt);

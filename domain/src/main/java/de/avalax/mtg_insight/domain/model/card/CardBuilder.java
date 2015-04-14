@@ -24,7 +24,7 @@ public class CardBuilder {
     public Card build() {
         GenericCard card;
         if (cardType.equals(Creature.class)) {
-            card = new Creature(cardName, creatureBody,abilities);
+            card = new Creature(cardName, creatureBody, abilities);
         } else if (cardType.equals(Artifact.class)) {
             card = new Artifact(cardName);
         } else if (cardType.equals(Land.class)) {
@@ -32,7 +32,7 @@ public class CardBuilder {
         } else if (cardType.equals(Enchantment.class)) {
             card = new Enchantment(cardName);
         } else if (cardType.equals(Planeswalker.class)) {
-            card = new Planeswalker(cardName,loyaltyPoints);
+            card = new Planeswalker(cardName, loyaltyPoints);
         } else if (cardType.equals(Instant.class)) {
             card = new Instant(cardName);
         } else if (cardType.equals(Sorcery.class)) {
@@ -47,7 +47,7 @@ public class CardBuilder {
     }
 
     public CardBuilder cardColors(List<Color> colors) {
-        this.colors = colors;
+        this.colors = colors != null ? colors : Collections.<Color>emptyList();
         return this;
     }
 

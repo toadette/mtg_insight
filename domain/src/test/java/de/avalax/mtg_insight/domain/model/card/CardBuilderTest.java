@@ -3,7 +3,6 @@ package de.avalax.mtg_insight.domain.model.card;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -31,6 +30,17 @@ public class CardBuilderTest {
 
         assertThat(card).isInstanceOf(GenericCard.class);
         assertThat(card.name()).isEqualTo(newcardname);
+        assertThat(card.colorOfCard()).isEmpty();
+    }
+
+    @Test
+    public void nullInstanceForColor_shouldBuildGenericCardWithEmptyCardColors() throws Exception {
+        CardBuilder sameCardBuilder = cardBuilder.cardColors(null);
+
+        Card card = cardBuilder.build();
+
+        assertThat(sameCardBuilder).isEqualTo(cardBuilder);
+        assertThat(card).isInstanceOf(GenericCard.class);
         assertThat(card.colorOfCard()).isEmpty();
     }
 

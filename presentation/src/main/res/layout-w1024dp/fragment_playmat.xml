@@ -1,0 +1,7 @@
+<de.avalax.mtg_insight.presentation.ScalableStaggeredGridView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardStage"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:column_count="4"
+    app:item_margin="4dp" />

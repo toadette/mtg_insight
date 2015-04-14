@@ -9,12 +9,12 @@ import android.view.Menu;
 
 import de.avalax.mtg_insight.R;
 
-public class CardStageActivity extends ActionBarActivity {
+public class DeckInsightActivity extends ActionBarActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_card_stage);
+        setContentView(R.layout.activity_deck_insight);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.card_stage_toolbar);
         setSupportActionBar(toolbar);
@@ -32,7 +32,7 @@ public class CardStageActivity extends ActionBarActivity {
         Bundle extras = getIntent().getExtras();
         if (savedInstanceState == null && extras != null && extras.getBoolean("CARD_DEMO")) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, new CardDemoFragment()).commit();
+                    .replace(R.id.fragment_container, new PlaymatFragment()).commit();
         }
     }
 

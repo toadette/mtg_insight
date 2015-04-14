@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".presentation.card.CardStageActivity"
+            android:name=".presentation.card.DeckInsightActivity"
             android:label="@string/title_activity_card_demo" />
     </application>
 

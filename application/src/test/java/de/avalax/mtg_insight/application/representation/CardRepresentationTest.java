@@ -154,17 +154,7 @@ public class CardRepresentationTest {
         @Before
         public void setUp() throws Exception {
             cardBuilder = new CardBuilder("creature");
-            creatureBody = new CreatureBody() {
-                @Override
-                public int power() {
-                    return CREATURE_POWER;
-                }
-
-                @Override
-                public int toughness() {
-                    return CREATURE_TOUGHNESS;
-                }
-            };
+            creatureBody = new CreatureBody(CREATURE_POWER, CREATURE_TOUGHNESS);
             Card creature = cardBuilder.creatureCard(creatureBody, null).build();
             cardRepresentation = new CardRepresentation(creature);
         }
@@ -197,17 +187,7 @@ public class CardRepresentationTest {
         @Before
         public void setUp() throws Exception {
             cardBuilder = new CardBuilder("creature");
-            creatureBody = new CreatureBody() {
-                @Override
-                public int power() {
-                    return CREATURE_POWER;
-                }
-
-                @Override
-                public int toughness() {
-                    return CREATURE_TOUGHNESS;
-                }
-            };
+            creatureBody = new CreatureBody(CREATURE_POWER, CREATURE_TOUGHNESS);
             Card creature = cardBuilder.creatureCard(creatureBody, null).build();
             cardRepresentation = new CardRepresentation(creature);
         }

@@ -26,23 +26,7 @@ public class CardCreator {
         cardBuilder.convertedManaCost(convertedManaCost);
         cardBuilder.cardColors(cardColors);
         if (isCardFromType(type, CARD_TYPE_CREATURE)) {
-            CreatureBody creatureBody = new CreatureBody() {
-                @Override
-                public int power() {
-                    if (power.equals("*")) {
-                        return -1;
-                    }
-                    return Integer.valueOf(power);
-                }
-
-                @Override
-                public int toughness() {
-                    if (toughness.equals("*")) {
-                        return -1;
-                    }
-                    return Integer.valueOf(toughness);
-                }
-            };
+            CreatureBody creatureBody = new CreatureBody(power.equals("*") ? -1 : Integer.valueOf(power), toughness.equals("*") ? -1 : Integer.valueOf(toughness));
             return cardBuilder.creatureCard(creatureBody, abilities).build();
         }
         if (isCardFromType(type, CARD_TYPE_ARTIFACT)) {

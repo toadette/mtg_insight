@@ -9,13 +9,13 @@ import java.util.List;
 
 import de.avalax.mtg_insight.domain.model.card.Card;
 import de.avalax.mtg_insight.domain.model.card.CardBuilder;
+import de.avalax.mtg_insight.domain.model.card.CardService;
 import de.avalax.mtg_insight.domain.model.deck.Deck;
 import de.avalax.mtg_insight.domain.model.deck.DeckService;
 import de.avalax.mtg_insight.domain.model.deck.Deckname;
 import de.avalax.mtg_insight.domain.model.deck.StandardDeck;
 import de.avalax.mtg_insight.domain.model.exception.CardNotFoundException;
 import de.avalax.mtg_insight.domain.model.exception.DeckNotFoundException;
-import de.avalax.mtg_insight.domain.model.card.CardService;
 
 public class TappedOutDeckService implements DeckService {
 
@@ -23,7 +23,7 @@ public class TappedOutDeckService implements DeckService {
     private List<Deckname> decknames;
     private final String host = "http://tappedout.net/mtg-decks/";
     private final String format = "/?fmt=txt";
-    private final String format_printable="?fmt=markdown";
+    private final String format_printable = "?fmt=markdown";
     private CardService cardService;
 
     public TappedOutDeckService(CardService cardService) {
@@ -45,7 +45,7 @@ public class TappedOutDeckService implements DeckService {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (line.length() > 0) {
-                    name= line.substring(line.indexOf("[")+1, line.lastIndexOf("]"));
+                    name = line.substring(line.indexOf("[") + 1, line.lastIndexOf("]"));
                     break;
                 }
             }
@@ -83,18 +83,20 @@ public class TappedOutDeckService implements DeckService {
         int count = Integer.valueOf(split[0]);
         String name = split[1];
 
-        for (int i = 0; i < count; i++) {
-            if (cardService == null) {
+        if (cardService == null) {
+            for (int i = 0; i < count; i++) {
                 cardOfDeck.add(new CardBuilder(name).build());
-                continue;
             }
+        } else {
             Card card;
             try {
                 card = cardService.cardFromCardname(name);
             } catch (CardNotFoundException ignored) {
                 card = new CardBuilder(name).build();
             }
-            cardOfDeck.add(card);
+            for (int i = 0; i < count; i++) {
+                cardOfDeck.add(card);
+            }
         }
     }
 

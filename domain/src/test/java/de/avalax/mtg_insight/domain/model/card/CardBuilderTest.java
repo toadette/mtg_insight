@@ -70,25 +70,15 @@ public class CardBuilderTest {
 
     @Test
     public void creatureGiven_shouldBuildCreatureCard() throws Exception {
-        CreatureBody creatureBody = new CreatureBody() {
-            @Override
-            public int power() {
-                return 9;
-            }
-
-            @Override
-            public int toughness() {
-                return 3;
-            }
-        };
-        List<Ability>abilities= Arrays.asList(Ability.DOUBLE_STRIKE,Ability.DEATHTOUCH);
+        CreatureBody creatureBody = new CreatureBody(9, 3);
+        List<Ability> abilities = Arrays.asList(Ability.DOUBLE_STRIKE, Ability.DEATHTOUCH);
         CardBuilder sameCardBuilder = cardBuilder.creatureCard(creatureBody, abilities);
 
         Card card = cardBuilder.build();
 
         assertThat(sameCardBuilder).isEqualTo(cardBuilder);
         assertThat(card).isInstanceOf(Creature.class);
-        Creature creatureCard=(Creature)card;
+        Creature creatureCard = (Creature) card;
         assertThat(creatureCard.creatureBody().power()).isEqualTo(9);
         assertThat(creatureCard.creatureBody().toughness()).isEqualTo(3);
         assertThat(creatureCard.abilities()).hasSize(2);
@@ -140,7 +130,7 @@ public class CardBuilderTest {
 
         assertThat(sameCardBuilder).isEqualTo(cardBuilder);
         assertThat(card).isInstanceOf(Planeswalker.class);
-        Planeswalker planeswalkerCard=(Planeswalker)card;
+        Planeswalker planeswalkerCard = (Planeswalker) card;
         assertThat(planeswalkerCard.loyaltyPoints().loyaltyPoints()).isEqualTo(4);
     }
 

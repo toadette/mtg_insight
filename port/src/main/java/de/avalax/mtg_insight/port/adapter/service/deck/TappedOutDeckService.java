@@ -15,7 +15,7 @@ import de.avalax.mtg_insight.domain.model.deck.Deckname;
 import de.avalax.mtg_insight.domain.model.deck.StandardDeck;
 import de.avalax.mtg_insight.domain.model.exception.CardNotFoundException;
 import de.avalax.mtg_insight.domain.model.exception.DeckNotFoundException;
-import de.avalax.mtg_insight.port.adapter.service.card.CardService;
+import de.avalax.mtg_insight.domain.model.card.CardService;
 
 public class TappedOutDeckService implements DeckService {
 
@@ -82,7 +82,12 @@ public class TappedOutDeckService implements DeckService {
         String[] split = line.split("\\t");
         int count = Integer.valueOf(split[0]);
         String name = split[1];
+
         for (int i = 0; i < count; i++) {
+            if (cardService == null) {
+                cardOfDeck.add(new CardBuilder(name).build());
+                continue;
+            }
             Card card;
             try {
                 card = cardService.cardFromCardname(name);

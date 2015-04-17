@@ -10,7 +10,7 @@ import de.avalax.mtg_insight.application.launcher.LauncherApplicationService;
 import de.avalax.mtg_insight.domain.model.deck.DeckService;
 import de.avalax.mtg_insight.port.adapter.service.ability.AbilityTokenizer;
 import de.avalax.mtg_insight.port.adapter.service.gatherer.GathererCardService;
-import de.avalax.mtg_insight.port.adapter.service.card.CardService;
+import de.avalax.mtg_insight.domain.model.card.CardService;
 import de.avalax.mtg_insight.port.adapter.service.color.ColorMatcher;
 import de.avalax.mtg_insight.port.adapter.service.deck.TappedOutDeckService;
 import de.avalax.mtg_insight.port.adapter.service.manaCost.ManaTokenizer;
@@ -48,7 +48,7 @@ public class MtgInsightModule {
     @Provides
     @Singleton
     DeckService provideDeckService(CardService cardService) {
-        return new TappedOutDeckService(cardService);
+        return new TappedOutDeckService(null);
     }
 
     @Provides

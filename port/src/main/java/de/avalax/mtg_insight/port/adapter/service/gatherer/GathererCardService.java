@@ -10,7 +10,7 @@ import java.util.List;
 import de.avalax.mtg_insight.domain.model.card.Card;
 import de.avalax.mtg_insight.domain.model.exception.CardNotFoundException;
 import de.avalax.mtg_insight.port.adapter.service.ability.AbilityTokenizer;
-import de.avalax.mtg_insight.port.adapter.service.card.CardService;
+import de.avalax.mtg_insight.domain.model.card.CardService;
 import de.avalax.mtg_insight.port.adapter.service.color.ColorMatcher;
 import de.avalax.mtg_insight.port.adapter.service.manaCost.ManaTokenizer;
 

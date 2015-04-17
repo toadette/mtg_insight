@@ -19,7 +19,7 @@ import de.avalax.mtg_insight.domain.model.exception.CardNotFoundException;
 import de.avalax.mtg_insight.domain.model.mana.ConvertedManaCost;
 import de.avalax.mtg_insight.domain.model.mana.ManaCost;
 import de.avalax.mtg_insight.port.adapter.service.card.CardCreator;
-import de.avalax.mtg_insight.port.adapter.service.card.CardService;
+import de.avalax.mtg_insight.domain.model.card.CardService;
 import de.avalax.mtg_insight.port.adapter.service.color.ColorMatcher;
 import de.avalax.mtg_insight.port.adapter.service.manaCost.ManaCostToken;
 import de.avalax.mtg_insight.port.adapter.service.manaCost.ManaTokenizer;

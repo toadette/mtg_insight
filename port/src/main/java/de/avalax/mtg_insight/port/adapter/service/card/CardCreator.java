@@ -1,15 +1,13 @@
 package de.avalax.mtg_insight.port.adapter.service.card;
 
 
-import org.json.simple.JSONObject;
-
 import java.util.List;
 
 import de.avalax.mtg_insight.domain.model.card.Ability;
 import de.avalax.mtg_insight.domain.model.card.Card;
 import de.avalax.mtg_insight.domain.model.card.CardBuilder;
-import de.avalax.mtg_insight.domain.model.card.LoyaltyPoints;
 import de.avalax.mtg_insight.domain.model.card.CreatureBody;
+import de.avalax.mtg_insight.domain.model.card.LoyaltyPoints;
 import de.avalax.mtg_insight.domain.model.color.Color;
 import de.avalax.mtg_insight.domain.model.mana.ConvertedManaCost;
 

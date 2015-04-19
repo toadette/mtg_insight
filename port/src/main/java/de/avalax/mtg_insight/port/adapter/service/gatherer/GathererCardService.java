@@ -5,6 +5,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import de.avalax.mtg_insight.domain.model.card.Card;
@@ -36,14 +37,17 @@ public class GathererCardService implements CardService {
             GathererHelper gathererHelper = new GathererHelper(abilityTokenizer, colorMatcher, manaTokenizer);
             return gathererHelper.getCard(getType(doc), getName(doc), getDescription(doc), getManaFromElement(getMana(doc)), getPowerToughness(doc));
         } catch (CardCorruptedException e) {
-            throw new CardCorruptedException(new Exception("Card was corrupted"));
+            throw new CardCorruptedException(e);
         } catch (Exception e) {
-            throw new CardNotFoundException(new Exception("Card not found"));
+            throw new CardNotFoundException(e);
         }
     }
 
     private Element getElementById(Document doc, String id) {
-        return doc.body().getElementById(id).children().get(1);
+        if (doc.body().getElementById(id) != null && doc.body().getElementById(id).children() != null && doc.body().getElementById(id).children().size() > 0) {
+            return doc.body().getElementById(id).children().get(1);
+        }
+        return null;
     }
 
     private Element getMana(Document doc) {
@@ -51,11 +55,19 @@ public class GathererCardService implements CardService {
     }
 
     private String getPowerToughness(Document doc) {
-        return getElementById(doc, GathererConstants.POWER_TOUGHNESS).text();
+        Element elementById = getElementById(doc, GathererConstants.POWER_TOUGHNESS);
+        if (elementById != null) {
+            return elementById.text();
+        }
+        return "";
     }
 
     private String getDescription(Document doc) {
-        return getElementById(doc, GathererConstants.DESCRIPTION_TEXT).toString();
+        Element elementById = getElementById(doc, GathererConstants.DESCRIPTION_TEXT);
+        if (elementById != null) {
+            return elementById.toString();
+        }
+        return "";
     }
 
     private String getName(Document doc) {
@@ -67,11 +79,14 @@ public class GathererCardService implements CardService {
     }
 
     private List<String> getManaFromElement(Element manaRow) {
-        List<String> manaList = new ArrayList<>();
-        for (int i = 0; i < manaRow.children().size(); i++) {
-            manaList.add(manaRow.children().get(i).attr("alt"));
+        if (manaRow != null) {
+            List<String> manaList = new ArrayList<>();
+            for (int i = 0; i < manaRow.children().size(); i++) {
+                manaList.add(manaRow.children().get(i).attr("alt"));
+            }
+            return manaList;
         }
-        return manaList;
+        return Collections.emptyList();
     }
 
     private String getCardNameForSearch(String cardname) {

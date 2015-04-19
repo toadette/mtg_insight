@@ -8,6 +8,4 @@ public interface DeckService {
     Deck deckFromDeckname(Deckname deck, JobProgressListener listener) throws DeckNotFoundException;
     //TODO: remove decknames
     List<Deckname> decknames();
-    double getCurrentLoadingCount();
-    double countOfCards();
 }

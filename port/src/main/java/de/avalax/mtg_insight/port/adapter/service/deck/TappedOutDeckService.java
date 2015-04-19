@@ -28,8 +28,7 @@ public class TappedOutDeckService implements DeckService {
     private final String format = "/?fmt=txt";
     private final String format_printable = "?fmt=markdown";
     private CardService cardService;
-    private int currentCard = 0;
-    private int decksize = 0;
+
 
 
     public TappedOutDeckService(CardService cardService) {
@@ -37,12 +36,12 @@ public class TappedOutDeckService implements DeckService {
         decknames = new ArrayList<>();
     }
 
-    private Deck readFromTextFile(String name, JobProgressListener listener) throws DeckNotFoundException {
+    private Deck readFromTextFile(String name, JobProgressListener listener, int currentCard) throws DeckNotFoundException {
         decknames.add(new Deckname(name));
         List<Card> deck = new ArrayList<>();
         List<Card> sideboard = new ArrayList<>();
         String deckname = readPrintableDeckname(name);
-        readCardsFromDeck(name, deck, sideboard, listener);
+        readCardsFromDeck(name, deck, sideboard, listener, currentCard);
         return new StandardDeck(new Deckname(deckname), deck, sideboard);
     }
 
@@ -56,17 +55,18 @@ public class TappedOutDeckService implements DeckService {
                 if (line.length() > 0) {
                     if (cnt == 0) {
                         name = line.substring(line.indexOf("[") + 1, line.lastIndexOf("]"));
+                        break;
                     }
-                    if (line.startsWith("##")) {
-                        String board = line.substring(line.indexOf("##") + 3, line.length());
-                        if (board.startsWith("Mainboard")) {
-                            mainboardsize = line.substring(line.indexOf("(") + 1, line.length() - 1);
-                        }
-                        if (board.startsWith("Sideboard")) {
-                            sideboardsize = line.substring(line.indexOf("(") + 1, line.length() - 1);
-                            break;
-                        }
-                    }
+//                    if (line.startsWith("##")) {
+//                        String board = line.substring(line.indexOf("##") + 3, line.length());
+//                        if (board.startsWith("Mainboard")) {
+//                            mainboardsize = line.substring(line.indexOf("(") + 1, line.length() - 1);
+//                        }
+//                        if (board.startsWith("Sideboard")) {
+//                            sideboardsize = line.substring(line.indexOf("(") + 1, line.length() - 1);
+//                            break;
+//                        }
+//                    }
                     ++cnt;
 
                 }
@@ -74,18 +74,18 @@ public class TappedOutDeckService implements DeckService {
         } catch (IOException e) {
             throw new DeckNotFoundException(e);
         }
-        if (mainboardsize != null && mainboardsize.matches(".\\d")) {
-            int mainBoardSize = Integer.valueOf(mainboardsize);
-            int sideBoardSize = 0;
-            if (sideboardsize != null && sideboardsize.matches(".\\d")) {
-                sideBoardSize = Integer.valueOf(sideBoardSize);
-            }
-            decksize = mainBoardSize + sideBoardSize;
-        }
+//        if (mainboardsize != null && mainboardsize.matches(".\\d")) {
+//            int mainBoardSize = Integer.valueOf(mainboardsize);
+//            int sideBoardSize = 0;
+//            if (sideboardsize != null && sideboardsize.matches(".\\d")) {
+//                sideBoardSize = Integer.valueOf(sideBoardSize);
+//            }
+//            decksize = mainBoardSize + sideBoardSize;
+//        }
         return name;
     }
 
-    private void readCardsFromDeck(String name, List<Card> deck, List<Card> sideboard, JobProgressListener listener) throws DeckNotFoundException {
+    private void readCardsFromDeck(String name, List<Card> deck, List<Card> sideboard, JobProgressListener listener, int currentCard) throws DeckNotFoundException {
 
         boolean readSideBoard = false;
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(new URL(host + name + format).openStream()))) {
@@ -97,20 +97,20 @@ public class TappedOutDeckService implements DeckService {
                         continue;
                     }
                     if (readSideBoard) {
-                        addCardFromLine(line, sideboard);
+                        currentCard=addCardFromLine(line, sideboard, currentCard);
                     } else {
-                        addCardFromLine(line, deck);
+                        currentCard=addCardFromLine(line, deck, currentCard);
                     }
-                    ++currentCard;
                 }
-                listener.publishProgress((currentCard / decksize) * 100);
+                //TODO:
+                listener.publishProgress(currentCard);
             }
         } catch (IOException e) {
             throw new DeckNotFoundException(e);
         }
     }
 
-    private void addCardFromLine(String line, List<Card> cardOfDeck) {
+    private int addCardFromLine(String line, List<Card> cardOfDeck, int currentCard) {
         String[] split = getCardInformationArray(line);
         int count = getCardCount(split);
         String name = getCardName(split);
@@ -130,6 +130,8 @@ public class TappedOutDeckService implements DeckService {
             }
             addCardsToDeck(cardOfDeck, count, name, card);
         }
+        currentCard += count;
+        return currentCard;
     }
 
     private String getCardName(String[] split) {
@@ -152,7 +154,8 @@ public class TappedOutDeckService implements DeckService {
 
     @Override
     public Deck deckFromDeckname(Deckname deckname, JobProgressListener listener) throws DeckNotFoundException {
-        return readFromTextFile(deckname.getName(), listener);
+        int currentCard=0;
+        return readFromTextFile(deckname.getName(), listener,currentCard);
     }
 
     @Override
@@ -160,15 +163,6 @@ public class TappedOutDeckService implements DeckService {
         return decknames;
     }
 
-    @Override
-    public double getCurrentLoadingCount() {
-        return currentCard;
-    }
-
-    @Override
-    public double countOfCards() {
-        return decksize;
-    }
 
 
 }

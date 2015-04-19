@@ -41,6 +41,7 @@ public class CachedCardServiceTest {
 
     @Test(expected = CardNotFoundException.class)
     public void unknownCard_shouldReturnNullFromService() throws Exception {
+        when(cacheStrategy.get(UNKNOWN_CARD)).thenThrow(new CardNotFoundException());
         when(realCardService.cardFromCardname(UNKNOWN_CARD)).thenThrow(new CardNotFoundException());
 
         cardService.cardFromCardname(UNKNOWN_CARD);
@@ -57,10 +58,12 @@ public class CachedCardServiceTest {
 
         @Test
         public void unknownCardInCache_shouldBeReturnAndAddedToTheCache() throws Exception {
+            when(cacheStrategy.get(CARDNAME)).thenThrow(new CardNotFoundException());
+
             Card cardFromCardname = cardService.cardFromCardname(CARDNAME);
 
             assertThat(cardFromCardname).isEqualTo(card);
-            verify(cacheStrategy).put(CARDNAME, CachedCardServiceTest.this.card);
+            verify(cacheStrategy).put(card);
         }
 
         @Test

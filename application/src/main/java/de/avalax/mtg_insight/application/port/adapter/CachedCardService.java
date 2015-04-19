@@ -18,10 +18,12 @@ public class CachedCardService implements CardService {
         if (cardname == null || cardname.isEmpty()) {
             throw new CardNotFoundException();
         }
-        Card card = cacheStrategy.get(cardname);
-        if (card == null) {
+        Card card;
+        try {
+            card = cacheStrategy.get(cardname);
+        } catch (CardNotFoundException ignored) {
             card = cardService.cardFromCardname(cardname);
-            cacheStrategy.put(cardname, card);
+            cacheStrategy.put(card);
         }
         return card;
     }

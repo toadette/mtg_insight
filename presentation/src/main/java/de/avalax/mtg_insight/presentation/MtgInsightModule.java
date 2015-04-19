@@ -1,15 +1,17 @@
 package de.avalax.mtg_insight.presentation;
 
 import android.content.Context;
-import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteOpenHelper;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import de.avalax.mtg_insight.R;
 import de.avalax.mtg_insight.application.launcher.LauncherApplicationService;
 import de.avalax.mtg_insight.application.port.adapter.CacheStrategy;
 import de.avalax.mtg_insight.application.port.adapter.CachedCardService;
+import de.avalax.mtg_insight.domain.model.card.CardRepository;
 import de.avalax.mtg_insight.domain.model.deck.DeckService;
 import de.avalax.mtg_insight.port.adapter.service.ability.AbilityTokenizer;
 import de.avalax.mtg_insight.port.adapter.service.gatherer.GathererCardService;
@@ -21,7 +23,9 @@ import de.avalax.mtg_insight.presentation.card.PlaymatFragment;
 import de.avalax.mtg_insight.presentation.card.CardHeaderView;
 import de.avalax.mtg_insight.presentation.card.CardRepresentationToDrawable;
 import de.avalax.mtg_insight.presentation.card.CardView;
-import de.avalax.mtg_insight.presentation.persistence.SharedPreferencesCacheStrategy;
+import de.avalax.mtg_insight.presentation.persistence.MtgInsightSQLiteOpenHelper;
+import de.avalax.mtg_insight.presentation.persistence.SQLiteCardRepository;
+import de.avalax.mtg_insight.presentation.persistence.AndroidCacheStrategy;
 import de.avalax.mtg_insight.presentation.launcher.LauncherFragment;
 
 @Module(injects = {
@@ -64,8 +68,19 @@ public class MtgInsightModule {
 
     @Provides
     @Singleton
-    CacheStrategy provideCacheStrategy() {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("mtg_insight.cards", Context.MODE_PRIVATE);
-        return new SharedPreferencesCacheStrategy(sharedPreferences);
+    CacheStrategy provideCacheStrategy(CardRepository cardRepository) {
+        return new AndroidCacheStrategy(cardRepository);
+    }
+
+    @Provides
+    @Singleton
+    SQLiteOpenHelper provideSQLiteOpenHelper() {
+        return new MtgInsightSQLiteOpenHelper("mtg_insight", 1, context, R.raw.mtg_insight_db);
+    }
+
+    @Provides
+    @Singleton
+    CardRepository provideCardRepository(SQLiteOpenHelper sqLiteOpenHelper) {
+        return new SQLiteCardRepository(sqLiteOpenHelper);
     }
 }

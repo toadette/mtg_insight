@@ -81,14 +81,12 @@ public class TappedOutDeckService implements DeckService {
     }
 
     private void addCardFromLine(String line, List<Card> cardOfDeck) {
-        String[] split = line.split("\\t");
-        int count = Integer.valueOf(split[0]);
-        String name = split[1];
+        String[] split = getCardInformationArray(line);
+        int count = getCardCount(split);
+        String name = getCardName(split);
 
         if (cardService == null) {
-            for (int i = 0; i < count; i++) {
-                cardOfDeck.add(new CardBuilder(name).build());
-            }
+            addCardsToDeck(cardOfDeck, count, name, new CardBuilder(name).build());
         } else {
             Card card;
             try {
@@ -96,9 +94,25 @@ public class TappedOutDeckService implements DeckService {
             } catch (CardNotFoundException ignored) {
                 card = new CardBuilder(name).build();
             }
-            for (int i = 0; i < count; i++) {
-                cardOfDeck.add(card);
-            }
+            addCardsToDeck(cardOfDeck, count, name, card);
+        }
+    }
+
+    private String getCardName(String[] split) {
+        return split[1];
+    }
+
+    private Integer getCardCount(String[] split) {
+        return Integer.valueOf(split[0]);
+    }
+
+    private String[] getCardInformationArray(String line) {
+        return line.split("\\t");
+    }
+
+    private void addCardsToDeck(List<Card> cardOfDeck, int count, String name, Card build) {
+        for (int i = 0; i < count; i++) {
+            cardOfDeck.add(build);
         }
     }
 

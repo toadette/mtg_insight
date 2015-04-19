@@ -16,14 +16,18 @@ import java.util.Collections;
 
 import de.avalax.mtg_insight.application.port.adapter.CacheStrategy;
 import de.avalax.mtg_insight.domain.model.card.Ability;
+import de.avalax.mtg_insight.domain.model.card.Artifact;
 import de.avalax.mtg_insight.domain.model.card.Card;
 import de.avalax.mtg_insight.domain.model.card.CardBuilder;
 import de.avalax.mtg_insight.domain.model.card.Creature;
 import de.avalax.mtg_insight.domain.model.card.CreatureBody;
+import de.avalax.mtg_insight.domain.model.card.Enchantment;
 import de.avalax.mtg_insight.domain.model.card.GenericCard;
+import de.avalax.mtg_insight.domain.model.card.Instant;
 import de.avalax.mtg_insight.domain.model.card.Land;
 import de.avalax.mtg_insight.domain.model.card.LoyaltyPoints;
 import de.avalax.mtg_insight.domain.model.card.Planeswalker;
+import de.avalax.mtg_insight.domain.model.card.Sorcery;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -33,6 +37,25 @@ import static org.hamcrest.Matchers.instanceOf;
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = "src/main/AndroidManifest.xml", emulateSdk = 18)
 public class SharedPreferencesCacheStrategyTest {
+
+    private void addGenericCardToCache(String cardname) {
+        Card card = new CardBuilder(cardname).build();
+        sharedPreferences.edit().putString(cardname, jsonForCard(card)).apply();
+    }
+
+    private void assertGenericCardExistsInCache(String cardname) {
+        assertThat(cacheStrategy.get(cardname), instanceOf(GenericCard.class));
+        assertThat(cacheStrategy.get(cardname).name(), equalTo(cardname));
+    }
+
+    private void assertCorrectCardTypeStored(Card card, Class<?> type) {
+        sharedPreferences.edit().putString("cardname", jsonForCard(card)).apply();
+
+        Card cardFromCache = cacheStrategy.get("cardname");
+
+        assertThat(cardFromCache, instanceOf(type));
+        assertThat(cardFromCache.name(), equalTo("cardname"));
+    }
 
     private String jsonForCard(Card card) {
         Object[] jsonObject = {card.getClass().getSimpleName(), card};
@@ -50,7 +73,9 @@ public class SharedPreferencesCacheStrategyTest {
     }
 
     private CacheStrategy cacheStrategy;
+
     private SharedPreferences sharedPreferences;
+
     private Gson gson;
 
     @Before
@@ -115,14 +140,12 @@ public class SharedPreferencesCacheStrategyTest {
     }
 
     @Test
-    public void getLandCardFromCache_shouldReturnStoredSharedPreference() throws Exception {
-        Card card = new CardBuilder("cardname").landCard().build();
-        sharedPreferences.edit().putString("cardname", jsonForCard(card)).apply();
-
-        Card cardFromCache = cacheStrategy.get("cardname");
-
-        assertThat(cardFromCache, instanceOf(Land.class));
-        assertThat(cardFromCache.name(), equalTo("cardname"));
+    public void differentCardTypes_shouldReturnFromSharedPreferences() throws Exception {
+        assertCorrectCardTypeStored(new CardBuilder("cardname").landCard().build(), Land.class);
+        assertCorrectCardTypeStored(new CardBuilder("cardname").artifactCard().build(), Artifact.class);
+        assertCorrectCardTypeStored(new CardBuilder("cardname").enchantmentCard().build(), Enchantment.class);
+        assertCorrectCardTypeStored(new CardBuilder("cardname").instantCard().build(), Instant.class);
+        assertCorrectCardTypeStored(new CardBuilder("cardname").sorceryCard().build(), Sorcery.class);
     }
 
     @Test
@@ -152,15 +175,5 @@ public class SharedPreferencesCacheStrategyTest {
         assertGenericCardExistsInCache("cardname 10");
         assertGenericCardExistsInCache("cardname 11");
         assertGenericCardExistsInCache("cardname 12");
-    }
-
-    private void assertGenericCardExistsInCache(String cardname) {
-        assertThat(cacheStrategy.get(cardname), instanceOf(GenericCard.class));
-        assertThat(cacheStrategy.get(cardname).name(), equalTo(cardname));
-    }
-
-    private void addGenericCardToCache(String cardname) {
-        Card card = new CardBuilder(cardname).build();
-        sharedPreferences.edit().putString(cardname, jsonForCard(card)).apply();
     }
 }

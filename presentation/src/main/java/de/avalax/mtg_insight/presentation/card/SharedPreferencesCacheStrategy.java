@@ -7,11 +7,15 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 
 import de.avalax.mtg_insight.application.port.adapter.CacheStrategy;
+import de.avalax.mtg_insight.domain.model.card.Artifact;
 import de.avalax.mtg_insight.domain.model.card.Card;
 import de.avalax.mtg_insight.domain.model.card.Creature;
+import de.avalax.mtg_insight.domain.model.card.Enchantment;
 import de.avalax.mtg_insight.domain.model.card.GenericCard;
+import de.avalax.mtg_insight.domain.model.card.Instant;
 import de.avalax.mtg_insight.domain.model.card.Land;
 import de.avalax.mtg_insight.domain.model.card.Planeswalker;
+import de.avalax.mtg_insight.domain.model.card.Sorcery;
 
 public class SharedPreferencesCacheStrategy implements CacheStrategy {
 
@@ -67,6 +71,18 @@ public class SharedPreferencesCacheStrategy implements CacheStrategy {
                 break;
             case "Land":
                 card = gson.fromJson(element.get(1), Land.class);
+                break;
+            case "Artifact":
+                card = gson.fromJson(element.get(1), Artifact.class);
+                break;
+            case "Enchantment":
+                card = gson.fromJson(element.get(1), Enchantment.class);
+                break;
+            case "Instant":
+                card = gson.fromJson(element.get(1), Instant.class);
+                break;
+            case "Sorcery":
+                card = gson.fromJson(element.get(1), Sorcery.class);
                 break;
             default:
                 card = gson.fromJson(element.get(1), GenericCard.class);

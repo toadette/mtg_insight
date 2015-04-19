@@ -2,6 +2,7 @@ package de.avalax.mtg_insight.application.port.adapter;
 
 import de.avalax.mtg_insight.domain.model.card.Card;
 import de.avalax.mtg_insight.domain.model.card.CardService;
+import de.avalax.mtg_insight.domain.model.exception.CardCorruptedException;
 import de.avalax.mtg_insight.domain.model.exception.CardNotFoundException;
 
 public class CachedCardService implements CardService {
@@ -14,7 +15,7 @@ public class CachedCardService implements CardService {
     }
 
     @Override
-    public Card cardFromCardname(String cardname) throws CardNotFoundException {
+    public Card cardFromCardname(String cardname) throws CardNotFoundException, CardCorruptedException {
         if (cardname == null || cardname.isEmpty()) {
             throw new CardNotFoundException();
         }

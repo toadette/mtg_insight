@@ -15,17 +15,22 @@ import de.avalax.mtg_insight.domain.model.deck.DeckService;
 import de.avalax.mtg_insight.domain.model.deck.Deckname;
 import de.avalax.mtg_insight.domain.model.deck.JobProgressListener;
 import de.avalax.mtg_insight.domain.model.deck.StandardDeck;
+import de.avalax.mtg_insight.domain.model.exception.CardCorruptedException;
 import de.avalax.mtg_insight.domain.model.exception.CardNotFoundException;
 import de.avalax.mtg_insight.domain.model.exception.DeckNotFoundException;
 
 public class TappedOutDeckService implements DeckService {
 
     //TODO: format von txt auf Markdown?
+    //TODO:refactoring
     private List<Deckname> decknames;
     private final String host = "http://tappedout.net/mtg-decks/";
     private final String format = "/?fmt=txt";
     private final String format_printable = "?fmt=markdown";
     private CardService cardService;
+    private int currentCard = 0;
+    private int decksize = 0;
+
 
     public TappedOutDeckService(CardService cardService) {
         this.cardService = cardService;
@@ -36,31 +41,55 @@ public class TappedOutDeckService implements DeckService {
         decknames.add(new Deckname(name));
         List<Card> deck = new ArrayList<>();
         List<Card> sideboard = new ArrayList<>();
+        String deckname = readPrintableDeckname(name);
         readCardsFromDeck(name, deck, sideboard, listener);
-        name = readPrintableDeckname(name);
-        return new StandardDeck(new Deckname(name), deck, sideboard);
+        return new StandardDeck(new Deckname(deckname), deck, sideboard);
     }
 
     private String readPrintableDeckname(String name) throws DeckNotFoundException {
+        String mainboardsize = null;
+        String sideboardsize = null;
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(new URL(host + name + format_printable).openStream()))) {
             String line;
+            int cnt = 0;
             while ((line = reader.readLine()) != null) {
                 if (line.length() > 0) {
-                    name = line.substring(line.indexOf("[") + 1, line.lastIndexOf("]"));
-                    break;
+                    if (cnt == 0) {
+                        name = line.substring(line.indexOf("[") + 1, line.lastIndexOf("]"));
+                    }
+                    if (line.startsWith("##")) {
+                        String board = line.substring(line.indexOf("##") + 3, line.length());
+                        if (board.startsWith("Mainboard")) {
+                            mainboardsize = line.substring(line.indexOf("(") + 1, line.length() - 1);
+                        }
+                        if (board.startsWith("Sideboard")) {
+                            sideboardsize = line.substring(line.indexOf("(") + 1, line.length() - 1);
+                            break;
+                        }
+                    }
+                    ++cnt;
+
                 }
             }
         } catch (IOException e) {
             throw new DeckNotFoundException(e);
         }
+        if (mainboardsize != null && mainboardsize.matches(".\\d")) {
+            int mainBoardSize = Integer.valueOf(mainboardsize);
+            int sideBoardSize = 0;
+            if (sideboardsize != null && sideboardsize.matches(".\\d")) {
+                sideBoardSize = Integer.valueOf(sideBoardSize);
+            }
+            decksize = mainBoardSize + sideBoardSize;
+        }
         return name;
     }
 
     private void readCardsFromDeck(String name, List<Card> deck, List<Card> sideboard, JobProgressListener listener) throws DeckNotFoundException {
+
         boolean readSideBoard = false;
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(new URL(host + name + format).openStream()))) {
             String line;
-            int linesRead = 0;
             while ((line = reader.readLine()) != null) {
                 if (line.length() > 0) {
                     if (line.startsWith("Sideboard")) {
@@ -72,8 +101,9 @@ public class TappedOutDeckService implements DeckService {
                     } else {
                         addCardFromLine(line, deck);
                     }
+                    ++currentCard;
                 }
-                listener.publishProgress(++linesRead);
+                listener.publishProgress((currentCard / decksize) * 100);
             }
         } catch (IOException e) {
             throw new DeckNotFoundException(e);
@@ -92,6 +122,10 @@ public class TappedOutDeckService implements DeckService {
             try {
                 card = cardService.cardFromCardname(name);
             } catch (CardNotFoundException ignored) {
+//                log.error("Card was not found: "+name+": "+ignored.getMessage());
+                card = new CardBuilder(name).build();
+            } catch (CardCorruptedException ignored) {
+//                log.error("Card was corrupted: "+name+": "+ignored.getMessage());
                 card = new CardBuilder(name).build();
             }
             addCardsToDeck(cardOfDeck, count, name, card);
@@ -125,4 +159,16 @@ public class TappedOutDeckService implements DeckService {
     public List<Deckname> decknames() {
         return decknames;
     }
+
+    @Override
+    public double getCurrentLoadingCount() {
+        return currentCard;
+    }
+
+    @Override
+    public double countOfCards() {
+        return decksize;
+    }
+
+
 }

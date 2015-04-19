@@ -1,12 +1,16 @@
 package de.avalax.mtg_insight.presentation.card;
 
-import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
+import org.robolectric.annotation.Config;
 
 import java.util.Collections;
 
@@ -22,11 +26,10 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-
+@RunWith(RobolectricTestRunner.class)
+@Config(manifest = "src/main/AndroidManifest.xml", emulateSdk = 18)
 public class SharedPreferencesCacheStrategyTest {
     private String jsonForCard(GenericCard card) {
         Object[] jsonObject = {card.getClass().getSimpleName(), card};
@@ -42,16 +45,12 @@ public class SharedPreferencesCacheStrategyTest {
     private SharedPreferences sharedPreferences;
     private Gson gson;
 
-    private android.content.SharedPreferences.Editor editor;
-
-    @SuppressLint("CommitPrefEdits")
     @Before
     public void setUp() throws Exception {
+        Context context = RuntimeEnvironment.application.getApplicationContext();
         gson = new Gson();
-        sharedPreferences = mock(SharedPreferences.class);
+        sharedPreferences = context.getSharedPreferences("mtg_insight.cards", Context.MODE_PRIVATE);
         cacheStrategy = new SharedPreferencesCacheStrategy(sharedPreferences);
-        editor = mock(android.content.SharedPreferences.Editor.class);
-        when(sharedPreferences.edit()).thenReturn(editor);
     }
 
     @Test
@@ -60,8 +59,7 @@ public class SharedPreferencesCacheStrategyTest {
 
         cacheStrategy.put("cardname", card);
 
-        verify(editor).putString("cardname", "[\"GenericCard\"," + gson.toJson(card) + "]");
-        verify(editor).apply();
+        assertThat(sharedPreferences.getString("cardname", null), equalTo("[\"GenericCard\"," + gson.toJson(card) + "]"));
     }
 
     @Test
@@ -74,7 +72,7 @@ public class SharedPreferencesCacheStrategyTest {
     @Test
     public void getGenericCardFromCache_shouldReturnStoredSharedPreference() throws Exception {
         GenericCard card = (GenericCard) new CardBuilder("cardname").build();
-        when(sharedPreferences.getString("cardname", null)).thenReturn(jsonForCard(card));
+        sharedPreferences.edit().putString("cardname",jsonForCard(card)).apply();
 
         Card cardFromCache = cacheStrategy.get("cardname");
 
@@ -86,7 +84,7 @@ public class SharedPreferencesCacheStrategyTest {
     public void getCreatureCardFromCache_shouldReturnStoredSharedPreference() throws Exception {
         CreatureBody creatureBody = new CreatureBody(12, 24);
         Creature card = (Creature) new CardBuilder("cardname").creatureCard(creatureBody, Collections.<Ability>emptyList()).build();
-        when(sharedPreferences.getString("cardname", null)).thenReturn(jsonForCard(card));
+        sharedPreferences.edit().putString("cardname",jsonForCard(card)).apply();
 
         Card cardFromCache = cacheStrategy.get("cardname");
 

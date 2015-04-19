@@ -29,6 +29,10 @@ public class SharedPreferencesCacheStrategy implements CacheStrategy {
 
     @Override
     public void put(String cardname, Card card) {
+        if (card.getClass().getSimpleName().equals("GenericCard")) {
+            return;
+        }
+
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(cardname, jsonFromCard(card));
         editor.apply();

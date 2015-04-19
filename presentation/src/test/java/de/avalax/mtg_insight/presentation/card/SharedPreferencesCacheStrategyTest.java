@@ -22,7 +22,6 @@ import de.avalax.mtg_insight.domain.model.card.CardBuilder;
 import de.avalax.mtg_insight.domain.model.card.Creature;
 import de.avalax.mtg_insight.domain.model.card.CreatureBody;
 import de.avalax.mtg_insight.domain.model.card.Enchantment;
-import de.avalax.mtg_insight.domain.model.card.GenericCard;
 import de.avalax.mtg_insight.domain.model.card.Instant;
 import de.avalax.mtg_insight.domain.model.card.Land;
 import de.avalax.mtg_insight.domain.model.card.LoyaltyPoints;
@@ -38,13 +37,8 @@ import static org.hamcrest.Matchers.instanceOf;
 @Config(manifest = "src/main/AndroidManifest.xml", emulateSdk = 18)
 public class SharedPreferencesCacheStrategyTest {
 
-    private void addGenericCardToCache(String cardname) {
-        Card card = new CardBuilder(cardname).build();
-        sharedPreferences.edit().putString(cardname, jsonForCard(card)).apply();
-    }
-
     private void assertGenericCardExistsInCache(String cardname) {
-        assertThat(cacheStrategy.get(cardname), instanceOf(GenericCard.class));
+        assertThat(cacheStrategy.get(cardname), instanceOf(Instant.class));
         assertThat(cacheStrategy.get(cardname).name(), equalTo(cardname));
     }
 
@@ -55,6 +49,11 @@ public class SharedPreferencesCacheStrategyTest {
 
         assertThat(cardFromCache, instanceOf(type));
         assertThat(cardFromCache.name(), equalTo("cardname"));
+    }
+
+    private void addInstantIntoCache(String cardname) {
+        Card card = new CardBuilder(cardname).instantCard().build();
+        cacheStrategy.put(cardname, card);
     }
 
     private String jsonForCard(Card card) {
@@ -87,12 +86,12 @@ public class SharedPreferencesCacheStrategyTest {
     }
 
     @Test
-    public void putIntoCache_shouldStoreObjectInSharedPreferences() throws Exception {
-        Card card = new CardBuilder("cardname").build();
+    public void putCardIntoCache_shouldStoreObjectInSharedPreferences() throws Exception {
+        Card card = new CardBuilder("cardname").landCard().build();
 
         cacheStrategy.put("cardname", card);
 
-        assertThat(sharedPreferences.getString("cardname", null), equalTo("[\"GenericCard\"," + gson.toJson(card) + "]"));
+        assertThat(sharedPreferences.getString("cardname", null), equalTo("[\"Land\"," + gson.toJson(card) + "]"));
     }
 
     @Test
@@ -103,13 +102,12 @@ public class SharedPreferencesCacheStrategyTest {
     }
 
     @Test
-    public void getGenericCardFromCache_shouldReturnStoredSharedPreference() throws Exception {
-        addGenericCardToCache("cardname");
+    public void genericCardFromCache_shouldNotStoredInSharedPreference() throws Exception {
+        cacheStrategy.put("cardname", new CardBuilder("cardname").build());
 
         Card cardFromCache = cacheStrategy.get("cardname");
 
-        assertThat(cardFromCache, instanceOf(GenericCard.class));
-        assertThat(cardFromCache.name(), equalTo("cardname"));
+        assertThat(cardFromCache, nullValue());
     }
 
     @Test
@@ -150,18 +148,18 @@ public class SharedPreferencesCacheStrategyTest {
 
     @Test
     public void writeManyCardsIntoCache_shouldReturnAllCardsFromCache() throws Exception {
-        addGenericCardToCache("cardname 1");
-        addGenericCardToCache("cardname 2");
-        addGenericCardToCache("cardname 3");
-        addGenericCardToCache("cardname 4");
-        addGenericCardToCache("cardname 5");
-        addGenericCardToCache("cardname 6");
-        addGenericCardToCache("cardname 7");
-        addGenericCardToCache("cardname 8");
-        addGenericCardToCache("cardname 9");
-        addGenericCardToCache("cardname 12");
-        addGenericCardToCache("cardname 11");
-        addGenericCardToCache("cardname 10");
+        addInstantIntoCache("cardname 1");
+        addInstantIntoCache("cardname 2");
+        addInstantIntoCache("cardname 3");
+        addInstantIntoCache("cardname 4");
+        addInstantIntoCache("cardname 5");
+        addInstantIntoCache("cardname 6");
+        addInstantIntoCache("cardname 7");
+        addInstantIntoCache("cardname 8");
+        addInstantIntoCache("cardname 9");
+        addInstantIntoCache("cardname 12");
+        addInstantIntoCache("cardname 11");
+        addInstantIntoCache("cardname 10");
 
         assertGenericCardExistsInCache("cardname 1");
         assertGenericCardExistsInCache("cardname 2");

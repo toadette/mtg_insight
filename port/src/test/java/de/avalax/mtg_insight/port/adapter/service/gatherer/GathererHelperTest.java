@@ -10,10 +10,16 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.avalax.mtg_insight.domain.model.card.Artifact;
 import de.avalax.mtg_insight.domain.model.card.Card;
 import de.avalax.mtg_insight.domain.model.card.Creature;
+import de.avalax.mtg_insight.domain.model.card.Instant;
+import de.avalax.mtg_insight.domain.model.card.Land;
 import de.avalax.mtg_insight.domain.model.card.Planeswalker;
+import de.avalax.mtg_insight.domain.model.card.Sorcery;
 import de.avalax.mtg_insight.domain.model.color.Color;
+import de.avalax.mtg_insight.domain.model.exception.CardCorruptedException;
+import de.avalax.mtg_insight.domain.model.exception.CardNotFoundException;
 import de.avalax.mtg_insight.domain.model.mana.Mana;
 import de.avalax.mtg_insight.port.adapter.service.TestHelper;
 import de.avalax.mtg_insight.port.adapter.service.ability.AbilityTokenizer;
@@ -32,17 +38,10 @@ public class GathererHelperTest {
     private List<String> manaList;
     private String powerToughness;
 
-    public void testCase1() throws Exception {
-        loadTestdataFromResource(getClass().getResourceAsStream("1_testcase.properties"));
+    public void loadTestCase(String number) throws Exception {
+        loadTestdataFromResource(getClass().getResourceAsStream(number+"_testcase.properties"));
     }
 
-    public void testCase2() throws Exception {
-        loadTestdataFromResource(getClass().getResourceAsStream("2_testcase.properties"));
-    }
-
-    public void testCase3() throws Exception {
-        loadTestdataFromResource(getClass().getResourceAsStream("3_testcase.properties"));
-    }
 
     private void loadTestdataFromResource(InputStream resourceAsStream) throws IOException {
         manaList = new ArrayList<>();
@@ -68,7 +67,7 @@ public class GathererHelperTest {
 
     @Test
     public void getCard_shouldReturnCreatureWithSingleMana() throws Exception {
-        testCase1();
+        loadTestCase("1");
         GathererHelper gathererHelper = new GathererHelper(new AbilityTokenizer(), new ColorMatcher(), new ManaTokenizer());
         Card card = gathererHelper.getCard(type, name, "description", manaList, powerToughness);
         TestHelper.assertCard("Narset, Enlightened Master", card, Creature.class);
@@ -85,7 +84,7 @@ public class GathererHelperTest {
 
     @Test
     public void getCard_shouldReturnCreatureWithHybridMana() throws Exception {
-        testCase2();
+        loadTestCase("2");
         GathererHelper gathererHelper = new GathererHelper(new AbilityTokenizer(), new ColorMatcher(), new ManaTokenizer());
         Card card = gathererHelper.getCard(type, name, "description", manaList, powerToughness);
         TestHelper.assertCard("Figure of Destiny", card, Creature.class);
@@ -98,7 +97,7 @@ public class GathererHelperTest {
 
     @Test
     public void getCard_shouldReturnPlaneswalker() throws Exception {
-        testCase3();
+        loadTestCase("3");
         GathererHelper gathererHelper = new GathererHelper(new AbilityTokenizer(), new ColorMatcher(), new ManaTokenizer());
         Card card = gathererHelper.getCard(type, name, "description", manaList, powerToughness);
         TestHelper.assertCard("Elspeth, Sun's Champion", card, Planeswalker.class);
@@ -113,6 +112,60 @@ public class GathererHelperTest {
         TestHelper.assertPlaneswalker(((Planeswalker) card), 4);
     }
 
+    @Test
+    public void cardFromCardname_ShouldReturnInstantWithSingleMana() throws Exception {
+        loadTestCase("4");
+        String cardName = "Lightning Strike";
+        GathererHelper gathererHelper = new GathererHelper(new AbilityTokenizer(), new ColorMatcher(), new ManaTokenizer());
+        Card card = gathererHelper.getCard(type, name, "description", manaList, powerToughness);
+        TestHelper.assertCard(cardName, card, Instant.class);
+        assertThat(card.convertedManaCost().manaCostAsList(), hasSize(2));
+        TestHelper.assertMana(card, 0, 0, Mana.COLORLESS);
+        TestHelper.assertMana(card, 1, 0, Mana.RED);
+        TestHelper.assertCardColor(card, 1, new Color[]{Color.RED});
+    }
+
+    @Test(expected = CardCorruptedException.class)
+    public void cardFromCardname_ShouldCardNotFoundException() throws Exception {
+        GathererHelper gathererHelper = new GathererHelper(new AbilityTokenizer(), new ColorMatcher(), new ManaTokenizer());
+        Card card = gathererHelper.getCard("", "hahahakeineKarte", "", null, "");
+    }
+    @Test
+    public void cardFromCardname_ShouldReturnSorcery() throws Exception {
+        loadTestCase("5");
+        String cardName = "Anger of the Gods";
+        GathererHelper gathererHelper = new GathererHelper(new AbilityTokenizer(), new ColorMatcher(), new ManaTokenizer());
+        Card card = gathererHelper.getCard(type, name, "description", manaList, powerToughness);
+        TestHelper.assertCard(cardName, card, Sorcery.class);
+        assertThat(card.convertedManaCost().manaCostAsList(), hasSize(3));
+        TestHelper.assertMana(card, 0, 0, Mana.COLORLESS);
+        TestHelper.assertMana(card, 1, 0, Mana.RED);
+        TestHelper.assertMana(card, 2, 0, Mana.RED);
+        TestHelper.assertCardColor(card, 1, new Color[]{Color.RED});
+    }
+    @Test
+    public void cardFromCardname_ShouldReturnLand() throws Exception {
+        loadTestCase("6");
+        String cardName = "Swamp";
+        GathererHelper gathererHelper = new GathererHelper(new AbilityTokenizer(), new ColorMatcher(), new ManaTokenizer());
+        Card card = gathererHelper.getCard(type, name, "description", manaList, powerToughness);
+        TestHelper.assertCard(cardName, card, Land.class);
+        assertThat(card.convertedManaCost().manaCostAsList(), hasSize(0));
+        TestHelper.assertCardColor(card, 0, new Color[]{});
+    }
+    @Test
+    public void cardFromCardname_ShouldReturnArtifact() throws Exception {
+        loadTestCase("7");
+        String cardName = "Godsend";
+        GathererHelper gathererHelper = new GathererHelper(new AbilityTokenizer(), new ColorMatcher(), new ManaTokenizer());
+        Card card = gathererHelper.getCard(type, name, "description", manaList, powerToughness);
+        TestHelper.assertCard(cardName, card, Artifact.class);
+        assertThat(card.convertedManaCost().manaCostAsList(), hasSize(3));
+        TestHelper.assertMana(card, 0, 0, Mana.COLORLESS);
+        TestHelper.assertMana(card, 1, 0, Mana.WHITE);
+        TestHelper.assertMana(card, 2, 0, Mana.WHITE);
+        TestHelper.assertCardColor(card, 1, new Color[]{Color.WHITE});
+    }
     //    @Ignore
 //    @Test
 //    public void cardFromCardname_ShouldReturnCreatureWithSingleMana2() throws Exception {

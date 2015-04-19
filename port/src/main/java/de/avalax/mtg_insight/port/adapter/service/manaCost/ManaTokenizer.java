@@ -11,10 +11,10 @@ public class ManaTokenizer {
     private static final String HYBRID_MANA = "^\\{[A-Z2]/[A-Z2]\\}.*$";
     private static final String PHYREXIAN_MANA = "^\\{([A-Z]P)\\}.*";
     private static Pattern HYBRID_MANA_PATTERN = Pattern.compile("^\\{([A-Z2]/[A-Z2])\\}");
-    private static Pattern PHYREXIAN_MANA_PATTERN=Pattern.compile("^\\{([A-Z]P)\\}");
+    private static Pattern PHYREXIAN_MANA_PATTERN = Pattern.compile("^\\{([A-Z]P)\\}");
 
     public List<ManaCostToken> get(String manaCostString) {
-        if (manaCostString == null || manaCostString.isEmpty()) {
+        if (manaCostString == null || manaCostString.isEmpty() || manaCostString.equals("null")) {
             return Collections.emptyList();
         }
         List<ManaCostToken> manaCostTokens = new ArrayList<>();

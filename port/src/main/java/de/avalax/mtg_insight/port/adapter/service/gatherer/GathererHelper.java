@@ -6,7 +6,9 @@ import java.util.List;
 
 import de.avalax.mtg_insight.domain.model.card.Ability;
 import de.avalax.mtg_insight.domain.model.card.Card;
+import de.avalax.mtg_insight.domain.model.card.GenericCard;
 import de.avalax.mtg_insight.domain.model.color.Color;
+import de.avalax.mtg_insight.domain.model.exception.CardCorruptedException;
 import de.avalax.mtg_insight.domain.model.mana.ConvertedManaCost;
 import de.avalax.mtg_insight.domain.model.mana.ManaCost;
 import de.avalax.mtg_insight.port.adapter.service.ability.AbilityTokenizer;
@@ -18,7 +20,6 @@ import de.avalax.mtg_insight.port.adapter.service.manaCost.ManaTokenizer;
 public class GathererHelper {
 
 
-    //TODO: Loyaltypoints
     //TODO:description
     private AbilityTokenizer abilityTokenizer;
     private ColorMatcher colorMatcher;
@@ -30,21 +31,31 @@ public class GathererHelper {
         this.manaTokenizer = manaTokenizer;
     }
 
-    public Card getCard(String type, String name, String description, List<String> manaRow, String powerToughness) {
-        List<Color> colorOfCard = getColorOfCard(manaRow);
-        ConvertedManaCost convertedManaCost = getConvertedManaCost(manaRow);
-        String power = getPowerFromString(powerToughness);
-        String toughness = getToughnessFromString(powerToughness);
-        List<Ability> abilities = null;
-        return new CardCreator().createCardFromType(type, name, colorOfCard, convertedManaCost, power, toughness, powerToughness, abilities);
+    public Card getCard(String type, String name, String description, List<String> manaRow, String powerToughness) throws CardCorruptedException {
+        try {
+            List<Color> colorOfCard = getColorOfCard(manaRow);
+            ConvertedManaCost convertedManaCost = getConvertedManaCost(manaRow);
+            String power = getPowerFromString(powerToughness);
+            String toughness = getToughnessFromString(powerToughness);
+            List<Ability> abilities = getAbilities(description);
+            return new CardCreator().createCardFromType(type, name, colorOfCard, convertedManaCost, power, toughness, powerToughness, abilities);
+        } catch (Exception e) {
+            throw new CardCorruptedException(e);
+        }
     }
 
     private String getToughnessFromString(String powerToughness) {
-        return powerToughness.substring(powerToughness.indexOf("/") + 1, powerToughness.length()).trim();
+        if (powerToughness != null && powerToughness.length() > 0) {
+            return powerToughness.substring(powerToughness.indexOf("/") + 1, powerToughness.length()).trim();
+        }
+        return "";
     }
 
     private String getPowerFromString(String powerToughness) {
-        return powerToughness.substring(0, 1).trim();
+        if (powerToughness != null && powerToughness.length() > 0) {
+            return powerToughness.substring(0, 1).trim();
+        }
+        return "";
     }
 
 
@@ -55,9 +66,8 @@ public class GathererHelper {
     private List<Color> getColorOfCard(List<String> mana) {
         return colorMatcher.getColorFromArray(getColorArray(mana));
     }
-
+//TODO:refactor
     private Object[] getColorArray(List<String> mana) {
-        List<String> colorList = new ArrayList<>();
         HashMap<String, String> colorMap = new HashMap<>();
         for (int i = 0; i < mana.size(); i++) {
             String manaStr = mana.get(i);

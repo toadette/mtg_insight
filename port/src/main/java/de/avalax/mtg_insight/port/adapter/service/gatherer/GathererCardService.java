@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.avalax.mtg_insight.domain.model.card.Card;
+import de.avalax.mtg_insight.domain.model.exception.CardCorruptedException;
 import de.avalax.mtg_insight.domain.model.exception.CardNotFoundException;
 import de.avalax.mtg_insight.port.adapter.service.ability.AbilityTokenizer;
 import de.avalax.mtg_insight.domain.model.card.CardService;
@@ -29,11 +30,13 @@ public class GathererCardService implements CardService {
     }
 
     @Override
-    public Card cardFromCardname(String cardname) throws CardNotFoundException {
+    public Card cardFromCardname(String cardname) throws CardNotFoundException, CardCorruptedException {
         try {
             Document doc = Jsoup.connect(host + getCardNameForSearch(cardname)).get();
             GathererHelper gathererHelper = new GathererHelper(abilityTokenizer, colorMatcher, manaTokenizer);
             return gathererHelper.getCard(getType(doc), getName(doc), getDescription(doc), getManaFromElement(getMana(doc)), getPowerToughness(doc));
+        } catch (CardCorruptedException e) {
+            throw new CardCorruptedException(new Exception("Card was corrupted"));
         } catch (Exception e) {
             throw new CardNotFoundException(new Exception("Card not found"));
         }

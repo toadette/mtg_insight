@@ -1,7 +1,22 @@
-<de.avalax.mtg_insight.presentation.ScalableStaggeredGridView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/cardStage"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:column_count="3"
-    app:item_margin="4dp" />
+    android:layout_height="match_parent">
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="100"
+        android:padding="10dip"
+        android:visibility="gone" />
+
+    <de.avalax.mtg_insight.presentation.ScalableStaggeredGridView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/cardStage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:column_count="3"
+        app:item_margin="4dp" />
+</LinearLayout>

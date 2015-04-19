@@ -1,24 +1,31 @@
 package de.avalax.mtg_insight.port.adapter.service.deck;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import de.avalax.mtg_insight.domain.model.deck.Deck;
 import de.avalax.mtg_insight.domain.model.deck.Deckname;
+import de.avalax.mtg_insight.domain.model.deck.JobProgressListener;
 import de.avalax.mtg_insight.domain.model.exception.DeckNotFoundException;
 import de.avalax.mtg_insight.port.adapter.service.ability.AbilityTokenizer;
-import de.avalax.mtg_insight.port.adapter.service.mtgdb.MtgDBCardService;
 import de.avalax.mtg_insight.port.adapter.service.color.ColorMatcher;
 import de.avalax.mtg_insight.port.adapter.service.manaCost.ManaTokenizer;
+import de.avalax.mtg_insight.port.adapter.service.mtgdb.MtgDBCardService;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 public class TappedOutDeckServiceTest {
 
     private String deckname;
     private TappedOutDeckService tappedOutDeckService;
+    private MockedJobProgressListener jobProgressListener;
+
+    @Before
+    public void setUp() throws Exception {
+        jobProgressListener = new MockedJobProgressListener();
+    }
 
     public void setUp1() throws Exception {
         deckname = "from-the-grave-to-the-cradle";
@@ -38,7 +45,7 @@ public class TappedOutDeckServiceTest {
     @Test
     public void testDeckFromDeckname() throws Exception {
         setUp1();
-        Deck deck = tappedOutDeckService.deckFromDeckname(new Deckname(deckname));
+        Deck deck = tappedOutDeckService.deckFromDeckname(new Deckname(deckname),jobProgressListener);
         assertThat(deck.name().getName(), equalTo("From the Grave, to the Cradle"));
         assertThat(deck.deck(), hasSize(61));
         assertThat(deck.deck().get(0).name(), equalTo("Boneyard Wurm"));
@@ -50,12 +57,12 @@ public class TappedOutDeckServiceTest {
     @Test(expected = DeckNotFoundException.class)
     public void deckFromDeckname_shouldReturnDeckNotFound() throws Exception {
         setUp1();
-        tappedOutDeckService.deckFromDeckname(new Deckname("blablablbalbla"));
+        tappedOutDeckService.deckFromDeckname(new Deckname("blablablbalbla"),jobProgressListener);
     }
     @Test
     public void testDeckFromDeckname_shouldReturnSideboard() throws Exception {
         setUp2();
-        Deck deck = tappedOutDeckService.deckFromDeckname(new Deckname(deckname));
+        Deck deck = tappedOutDeckService.deckFromDeckname(new Deckname(deckname),jobProgressListener);
         assertThat(deck.name().getName(), equalTo("Lotus Blade [Modern]"));
         assertThat(deck.deck(), hasSize(60));
         assertThat(deck.sideboard(),hasSize(15));
@@ -69,8 +76,15 @@ public class TappedOutDeckServiceTest {
     @Test
     public void testDeckFromDeckname_shouldReturnPrintableName() throws Exception {
         setUp3();
-        Deck deck = tappedOutDeckService.deckFromDeckname(new Deckname(deckname));
+        Deck deck = tappedOutDeckService.deckFromDeckname(new Deckname(deckname),jobProgressListener);
         assertThat(deck.name().getName(),equalTo("You do not defy Ojutai! (U/W Control)"));
 
+    }
+
+    private static class MockedJobProgressListener implements JobProgressListener {
+        @Override
+        public void publishProgress(int progress) {
+            //TODO: Tests for progress indicator
+        }
     }
 }

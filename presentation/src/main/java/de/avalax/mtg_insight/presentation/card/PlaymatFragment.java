@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import javax.inject.Inject;
 
@@ -21,6 +22,9 @@ import de.avalax.mtg_insight.presentation.tasks.DeckServiceTask;
 public class PlaymatFragment extends Fragment implements DeckServiceResponse {
     @InjectView(R.id.cardStage)
     protected ScalableStaggeredGridView cardStage;
+
+    @InjectView(R.id.progressBar)
+    protected ProgressBar progressBar;
 
     @Inject
     protected DeckService deckService;
@@ -41,7 +45,7 @@ public class PlaymatFragment extends Fragment implements DeckServiceResponse {
     }
 
     private void addDummyCard() {
-        new DeckServiceTask(this, deckService).execute("from-the-grave-to-the-cradle");
+        new DeckServiceTask(this, deckService, progressBar).execute("from-the-grave-to-the-cradle");
     }
 
     @Override

@@ -13,6 +13,7 @@ import de.avalax.mtg_insight.domain.model.card.CardService;
 import de.avalax.mtg_insight.domain.model.deck.Deck;
 import de.avalax.mtg_insight.domain.model.deck.DeckService;
 import de.avalax.mtg_insight.domain.model.deck.Deckname;
+import de.avalax.mtg_insight.domain.model.deck.JobProgressListener;
 import de.avalax.mtg_insight.domain.model.deck.StandardDeck;
 import de.avalax.mtg_insight.domain.model.exception.CardNotFoundException;
 import de.avalax.mtg_insight.domain.model.exception.DeckNotFoundException;
@@ -31,11 +32,11 @@ public class TappedOutDeckService implements DeckService {
         decknames = new ArrayList<>();
     }
 
-    private Deck readFromTextFile(String name) throws DeckNotFoundException {
+    private Deck readFromTextFile(String name, JobProgressListener listener) throws DeckNotFoundException {
         decknames.add(new Deckname(name));
         List<Card> deck = new ArrayList<>();
         List<Card> sideboard = new ArrayList<>();
-        readCardsFromDeck(name, deck, sideboard);
+        readCardsFromDeck(name, deck, sideboard, listener);
         name = readPrintableDeckname(name);
         return new StandardDeck(new Deckname(name), deck, sideboard);
     }
@@ -55,10 +56,11 @@ public class TappedOutDeckService implements DeckService {
         return name;
     }
 
-    private void readCardsFromDeck(String name, List<Card> deck, List<Card> sideboard) throws DeckNotFoundException {
+    private void readCardsFromDeck(String name, List<Card> deck, List<Card> sideboard, JobProgressListener listener) throws DeckNotFoundException {
         boolean readSideBoard = false;
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(new URL(host + name + format).openStream()))) {
             String line;
+            int linesRead = 0;
             while ((line = reader.readLine()) != null) {
                 if (line.length() > 0) {
                     if (line.startsWith("Sideboard")) {
@@ -70,8 +72,8 @@ public class TappedOutDeckService implements DeckService {
                     } else {
                         addCardFromLine(line, deck);
                     }
-
                 }
+                listener.publishProgress(++linesRead);
             }
         } catch (IOException e) {
             throw new DeckNotFoundException(e);
@@ -101,8 +103,8 @@ public class TappedOutDeckService implements DeckService {
     }
 
     @Override
-    public Deck deckFromDeckname(Deckname deckname) throws DeckNotFoundException {
-        return readFromTextFile(deckname.getName());
+    public Deck deckFromDeckname(Deckname deckname, JobProgressListener listener) throws DeckNotFoundException {
+        return readFromTextFile(deckname.getName(), listener);
     }
 
     @Override

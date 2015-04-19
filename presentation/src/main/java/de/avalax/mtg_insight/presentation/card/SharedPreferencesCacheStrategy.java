@@ -10,6 +10,8 @@ import de.avalax.mtg_insight.application.port.adapter.CacheStrategy;
 import de.avalax.mtg_insight.domain.model.card.Card;
 import de.avalax.mtg_insight.domain.model.card.Creature;
 import de.avalax.mtg_insight.domain.model.card.GenericCard;
+import de.avalax.mtg_insight.domain.model.card.Land;
+import de.avalax.mtg_insight.domain.model.card.Planeswalker;
 
 public class SharedPreferencesCacheStrategy implements CacheStrategy {
 
@@ -59,6 +61,12 @@ public class SharedPreferencesCacheStrategy implements CacheStrategy {
         switch (cardType) {
             case "Creature":
                 card = gson.fromJson(element.get(1), Creature.class);
+                break;
+            case "Planeswalker":
+                card = gson.fromJson(element.get(1), Planeswalker.class);
+                break;
+            case "Land":
+                card = gson.fromJson(element.get(1), Land.class);
                 break;
             default:
                 card = gson.fromJson(element.get(1), GenericCard.class);

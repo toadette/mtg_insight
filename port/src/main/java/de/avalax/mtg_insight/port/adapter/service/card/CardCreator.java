@@ -39,12 +39,7 @@ public class CardCreator {
             return cardBuilder.enchantmentCard().build();
         }
         if (isCardFromType(type, CARD_TYPE_PLANESWALKER)) {
-            LoyaltyPoints loyaltyPoints = new LoyaltyPoints() {
-                @Override
-                public int loyaltyPoints() {
-                    return Integer.valueOf(loyalty);
-                }
-            };
+            LoyaltyPoints loyaltyPoints = new LoyaltyPoints(Integer.valueOf(loyalty));
             return cardBuilder.planeswalkerCard(loyaltyPoints).build();
         }
         if (isCardFromType(type, CARD_TYPE_INSTANT)) {

@@ -118,12 +118,7 @@ public class CardBuilderTest {
 
     @Test
     public void planeswalkerGiven_shouldBuildPlaneswalkerCard() throws Exception {
-        LoyaltyPoints loyaltyPoints = new LoyaltyPoints() {
-            @Override
-            public int loyaltyPoints() {
-                return 4;
-            }
-        };
+        LoyaltyPoints loyaltyPoints = new LoyaltyPoints(4);
         CardBuilder sameCardBuilder = cardBuilder.planeswalkerCard(loyaltyPoints);
 
         Card card = cardBuilder.build();

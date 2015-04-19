@@ -18,7 +18,6 @@ import de.avalax.mtg_insight.domain.model.card.Planeswalker;
 import de.avalax.mtg_insight.domain.model.card.Sorcery;
 
 public class SharedPreferencesCacheStrategy implements CacheStrategy {
-
     private final Gson gson;
     private SharedPreferences sharedPreferences;
 
@@ -35,32 +34,21 @@ public class SharedPreferencesCacheStrategy implements CacheStrategy {
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(cardname, jsonFromCard(card));
-        editor.apply();
-    }
-
-    private String jsonFromCard(Card card) {
-        switch (card.getClass().getSimpleName()) {
-            case "Creature":
-                return jsonFromCard((Creature) card);
-            default:
-                Object[] json = {card.getClass().getSimpleName(), card};
-                return gson.toJson(json);
+        if (!editor.commit()) {
+            Log.d("unable to cache", cardname);
         }
     }
 
-    private String jsonFromCard(Creature creature) {
-        Object[] json = {creature.getClass().getSimpleName(), creature};
+    private String jsonFromCard(Card card) {
+        Object[] json = {card.getClass().getSimpleName(), card};
         return gson.toJson(json);
     }
 
     @Override
     public Card get(String cardname) {
-        long startTime = System.currentTimeMillis();
         String jsonCard = sharedPreferences.getString(cardname, null);
         if (jsonCard == null) {
-            long endTime = System.currentTimeMillis();
-            long duration = (endTime - startTime) / 1000;
-            Log.d(cardname + " missed", String.valueOf(duration));
+            Log.d("card not in cache", cardname);
             return null;
         }
         JsonArray element = gson.fromJson(jsonCard, JsonArray.class);
@@ -91,9 +79,6 @@ public class SharedPreferencesCacheStrategy implements CacheStrategy {
             default:
                 card = gson.fromJson(element.get(1), GenericCard.class);
         }
-        long endTime = System.currentTimeMillis();
-        long duration = (endTime - startTime) / 1000;
-        Log.d(cardname + " hit", String.valueOf(duration));
         return card;
     }
 }

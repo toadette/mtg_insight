@@ -61,16 +61,6 @@ public class SharedPreferencesCacheStrategyTest {
         return gson.toJson(jsonObject);
     }
 
-    private String jsonForCard(Planeswalker card) {
-        Object[] jsonObject = {card.getClass().getSimpleName(), card};
-        return gson.toJson(jsonObject);
-    }
-
-    private String jsonForCard(Creature card) {
-        Object[] jsonObject = {card.getClass().getSimpleName(), card};
-        return gson.toJson(jsonObject);
-    }
-
     private CacheStrategy cacheStrategy;
 
     private SharedPreferences sharedPreferences;
@@ -114,7 +104,7 @@ public class SharedPreferencesCacheStrategyTest {
     public void getCreatureCardFromCache_shouldReturnStoredSharedPreference() throws Exception {
         CreatureBody creatureBody = new CreatureBody(12, 24);
         Creature card = (Creature) new CardBuilder("cardname").creatureCard(creatureBody, Collections.<Ability>emptyList()).build();
-        sharedPreferences.edit().putString("cardname", jsonForCard(card)).apply();
+        cacheStrategy.put("cardname", card);
 
         Card cardFromCache = cacheStrategy.get("cardname");
 
@@ -128,13 +118,13 @@ public class SharedPreferencesCacheStrategyTest {
     public void getPlaneswalkerCardFromCache_shouldReturnStoredSharedPreference() throws Exception {
         LoyaltyPoints loyaltyPoints = new LoyaltyPoints(6);
         Planeswalker card = (Planeswalker) new CardBuilder("cardname").planeswalkerCard(loyaltyPoints).build();
-        sharedPreferences.edit().putString("cardname", jsonForCard(card)).apply();
+        cacheStrategy.put("cardname", card);
 
         Card cardFromCache = cacheStrategy.get("cardname");
 
         assertThat(cardFromCache, instanceOf(Planeswalker.class));
         assertThat(cardFromCache.name(), equalTo("cardname"));
-        assertThat(((Planeswalker) cardFromCache).loyaltyPoints().loyaltyPoints(), equalTo(6));
+        assertThat(((Planeswalker) cardFromCache).loyaltyPoints().loyaltyPoints(), equalTo(loyaltyPoints.loyaltyPoints()));
     }
 
     @Test

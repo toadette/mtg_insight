@@ -21,7 +21,7 @@ import de.avalax.mtg_insight.presentation.card.PlaymatFragment;
 import de.avalax.mtg_insight.presentation.card.CardHeaderView;
 import de.avalax.mtg_insight.presentation.card.CardRepresentationToDrawable;
 import de.avalax.mtg_insight.presentation.card.CardView;
-import de.avalax.mtg_insight.presentation.card.SharedPreferencesCacheStrategy;
+import de.avalax.mtg_insight.presentation.persistence.SharedPreferencesCacheStrategy;
 import de.avalax.mtg_insight.presentation.launcher.LauncherFragment;
 
 @Module(injects = {

@@ -1,4 +1,4 @@
-package de.avalax.mtg_insight.presentation.card;
+package de.avalax.mtg_insight.presentation.persistence;
 
 import android.content.Context;
 import android.content.SharedPreferences;

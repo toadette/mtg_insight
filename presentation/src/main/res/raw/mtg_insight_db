@@ -1,0 +1,1 @@
+CREATE TABLE cards(cardname VARCHAR UNIQUE, json TEXT);

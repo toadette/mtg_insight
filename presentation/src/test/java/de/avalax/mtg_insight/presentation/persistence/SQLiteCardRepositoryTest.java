@@ -16,6 +16,7 @@ import de.avalax.mtg_insight.domain.model.card.Card;
 import de.avalax.mtg_insight.domain.model.card.CardBuilder;
 import de.avalax.mtg_insight.domain.model.card.CardRepository;
 import de.avalax.mtg_insight.domain.model.exception.CardNotFoundException;
+import de.avalax.mtg_insight.port.adapter.service.card.TranslatingCardService;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -31,7 +32,7 @@ public class SQLiteCardRepositoryTest {
     public void setUp() throws Exception {
         Context context = RuntimeEnvironment.application.getApplicationContext();
         sqLiteOpenHelper = new MtgInsightSQLiteOpenHelper("SQLiteCardRepositoryTest", 1, context, R.raw.mtg_insight_db);
-        cardRepository = new SQLiteCardRepository(sqLiteOpenHelper);
+        cardRepository = new SQLiteCardRepository(sqLiteOpenHelper, new TranslatingCardService());
     }
 
     @Test

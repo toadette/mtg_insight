@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 
 import de.avalax.mtg_insight.domain.model.card.Card;
 
-public class CardInJsonAdapter {
+class CardInJsonAdapter {
 
     private final Gson gson;
 

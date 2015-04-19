@@ -13,7 +13,7 @@ import de.avalax.mtg_insight.domain.model.card.Land;
 import de.avalax.mtg_insight.domain.model.card.Planeswalker;
 import de.avalax.mtg_insight.domain.model.card.Sorcery;
 
-public class JsonInCardAdapter {
+class JsonInCardAdapter {
     private final Gson gson;
 
     public JsonInCardAdapter() {

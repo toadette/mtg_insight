@@ -14,6 +14,7 @@ import de.avalax.mtg_insight.application.port.adapter.CachedCardService;
 import de.avalax.mtg_insight.domain.model.card.CardRepository;
 import de.avalax.mtg_insight.domain.model.deck.DeckService;
 import de.avalax.mtg_insight.port.adapter.service.ability.AbilityTokenizer;
+import de.avalax.mtg_insight.port.adapter.service.card.TranslatingCardService;
 import de.avalax.mtg_insight.port.adapter.service.gatherer.GathererCardService;
 import de.avalax.mtg_insight.domain.model.card.CardService;
 import de.avalax.mtg_insight.port.adapter.service.color.ColorMatcher;
@@ -80,7 +81,13 @@ public class MtgInsightModule {
 
     @Provides
     @Singleton
-    CardRepository provideCardRepository(SQLiteOpenHelper sqLiteOpenHelper) {
-        return new SQLiteCardRepository(sqLiteOpenHelper);
+    CardRepository provideCardRepository(SQLiteOpenHelper sqLiteOpenHelper, TranslatingCardService translatingCardService) {
+        return new SQLiteCardRepository(sqLiteOpenHelper, translatingCardService);
+    }
+
+    @Provides
+    @Singleton
+    TranslatingCardService provideTranslatingCardService() {
+        return new TranslatingCardService();
     }
 }

@@ -8,19 +8,16 @@ import android.database.sqlite.SQLiteOpenHelper;
 import de.avalax.mtg_insight.domain.model.card.Card;
 import de.avalax.mtg_insight.domain.model.card.CardRepository;
 import de.avalax.mtg_insight.domain.model.exception.CardNotFoundException;
-import de.avalax.mtg_insight.port.adapter.service.card.CardInJsonAdapter;
-import de.avalax.mtg_insight.port.adapter.service.card.JsonInCardAdapter;
+import de.avalax.mtg_insight.port.adapter.service.card.TranslatingCardService;
 
 public class SQLiteCardRepository implements CardRepository {
     protected static final String TABLE_NAME = "cards";
     private SQLiteOpenHelper sqLiteOpenHelper;
-    private CardInJsonAdapter cardInJsonAdapter;
-    private JsonInCardAdapter jsonInCardAdapter;
+    private TranslatingCardService translatingCardService;
 
-    public SQLiteCardRepository(SQLiteOpenHelper sqLiteOpenHelper) {
+    public SQLiteCardRepository(SQLiteOpenHelper sqLiteOpenHelper, TranslatingCardService translatingCardService) {
         this.sqLiteOpenHelper = sqLiteOpenHelper;
-        cardInJsonAdapter = new CardInJsonAdapter();
-        jsonInCardAdapter = new JsonInCardAdapter();
+        this.translatingCardService = translatingCardService;
     }
 
     @Override
@@ -36,7 +33,7 @@ public class SQLiteCardRepository implements CardRepository {
         Cursor cursor = database.query(TABLE_NAME, new String[]{"json"},
                 "cardname=?", new String[]{cardName}, null, null, null);
         if (cursor.moveToFirst()) {
-            Card card = jsonInCardAdapter.createFromJson(cursor.getString(0));
+            Card card = translatingCardService.cardFromJson(cursor.getString(0));
             cursor.close();
             database.close();
             return card;
@@ -56,7 +53,7 @@ public class SQLiteCardRepository implements CardRepository {
         ContentValues values = new ContentValues();
 
         values.put("cardname", card.name());
-        values.put("json", cardInJsonAdapter.fromCard(card));
+        values.put("json", translatingCardService.jsonFromCard(card));
         return values;
     }
 }

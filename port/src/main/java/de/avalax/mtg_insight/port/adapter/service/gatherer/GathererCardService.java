@@ -3,10 +3,15 @@ package de.avalax.mtg_insight.port.adapter.service.gatherer;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import de.avalax.mtg_insight.domain.model.card.Card;
 import de.avalax.mtg_insight.domain.model.exception.CardCorruptedException;
@@ -32,15 +37,62 @@ public class GathererCardService implements CardService {
 
     @Override
     public Card cardFromCardname(String cardname) throws CardNotFoundException, CardCorruptedException {
+        Document doc=null;
         try {
-            Document doc = Jsoup.connect(host + getCardNameForSearch(cardname)).get();
+            doc = Jsoup.connect(host + getCardNameForSearch(cardname)).get();
             GathererHelper gathererHelper = new GathererHelper(abilityTokenizer, colorMatcher, manaTokenizer);
             return gathererHelper.getCard(getType(doc), getName(doc), getDescription(doc), getManaFromElement(getMana(doc)), getPowerToughness(doc));
         } catch (CardCorruptedException e) {
             throw new CardCorruptedException(e);
         } catch (Exception e) {
-            throw new CardNotFoundException(e);
+            Card cardResultinList = null;
+            try {
+                cardResultinList = findCardResultinList(doc,cardname);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+            if(cardResultinList==null) {
+                throw new CardNotFoundException(e);
+            }
+            return cardResultinList;
         }
+    }
+
+    private Card findCardResultinList(Document doc, String cardname) throws IOException, CardCorruptedException {
+        if(doc!=null) {
+            Elements cardItemTable = doc.getElementsByClass("cardItemTable");
+            if(cardItemTable!=null){
+                Element element = cardItemTable.get(0).child(0).child(0).child(0);
+                for(Element child: element.children()){
+                    Element child1 = child.child(0).child(0);
+                    Elements middleCol = child1.getElementsByClass("middleCol");
+                    if(middleCol!=null){
+                        Element cardInfo = middleCol.get(0).child(1);
+                        if(cardInfo!=null){
+                            Elements cardTitle = cardInfo.getElementsByClass("cardTitle");
+                            if(cardTitle!=null){
+                                String name = cardTitle.get(0).child(0).text();
+                                Element href = cardTitle.get(0).child(0).attr("href", "");
+                                cardTitle.get(0).child(0).attr("href");
+                                if(name.equals(cardname)){
+                                    String attr = child.child(0).child(0).getElementsByClass("leftCol").get(0).child(1).attr("href");
+                                    Pattern pattern=Pattern.compile(".\\?multiverseid.");
+                                    Matcher matcher= pattern.matcher(attr);
+                                    if(matcher.find()){
+                                        String substring = attr.substring(attr.indexOf("?") + 1, attr.length());
+                                        String url="http://gatherer.wizards.com/Pages/Card/Details.aspx?"+substring;
+                                        doc = Jsoup.connect(url).get();
+                                        GathererHelper gathererHelper = new GathererHelper(abilityTokenizer, colorMatcher, manaTokenizer);
+                                        return gathererHelper.getCard(getType(doc), getName(doc), getDescription(doc), getManaFromElement(getMana(doc)), getPowerToughness(doc));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     private Element getElementById(Document doc, String id) {

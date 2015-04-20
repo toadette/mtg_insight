@@ -41,5 +41,11 @@ public class GathererCardServiceIntegrationTest {
         TestHelper.assertCardColor(card, 3, new Color[]{Color.BLUE, Color.RED, Color.WHITE});
         TestHelper.assertCreature((Creature) card, 3, 2);
     }
-
+    @Test
+    public void cardFromCardname_shouldReturnMultipleResult() throws Exception {
+        String cardname = "Forest";
+        Card card = cardService.cardFromCardname(cardname);
+        TestHelper.assertCard(cardname, card, Creature.class);
+        assertThat(card.convertedManaCost().manaCostAsList(), hasSize(6));
+    }
 }

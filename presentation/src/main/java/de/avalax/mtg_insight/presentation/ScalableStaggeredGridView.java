@@ -1,14 +1,18 @@
 package de.avalax.mtg_insight.presentation;
 
 import android.content.Context;
+import android.support.v4.view.MotionEventCompat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
-import android.view.View;
+import android.widget.LinearLayout;
 
 import com.etsy.android.grid.StaggeredGridView;
 
 public class ScalableStaggeredGridView extends StaggeredGridView {
+
+    private float scaleFactor;
+    private ScaleGestureDetector scaleDetector;
 
     public ScalableStaggeredGridView(Context context) {
         super(context);
@@ -25,34 +29,36 @@ public class ScalableStaggeredGridView extends StaggeredGridView {
         init(context);
     }
 
-    private void init(final Context context) {
-        setOnTouchListener(new View.OnTouchListener() {
+    private void init(Context context) {
+        scaleDetector = new ScaleGestureDetector(context, new ScaleListener());
+        scaleFactor = 1.f;
+    }
 
-            private ScaleGestureDetector mScaleDetector = new ScaleGestureDetector(context, new ScaleListener());
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        scaleDetector.onTouchEvent(event);
+        final int action = MotionEventCompat.getActionMasked(event);
+        if (action == MotionEvent.ACTION_MOVE) {
+            return super.onTouchEvent(event);
+        }
+        return true;
+    }
 
-            private float mScaleFactor = 1.f;
-
-            public boolean onTouch(View v, MotionEvent event) {
-                if (!mScaleDetector.onTouchEvent(event)) {
-                    onTouchEvent(event);
-                }
-                return true;
+    class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
+        @Override
+        public boolean onScale(ScaleGestureDetector detector) {
+            if (scaleFactor == 1.f) {
+                setLayoutParams(new LinearLayout.LayoutParams(getWidth(), getHeight()));
             }
+            scaleFactor *= detector.getScaleFactor();
 
-            class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
-                @Override
-                public boolean onScale(ScaleGestureDetector detector) {
-                    mScaleFactor *= detector.getScaleFactor();
-
-                    // Don't let the object get too small or too large.
-                    mScaleFactor = Math.max(0.1f, Math.min(mScaleFactor, 5.0f));
-
-                    setScaleX(mScaleFactor);
-                    setScaleY(mScaleFactor);
-                    invalidate();
-                    return true;
-                }
-            }
-        });
+            scaleFactor = Math.max(0.1f, Math.min(scaleFactor, 5.0f));
+            setPivotX(0);
+            setPivotY(0);
+            setScaleX(scaleFactor);
+            setScaleY(scaleFactor);
+            invalidate();
+            return true;
+        }
     }
 }

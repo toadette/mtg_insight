@@ -12,11 +12,26 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 
 public class TestHelper {
-    public static void assertMana(Card card, int manaCostPosition, int manaPosition, Mana mana) {
+    private static void assertMana(Card card, int manaCostPosition, int manaPosition, Mana mana) {
         assertThat(card.convertedManaCost().manaCostAsList().get(manaCostPosition).mana().get(manaPosition), equalTo(mana));
+    }
+
+    public static void assertMana(Card card, Mana... mana) {
+        for (int i=0;i<mana.length;i++) {
+            assertMana(card,i,0,mana[i]);
+        }
+    }
+
+    public static void assertHybridMana(Card card, Mana[]... hybridMana) {
+        for (int i=0;i<hybridMana.length;i++) {
+            for (int j=0;j<hybridMana[i].length;j++) {
+                assertMana(card,i,j,hybridMana[i][j]);
+            }
+        }
     }
 
     public static void assertCard(String cardname, Card card, Class<?> cardType) {

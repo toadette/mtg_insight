@@ -33,12 +33,7 @@ public class GathererCardServiceIntegrationTest {
         Card card = cardService.cardFromCardname(cardname);
         TestHelper.assertCard(cardname, card, Creature.class);
         assertThat(card.convertedManaCost().manaCostAsList(), hasSize(6));
-        TestHelper.assertMana(card, 0, 0, Mana.COLORLESS);
-        TestHelper.assertMana(card, 1, 0, Mana.COLORLESS);
-        TestHelper.assertMana(card, 2, 0, Mana.COLORLESS);
-        TestHelper.assertMana(card, 3, 0, Mana.BLUE);
-        TestHelper.assertMana(card, 4, 0, Mana.RED);
-        TestHelper.assertMana(card, 5, 0, Mana.WHITE);
+        TestHelper.assertMana(card, Mana.COLORLESS, Mana.COLORLESS, Mana.COLORLESS, Mana.BLUE, Mana.RED, Mana.WHITE);
         TestHelper.assertCardColor(card, 3, new Color[]{Color.BLUE, Color.RED, Color.WHITE});
         TestHelper.assertCreature((Creature) card, 3, 2);
     }

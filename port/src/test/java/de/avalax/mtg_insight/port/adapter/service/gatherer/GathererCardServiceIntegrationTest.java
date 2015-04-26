@@ -8,13 +8,16 @@ import de.avalax.mtg_insight.domain.model.card.Creature;
 import de.avalax.mtg_insight.domain.model.card.Land;
 import de.avalax.mtg_insight.domain.model.color.Color;
 import de.avalax.mtg_insight.domain.model.mana.Mana;
-import de.avalax.mtg_insight.port.adapter.service.TestHelper;
 import de.avalax.mtg_insight.port.adapter.service.ability.AbilityTokenizer;
 import de.avalax.mtg_insight.port.adapter.service.color.ColorMatcher;
 import de.avalax.mtg_insight.port.adapter.service.manaCost.ManaTokenizer;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.assertThat;
+import static de.avalax.mtg_insight.port.adapter.service.TestHelper.assertCard;
+import static de.avalax.mtg_insight.port.adapter.service.TestHelper.assertCardColor;
+import static de.avalax.mtg_insight.port.adapter.service.TestHelper.assertColorlessCard;
+import static de.avalax.mtg_insight.port.adapter.service.TestHelper.assertConvertedManaCostOfZero;
+import static de.avalax.mtg_insight.port.adapter.service.TestHelper.assertCreature;
+import static de.avalax.mtg_insight.port.adapter.service.TestHelper.assertMana;
 
 
 public class GathererCardServiceIntegrationTest {
@@ -30,20 +33,23 @@ public class GathererCardServiceIntegrationTest {
     @Test
     public void cardFromCardname_shouldReturnCreatureWithSingleMana() throws Exception {
         String cardname = "Narset, Enlightened Master";
+
         Card card = cardService.cardFromCardname(cardname);
-        TestHelper.assertCard(cardname, card, Creature.class);
-        assertThat(card.convertedManaCost().manaCostAsList(), hasSize(6));
-        TestHelper.assertMana(card, Mana.COLORLESS, Mana.COLORLESS, Mana.COLORLESS, Mana.BLUE, Mana.RED, Mana.WHITE);
-        TestHelper.assertCardColor(card, 3, new Color[]{Color.BLUE, Color.RED, Color.WHITE});
-        TestHelper.assertCreature((Creature) card, 3, 2);
+
+        assertCard(card, cardname, Creature.class);
+        assertMana(card, Mana.COLORLESS, Mana.COLORLESS, Mana.COLORLESS, Mana.BLUE, Mana.RED, Mana.WHITE);
+        assertCardColor(card, Color.BLUE, Color.RED, Color.WHITE);
+        assertCreature(card, 3, 2);
     }
 
     @Test
     public void cardFromCardname_shouldReturnMultipleResult() throws Exception {
         String cardname = "Forest";
+
         Card card = cardService.cardFromCardname(cardname);
-        TestHelper.assertCard(cardname, card, Land.class);
-        assertThat(card.convertedManaCost().manaCostAsList(), hasSize(0));
-        TestHelper.assertCardColor(card, 0, new Color[]{});
+
+        assertCard(card, cardname, Land.class);
+        assertConvertedManaCostOfZero(card);
+        assertColorlessCard(card);
     }
 }

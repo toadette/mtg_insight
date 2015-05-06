@@ -52,8 +52,8 @@ public class CardView extends LinearLayout {
         } else {
             setBackground(cardRepresentationToDrawable.cardBackgroundFrom(cardRepresentation));
         }
-        if (cardRepresentation.isCreature()) {
-            creatureBody.setText(cardRepresentation.power() + " / " + cardRepresentation.toughness());
+        if (cardRepresentation.hasPowerToughness()) {
+            creatureBody.setText(cardRepresentation.powerToughness());
         } else {
             creatureBody.setVisibility(INVISIBLE);
         }

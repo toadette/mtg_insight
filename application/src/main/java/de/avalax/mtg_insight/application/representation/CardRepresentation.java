@@ -3,6 +3,7 @@ package de.avalax.mtg_insight.application.representation;
 import de.avalax.mtg_insight.domain.model.card.Card;
 import de.avalax.mtg_insight.domain.model.card.Creature;
 import de.avalax.mtg_insight.domain.model.card.CreatureBody;
+import de.avalax.mtg_insight.domain.model.card.Planeswalker;
 
 public class CardRepresentation {
     private static final String STAR_PT = "*";
@@ -56,22 +57,18 @@ public class CardRepresentation {
         }
     }
 
-    public boolean isCreature() {
-        return card instanceof Creature;
+    public boolean hasPowerToughness() {
+        return card instanceof Creature || card instanceof Planeswalker;
     }
 
-    public String power() {
-        if (!isCreature()) {
-            return null;
+    public String powerToughness() {
+        if (!hasPowerToughness()) {
+            return "";
         }
-        return bodyAttributeStringFrom(creatureBody().power());
-    }
-
-    public String toughness() {
-        if (!isCreature()) {
-            return null;
+        if (card instanceof Creature) {
+            return bodyAttributeStringFrom(creatureBody().power()) + " / " + bodyAttributeStringFrom(creatureBody().toughness());
         }
-        return bodyAttributeStringFrom(creatureBody().toughness());
+        return String.valueOf(((Planeswalker) card).loyaltyPoints().loyaltyPoints());
     }
 
     private String bodyAttributeStringFrom(int power) {

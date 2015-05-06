@@ -45,7 +45,7 @@ public class PlaymatFragment extends Fragment implements DeckServiceResponse {
     }
 
     private void addDummyCard() {
-        new DeckServiceTask(this, deckService, progressBar).execute("from-the-grave-to-the-cradle");
+        new DeckServiceTask(this, deckService, progressBar).execute("wg-raptor");
     }
 
     @Override

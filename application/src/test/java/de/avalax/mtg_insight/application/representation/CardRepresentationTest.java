@@ -10,12 +10,13 @@ import java.util.List;
 import de.avalax.mtg_insight.domain.model.card.Card;
 import de.avalax.mtg_insight.domain.model.card.CardBuilder;
 import de.avalax.mtg_insight.domain.model.card.CreatureBody;
+import de.avalax.mtg_insight.domain.model.card.LoyaltyPoints;
 import de.avalax.mtg_insight.domain.model.color.Color;
 import de.avalax.mtg_insight.domain.model.mana.ConvertedManaCost;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
 
+import static org.hamcrest.Matchers.isEmptyString;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static org.hamcrest.core.IsNull.nullValue;
 import static org.junit.Assert.assertThat;
 
 @RunWith(HierarchicalContextRunner.class)
@@ -79,20 +80,14 @@ public class CardRepresentationTest {
 
     @Test
     public void genericCard_shouldBeNoCreature() throws Exception {
-        boolean isCreature = cardRepresentation.isCreature();
+        boolean isCreature = cardRepresentation.hasPowerToughness();
         assertThat(isCreature, equalTo(Boolean.FALSE));
     }
 
     @Test
-    public void genericCard_shouldReturnNullPower() throws Exception {
-        String creatureBody = cardRepresentation.power();
-        assertThat(creatureBody, nullValue());
-    }
-
-    @Test
-    public void genericCard_shouldReturnNullToughness() throws Exception {
-        String creatureBody = cardRepresentation.toughness();
-        assertThat(creatureBody, nullValue());
+    public void genericCard_shouldReturnEmptyPowerToughness() throws Exception {
+        String creatureBody = cardRepresentation.powerToughness();
+        assertThat(creatureBody, isEmptyString());
     }
 
     public class color {
@@ -161,21 +156,16 @@ public class CardRepresentationTest {
 
         @Test
         public void creatureRepresentation_shouldBeACreature() throws Exception {
-            boolean isCreature = cardRepresentation.isCreature();
+            boolean isCreature = cardRepresentation.hasPowerToughness();
             assertThat(isCreature, equalTo(Boolean.TRUE));
         }
 
         @Test
         public void creatureRepresentation_shouldReturnCreaturePower() throws Exception {
-            String creatureBodyFromRepresentation = cardRepresentation.power();
-            assertThat(creatureBodyFromRepresentation, equalTo(String.valueOf(CREATURE_POWER)));
+            String creatureBodyFromRepresentation = cardRepresentation.powerToughness();
+            assertThat(creatureBodyFromRepresentation, equalTo(CREATURE_POWER + " / " + CREATURE_TOUGHNESS));
         }
 
-        @Test
-        public void creatureRepresentation_shouldReturnCreatureToughness() throws Exception {
-            String creatureBodyFromRepresentation = cardRepresentation.toughness();
-            assertThat(creatureBodyFromRepresentation, equalTo(String.valueOf(CREATURE_TOUGHNESS)));
-        }
     }
 
     public class creatureRepresentationWithStarPowerToughness {
@@ -194,20 +184,36 @@ public class CardRepresentationTest {
 
         @Test
         public void creatureRepresentation_shouldBeACreature() throws Exception {
-            boolean isCreature = cardRepresentation.isCreature();
-            assertThat(isCreature, equalTo(Boolean.TRUE));
+            boolean hasPowerToughness = cardRepresentation.hasPowerToughness();
+            assertThat(hasPowerToughness, equalTo(Boolean.TRUE));
         }
 
         @Test
         public void creatureRepresentation_shouldReturnCreatureStarPower() throws Exception {
-            String creatureBodyFromRepresentation = cardRepresentation.power();
-            assertThat(creatureBodyFromRepresentation, equalTo("*"));
+            String creatureBodyFromRepresentation = cardRepresentation.powerToughness();
+            assertThat(creatureBodyFromRepresentation, equalTo("* / *"));
+        }
+    }
+
+    public class planeswalkerRepresentationWithLoyaltyPoints {
+        public static final int LOYALTY_POINTS = 42;
+
+        @Before
+        public void setUp() throws Exception {
+            Card planeswalker = new CardBuilder("planeswalker").planeswalkerCard(new LoyaltyPoints(LOYALTY_POINTS)).build();
+            cardRepresentation = new CardRepresentation(planeswalker);
         }
 
         @Test
-        public void creatureRepresentation_shouldReturnCreatureStartToughness() throws Exception {
-            String creatureBodyFromRepresentation = cardRepresentation.toughness();
-            assertThat(creatureBodyFromRepresentation, equalTo("*"));
+        public void planeswalkerRepresentation_shouldHavePowerToughness() throws Exception {
+            boolean hasPowerToughness = cardRepresentation.hasPowerToughness();
+            assertThat(hasPowerToughness, equalTo(Boolean.TRUE));
+        }
+
+        @Test
+        public void planeswalkerRepresentation_shouldReturnLoyaltyPoints() throws Exception {
+            String creatureBodyFromRepresentation = cardRepresentation.powerToughness();
+            assertThat(creatureBodyFromRepresentation, equalTo(String.valueOf(LOYALTY_POINTS)));
         }
     }
 }

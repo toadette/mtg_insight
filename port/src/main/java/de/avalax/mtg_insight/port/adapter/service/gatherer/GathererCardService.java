@@ -37,7 +37,7 @@ public class GathererCardService implements CardService {
 
     @Override
     public Card cardFromCardname(String cardname) throws CardNotFoundException, CardCorruptedException {
-        Document doc=null;
+        Document doc = null;
         try {
             doc = Jsoup.connect(host + getCardNameForSearch(cardname)).get();
             GathererHelper gathererHelper = new GathererHelper(abilityTokenizer, colorMatcher, manaTokenizer);
@@ -47,11 +47,11 @@ public class GathererCardService implements CardService {
         } catch (Exception e) {
             Card cardResultinList = null;
             try {
-                cardResultinList = findCardResultinList(doc,cardname);
+                cardResultinList = findCardResultinList(doc, cardname);
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
-            if(cardResultinList==null) {
+            if (cardResultinList == null) {
                 throw new CardNotFoundException(e);
             }
             return cardResultinList;
@@ -59,28 +59,28 @@ public class GathererCardService implements CardService {
     }
 
     private Card findCardResultinList(Document doc, String cardname) throws IOException, CardCorruptedException {
-        if(doc!=null) {
+        if (doc != null) {
             Elements cardItemTable = doc.getElementsByClass("cardItemTable");
-            if(cardItemTable!=null){
+            if (cardItemTable != null) {
                 Element element = cardItemTable.get(0).child(0).child(0).child(0);
-                for(Element child: element.children()){
+                for (Element child : element.children()) {
                     Element child1 = child.child(0).child(0);
                     Elements middleCol = child1.getElementsByClass("middleCol");
-                    if(middleCol!=null){
+                    if (middleCol != null) {
                         Element cardInfo = middleCol.get(0).child(1);
-                        if(cardInfo!=null){
+                        if (cardInfo != null) {
                             Elements cardTitle = cardInfo.getElementsByClass("cardTitle");
-                            if(cardTitle!=null){
+                            if (cardTitle != null) {
                                 String name = cardTitle.get(0).child(0).text();
                                 Element href = cardTitle.get(0).child(0).attr("href", "");
                                 cardTitle.get(0).child(0).attr("href");
-                                if(name.equals(cardname)){
+                                if (name.equals(cardname)) {
                                     String attr = child.child(0).child(0).getElementsByClass("leftCol").get(0).child(1).attr("href");
-                                    Pattern pattern=Pattern.compile(".\\?multiverseid.");
-                                    Matcher matcher= pattern.matcher(attr);
-                                    if(matcher.find()){
+                                    Pattern pattern = Pattern.compile(".\\?multiverseid.");
+                                    Matcher matcher = pattern.matcher(attr);
+                                    if (matcher.find()) {
                                         String substring = attr.substring(attr.indexOf("?") + 1, attr.length());
-                                        String url="http://gatherer.wizards.com/Pages/Card/Details.aspx?"+substring;
+                                        String url = "http://gatherer.wizards.com/Pages/Card/Details.aspx?" + substring;
                                         doc = Jsoup.connect(url).get();
                                         GathererHelper gathererHelper = new GathererHelper(abilityTokenizer, colorMatcher, manaTokenizer);
                                         return gathererHelper.getCard(getType(doc), getName(doc), getDescription(doc), getManaFromElement(getMana(doc)), getPowerToughness(doc));
@@ -116,8 +116,8 @@ public class GathererCardService implements CardService {
 
     private String getDescription(Document doc) {
         Element elementById = getElementById(doc, GathererConstants.DESCRIPTION_TEXT);
-        if (elementById != null) {
-            return elementById.toString();
+        if (elementById != null && elementById.children().size() > 0 && elementById.child(0).childNodes().size() > 0) {
+            return elementById.child(0).childNodes().get(0).toString();
         }
         return "";
     }

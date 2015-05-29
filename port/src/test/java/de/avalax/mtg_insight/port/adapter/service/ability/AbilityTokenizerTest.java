@@ -19,7 +19,7 @@ import static org.hamcrest.Matchers.hasSize;
  */
 public class AbilityTokenizerTest {
 
-    private String description;
+    private String description="";
 
     public void testCase1() throws Exception {
         loadTestdataFromResource(getClass().getResourceAsStream("1_testcase.properties"));
@@ -39,7 +39,7 @@ public class AbilityTokenizerTest {
     public void getAbilitiesFromDescription_ShouldReturnEmptyList() throws Exception {
         testCase1();
         AbilityTokenizer abilityTokenizer = new AbilityTokenizer();
-        List<Ability> abilitiesFromDescription = abilityTokenizer.getAbilitiesFromDescription("");
+        List<Ability> abilitiesFromDescription = abilityTokenizer.getAbilitiesFromDescription(description);
         assertThat(abilitiesFromDescription, hasSize(0));
         System.out.println(description);
     }

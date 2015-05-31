@@ -6,12 +6,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import de.avalax.mtg_insight.application.representation.CardComparator;
 import de.avalax.mtg_insight.application.representation.CardRepresentation;
 import de.avalax.mtg_insight.domain.model.card.Card;
 import de.avalax.mtg_insight.domain.model.deck.Deck;
@@ -20,13 +18,14 @@ public class DeckAdapter extends BaseAdapter {
     private List<CardRepresentation> cards;
     private Context context;
 
-    public DeckAdapter(Context context, Deck deck) {
+    public DeckAdapter(Context context, List<?> deck) {
         this.context = context;
         cards = new ArrayList<>();
         SortedMap<String, CardRepresentation> groupedCards = new TreeMap<>();
 
 
-        for (Card card : getSortedDeck(deck)) {
+        for (Object genericCard : deck) {
+            Card card = (Card) genericCard;
             if (groupedCards.containsKey(card.name())) {
                 groupedCards.get(card.name()).setCountOfCard(groupedCards.get(card.name()).count() + 1);
             } else {
@@ -35,12 +34,6 @@ public class DeckAdapter extends BaseAdapter {
         }
 
         cards.addAll(groupedCards.values());
-    }
-
-    private List<Card> getSortedDeck(Deck deck) {
-        List<Card> cardList = deck.deck();
-        Collections.sort(cardList, new CardComparator());
-        return cardList;
     }
 
     @Override

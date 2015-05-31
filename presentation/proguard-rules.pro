@@ -58,3 +58,6 @@
 -dontwarn dagger.internal.codegen.**
 -dontwarn javax.annotation.**
 -keep public class de.avalax.mtg_insight.presentation.** { *; }
+
+# TwoWayView
+-keep class org.lucasr.twowayview.** { *; }

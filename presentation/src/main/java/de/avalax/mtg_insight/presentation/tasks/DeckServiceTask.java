@@ -7,7 +7,7 @@ import android.widget.ProgressBar;
 import java.util.Collections;
 
 import de.avalax.mtg_insight.domain.model.card.Card;
-import de.avalax.mtg_insight.domain.model.deck.BasicDeck;
+import de.avalax.mtg_insight.domain.model.deck.StandardDeck;
 import de.avalax.mtg_insight.domain.model.deck.Deck;
 import de.avalax.mtg_insight.domain.model.deck.DeckService;
 import de.avalax.mtg_insight.domain.model.deck.Deckname;
@@ -33,7 +33,7 @@ public class DeckServiceTask extends AsyncTask<String, Integer, Deck> implements
             return deckService.deckFromDeckname(new Deckname(params[0]), this);
         } catch (DeckNotFoundException e) {
             Log.d("deck not found", e.getMessage(), e);
-            return new BasicDeck(new Deckname(e.getMessage()), Collections.<Card>emptyList(), Collections.<Card>emptyList());
+            return new StandardDeck(new Deckname(e.getMessage()), Collections.<Card>emptyList(), Collections.<Card>emptyList());
         }
     }
 

@@ -5,7 +5,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
+import android.widget.ListView;
 import android.widget.ProgressBar;
+
+import org.lucasr.twowayview.widget.TwoWayView;
 
 import javax.inject.Inject;
 
@@ -15,13 +19,24 @@ import de.avalax.mtg_insight.R;
 import de.avalax.mtg_insight.domain.model.deck.Deck;
 import de.avalax.mtg_insight.domain.model.deck.DeckService;
 import de.avalax.mtg_insight.presentation.MtgInsightApplication;
-import de.avalax.mtg_insight.presentation.ScalableStaggeredGridView;
 import de.avalax.mtg_insight.presentation.tasks.DeckServiceResponse;
 import de.avalax.mtg_insight.presentation.tasks.DeckServiceTask;
 
 public class PlaymatFragment extends Fragment implements DeckServiceResponse {
-    @InjectView(R.id.cardStage)
-    protected ScalableStaggeredGridView cardStage;
+    @InjectView(R.id.creatures)
+    protected GridView creatures;
+
+    @InjectView(R.id.spells)
+    protected GridView spells;
+
+    @InjectView(R.id.permanents)
+    protected GridView permanents;
+
+    @InjectView(R.id.planeswalkers)
+    protected GridView planeswalkers;
+
+    @InjectView(R.id.lands)
+    protected GridView lands;
 
     @InjectView(R.id.progressBar)
     protected ProgressBar progressBar;
@@ -50,7 +65,11 @@ public class PlaymatFragment extends Fragment implements DeckServiceResponse {
 
     @Override
     public void processFinish(Deck deck) {
-        cardStage.setAdapter(new DeckAdapter(getActivity(), deck));
+        creatures.setAdapter(new DeckAdapter(getActivity(), deck.deck().creatures()));
+        permanents.setAdapter(new DeckAdapter(getActivity(), deck.deck().permanents()));
+        spells.setAdapter(new DeckAdapter(getActivity(), deck.deck().spells()));
+        planeswalkers.setAdapter(new DeckAdapter(getActivity(), deck.deck().planeswalkers()));
+        lands.setAdapter(new DeckAdapter(getActivity(), deck.deck().lands()));
         getActivity().setTitle(deck.name().getName());
     }
 }

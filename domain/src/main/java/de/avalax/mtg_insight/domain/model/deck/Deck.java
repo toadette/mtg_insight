@@ -7,7 +7,7 @@ import de.avalax.mtg_insight.domain.model.card.Card;
 public interface Deck {
     Deckname name();
 
-    List<Card> deck();
+    CardCollection deck();
 
     List<Card> sideboard();
 }

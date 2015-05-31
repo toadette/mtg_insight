@@ -12,6 +12,7 @@ import java.util.List;
 import de.avalax.mtg_insight.domain.model.card.Ability;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasSize;
 
 /**
@@ -24,7 +25,9 @@ public class AbilityTokenizerTest {
     public void testCase1() throws Exception {
         loadTestdataFromResource(getClass().getResourceAsStream("1_testcase.properties"));
     }
-
+    public void testCase2() throws Exception {
+        loadTestdataFromResource(getClass().getResourceAsStream("2_testcase.properties"));
+    }
     private void loadTestdataFromResource(InputStream resourceAsStream) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(resourceAsStream));
         String line = br.readLine();
@@ -36,11 +39,20 @@ public class AbilityTokenizerTest {
     }
 
     @Test
-    public void getAbilitiesFromDescription_ShouldReturnEmptyList() throws Exception {
+    public void getAbilitiesFromDescription_ShouldReturnListWithAbilities() throws Exception {
         testCase1();
         AbilityTokenizer abilityTokenizer = new AbilityTokenizer();
         List<Ability> abilitiesFromDescription = abilityTokenizer.getAbilitiesFromDescription(description);
-        assertThat(abilitiesFromDescription, hasSize(0));
-        System.out.println(description);
+        assertThat(abilitiesFromDescription, hasSize(2));
+        assertThat(abilitiesFromDescription, hasItems(Ability.FIRST_STRIKE,Ability.HEXPROOF));
+    }
+
+    @Test
+    public void getAbilitiesFromDescription_ShouldReturnListWithAbilities2() throws Exception {
+        testCase2();
+        AbilityTokenizer abilityTokenizer = new AbilityTokenizer();
+        List<Ability> abilitiesFromDescription = abilityTokenizer.getAbilitiesFromDescription(description);
+        assertThat(abilitiesFromDescription, hasSize(1));
+        assertThat(abilitiesFromDescription, hasItems(Ability.VIGILANCE));
     }
 }

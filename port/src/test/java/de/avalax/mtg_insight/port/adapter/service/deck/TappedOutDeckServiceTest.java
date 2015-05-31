@@ -48,11 +48,11 @@ public class TappedOutDeckServiceTest {
         setUp1();
         Deck deck = tappedOutDeckService.deckFromDeckname(new Deckname(deckname), listener);
         assertThat(deck.name().getName(), equalTo("From the Grave, to the Cradle"));
-        assertThat(deck.deck(), hasSize(61));
+        assertThat(deck.deck(), hasSize(64));
         assertThat(deck.deck().get(0).name(), equalTo("Boneyard Wurm"));
         assertThat(deck.deck().get(1).name(), equalTo("Boneyard Wurm"));
-        assertThat(deck.deck().get(13).name(), equalTo("Elvish Mystic"));
-        assertThat(deck.deck().get(45).name(), equalTo("Swamp"));
+        assertThat(deck.deck().get(13).name(), equalTo("Drown in Filth"));
+        assertThat(deck.deck().get(45).name(), equalTo("Svogthos, the Restless Tomb"));
     }
 
     @Test(expected = DeckNotFoundException.class)
@@ -70,7 +70,7 @@ public class TappedOutDeckServiceTest {
         assertThat(deck.sideboard(), hasSize(15));
         assertThat(deck.sideboard().get(0).name(), equalTo("Celestial Purge"));
         assertThat(deck.sideboard().get(1).name(), equalTo("Celestial Purge"));
-        assertThat(deck.sideboard().get(6).name(), equalTo("Ghostly Prison"));
+        assertThat(deck.sideboard().get(6).name(), equalTo("Leyline of Sanctity"));
         assertThat(deck.sideboard().get(11).name(), equalTo("Rest in Peace"));
         assertThat(deck.sideboard().get(14).name(), equalTo("Stony Silence"));
     }

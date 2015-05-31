@@ -14,6 +14,9 @@ public class AbilityTokenizer {
     public static final String TAB = "\t";
 
     public List<Ability> getAbilitiesFromDescription(String description) {
+        if(description==null){
+            return Collections.emptyList();
+        }
         return getAbilities(getCleanString(description));
     }
 
@@ -52,10 +55,10 @@ public class AbilityTokenizer {
         if (containsOrEquals("indestructible",abilityString)) {
             return Ability.INDESTRUCTIBLE;
         }
-        if (containsOrEquals("defender",abilityString)) {
+        if (containsOrEquals("defender", abilityString)) {
             return Ability.DEFENDER;
         }
-        if (containsOrEquals("double strike",abilityString)) {
+        if (containsOrEquals("double strike", abilityString)) {
             return Ability.DOUBLE_STRIKE;
         }
         if (containsOrEquals("flash",abilityString)) {
@@ -91,6 +94,7 @@ public class AbilityTokenizer {
         return token.equalsIgnoreCase(string) || string.toLowerCase().contains(token);
     }
     private String getCleanString(String description) {
+
         return description.replace(NEWLINE, "").replace(RETURN, "").replace(TAB, "");
     }
 }

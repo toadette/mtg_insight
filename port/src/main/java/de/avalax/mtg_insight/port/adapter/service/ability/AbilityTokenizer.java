@@ -19,30 +19,77 @@ public class AbilityTokenizer {
 
     private List<Ability> getAbilities(String description) {
         List<Ability> abilities = new ArrayList<>();
+        if (description == "") {
+            return abilities;
+        }
         String[] split = description.split(",");
-        if (split.length > 0) {
+        if (split.length > 1) {
             for (String abilityString : split) {
                 abilities.add(getAbility(abilityString.trim()));
             }
-        }else{
+        } else {
             abilities.add(getAbility(description));
         }
         return abilities;
     }
 
     private Ability getAbility(String abilityString) {
-        if ("First strike".equalsIgnoreCase(abilityString)) {
+        if (containsOrEquals("First strike",abilityString)) {
             return Ability.FIRST_STRIKE;
         }
-        if ("hexproof".equalsIgnoreCase(abilityString)) {
+        if (containsOrEquals("hexproof",abilityString)) {
             return Ability.HEXPROOF;
         }
-        if("Vigilance".equalsIgnoreCase(abilityString)){
+        if (containsOrEquals("Vigilance",abilityString)) {
             return Ability.VIGILANCE;
+        }
+        if (containsOrEquals("Flying",abilityString)) {
+            return Ability.FLYING;
+        }
+        if (containsOrEquals("deathtouch",abilityString)) {
+            return Ability.DEATHTOUCH;
+        }
+        if (containsOrEquals("indestructible",abilityString)) {
+            return Ability.INDESTRUCTIBLE;
+        }
+        if (containsOrEquals("defender",abilityString)) {
+            return Ability.DEFENDER;
+        }
+        if (containsOrEquals("double strike",abilityString)) {
+            return Ability.DOUBLE_STRIKE;
+        }
+        if (containsOrEquals("flash",abilityString)) {
+            return Ability.FLASH;
+        }
+        if (containsOrEquals("intimidate",abilityString)) {
+            return Ability.INTIMIDATE;
+        }
+        if (containsOrEquals("landwalk",abilityString)) {
+            return Ability.LANDWALK;
+        }
+        if (containsOrEquals("lifelink",abilityString)) {
+            return Ability.LIFELINK;
+        }
+        if (containsOrEquals("protection",abilityString)) {
+            return Ability.PROTECTION;
+        }
+        if (containsOrEquals("reach",abilityString)) {
+            return Ability.REACH;
+        }
+        if (containsOrEquals("shroud", abilityString)) {
+            return Ability.SHROUD;
+        }
+        if (containsOrEquals("trample", abilityString)) {
+            return Ability.TRAMPLE;
+        }
+        if (containsOrEquals("haste",abilityString)) {
+            return Ability.HASTE;
         }
         return Ability.FIRST_STRIKE;
     }
-
+    private boolean containsOrEquals(String token,String string){
+        return token.equalsIgnoreCase(string) || string.toLowerCase().contains(token);
+    }
     private String getCleanString(String description) {
         return description.replace(NEWLINE, "").replace(RETURN, "").replace(TAB, "");
     }

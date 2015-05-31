@@ -1,5 +1,6 @@
 package de.avalax.mtg_insight.port.adapter.service;
 
+import de.avalax.mtg_insight.domain.model.card.Ability;
 import de.avalax.mtg_insight.domain.model.card.Card;
 import de.avalax.mtg_insight.domain.model.card.Creature;
 import de.avalax.mtg_insight.domain.model.card.Planeswalker;
@@ -53,7 +54,15 @@ public class TestHelper {
         assertThat(card.colorOfCard(), hasSize(cardColors.length));
         assertThat(card.colorOfCard(), hasItems(cardColors));
     }
-
+    public static void assertAbilities(Card card, Ability... abilities){
+        Creature creature= (Creature) card;
+        assertThat(creature.abilities(),hasSize(abilities.length));
+        assertThat(creature.abilities(),hasItems(abilities));
+    }
+    public static void assertNoneAbility(Card card){
+        Creature creature=(Creature)card;
+        assertThat(creature.abilities(),emptyCollectionOf(Ability.class));
+    }
     public static void assertCreature(Card card, int power, int toughness) {
         Creature creature = (Creature) card;
         assertThat(creature.creatureBody().power(), equalTo(power));

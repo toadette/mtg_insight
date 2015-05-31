@@ -11,13 +11,12 @@ import java.util.List;
 import de.avalax.mtg_insight.application.representation.CardRepresentation;
 import de.avalax.mtg_insight.domain.model.card.Card;
 import de.avalax.mtg_insight.domain.model.card.CardBuilder;
-import de.avalax.mtg_insight.domain.model.card.GenericCard;
 import de.avalax.mtg_insight.domain.model.deck.BasicDeck;
 import de.avalax.mtg_insight.domain.model.deck.Deckname;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 
 public class DeckAdapterTest {
@@ -45,8 +44,8 @@ public class DeckAdapterTest {
 
     @Test
     public void deckWithTwoDifferentCards_shouldReturnDeckWithTwoCardRepresentations() throws Exception {
-        deck.add(new CardBuilder("card1").build());
         deck.add(new CardBuilder("card2").build());
+        deck.add(new CardBuilder("card1").build());
 
         deckAdapter = new DeckAdapter(context, new BasicDeck(deckname, deck, sideboard));
 

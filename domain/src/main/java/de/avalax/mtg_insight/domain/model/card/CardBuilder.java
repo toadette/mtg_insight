@@ -5,6 +5,8 @@ import java.util.List;
 
 import de.avalax.mtg_insight.domain.model.color.Color;
 import de.avalax.mtg_insight.domain.model.mana.ConvertedManaCost;
+import de.avalax.mtg_insight.domain.model.mana.Mana;
+import de.avalax.mtg_insight.domain.model.mana.ManaCost;
 
 public class CardBuilder {
     private String cardName;
@@ -19,6 +21,7 @@ public class CardBuilder {
         this.cardName = cardName;
         this.colors = Collections.emptyList();
         this.cardType = GenericCard.class;
+        this.cmc = new ConvertedManaCost("", Collections.<ManaCost>emptyList());
     }
 
     public Card build() {

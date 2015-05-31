@@ -31,6 +31,7 @@ public class CardBuilderTest {
         assertThat(card).isInstanceOf(GenericCard.class);
         assertThat(card.name()).isEqualTo(newcardname);
         assertThat(card.colorOfCard()).isEmpty();
+        assertThat(card.convertedManaCost().manaCostAsList()).isEmpty();
     }
 
     @Test

@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 
 import de.avalax.mtg_insight.R;
+import de.avalax.mtg_insight.presentation.playmat.PlaymatFragment;
 
 public class DeckInsightActivity extends ActionBarActivity {
 

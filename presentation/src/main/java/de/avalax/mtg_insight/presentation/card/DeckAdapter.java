@@ -12,8 +12,8 @@ import java.util.TreeMap;
 
 import de.avalax.mtg_insight.application.representation.CardRepresentation;
 import de.avalax.mtg_insight.domain.model.card.Card;
-import de.avalax.mtg_insight.domain.model.deck.Deck;
 
+@Deprecated
 public class DeckAdapter extends BaseAdapter {
     private List<CardRepresentation> cards;
     private Context context;

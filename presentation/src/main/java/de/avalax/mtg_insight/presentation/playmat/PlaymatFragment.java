@@ -1,15 +1,12 @@
-package de.avalax.mtg_insight.presentation.card;
+package de.avalax.mtg_insight.presentation.playmat;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
-import android.widget.ListView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-
-import org.lucasr.twowayview.widget.TwoWayView;
 
 import javax.inject.Inject;
 
@@ -19,24 +16,25 @@ import de.avalax.mtg_insight.R;
 import de.avalax.mtg_insight.domain.model.deck.Deck;
 import de.avalax.mtg_insight.domain.model.deck.DeckService;
 import de.avalax.mtg_insight.presentation.MtgInsightApplication;
+import de.avalax.mtg_insight.presentation.card.CardView;
 import de.avalax.mtg_insight.presentation.tasks.DeckServiceResponse;
 import de.avalax.mtg_insight.presentation.tasks.DeckServiceTask;
 
 public class PlaymatFragment extends Fragment implements DeckServiceResponse {
     @InjectView(R.id.creatures)
-    protected GridView creatures;
+    protected LinearLayout creatures;
 
     @InjectView(R.id.spells)
-    protected GridView spells;
+    protected LinearLayout spells;
 
     @InjectView(R.id.permanents)
-    protected GridView permanents;
+    protected LinearLayout permanents;
 
     @InjectView(R.id.planeswalkers)
-    protected GridView planeswalkers;
+    protected LinearLayout planeswalkers;
 
     @InjectView(R.id.lands)
-    protected GridView lands;
+    protected LinearLayout lands;
 
     @InjectView(R.id.progressBar)
     protected ProgressBar progressBar;
@@ -65,11 +63,27 @@ public class PlaymatFragment extends Fragment implements DeckServiceResponse {
 
     @Override
     public void processFinish(Deck deck) {
-        creatures.setAdapter(new DeckAdapter(getActivity(), deck.deck().creatures()));
-        permanents.setAdapter(new DeckAdapter(getActivity(), deck.deck().permanents()));
-        spells.setAdapter(new DeckAdapter(getActivity(), deck.deck().spells()));
-        planeswalkers.setAdapter(new DeckAdapter(getActivity(), deck.deck().planeswalkers()));
-        lands.setAdapter(new DeckAdapter(getActivity(), deck.deck().lands()));
+        creatures.removeAllViews();
+
+        for (CardView card : new CardRepresentationAdapter(getActivity(), deck.deck().creatures())) {
+            creatures.addView(card);
+        }
+        permanents.removeAllViews();
+        for (CardView card : new CardRepresentationAdapter(getActivity(), deck.deck().permanents())) {
+            permanents.addView(card);
+        }
+        spells.removeAllViews();
+        for (CardView card : new CardRepresentationAdapter(getActivity(), deck.deck().spells())) {
+            spells.addView(card);
+        }
+        planeswalkers.removeAllViews();
+        for (CardView card : new CardRepresentationAdapter(getActivity(), deck.deck().planeswalkers())) {
+            planeswalkers.addView(card);
+        }
+        lands.removeAllViews();
+        for (CardView card : new CardRepresentationAdapter(getActivity(), deck.deck().lands())) {
+            lands.addView(card);
+        }
         getActivity().setTitle(deck.name().getName());
     }
 }

@@ -20,7 +20,7 @@ import de.avalax.mtg_insight.domain.model.card.CardService;
 import de.avalax.mtg_insight.port.adapter.service.color.ColorMatcher;
 import de.avalax.mtg_insight.port.adapter.service.deck.TappedOutDeckService;
 import de.avalax.mtg_insight.port.adapter.service.manaCost.ManaTokenizer;
-import de.avalax.mtg_insight.presentation.card.PlaymatFragment;
+import de.avalax.mtg_insight.presentation.playmat.PlaymatFragment;
 import de.avalax.mtg_insight.presentation.card.CardHeaderView;
 import de.avalax.mtg_insight.presentation.card.CardRepresentationToDrawable;
 import de.avalax.mtg_insight.presentation.card.CardView;

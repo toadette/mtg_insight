@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import de.avalax.mtg_insight.domain.model.card.Card;
@@ -13,6 +14,8 @@ import de.avalax.mtg_insight.domain.model.card.CreatureBody;
 import de.avalax.mtg_insight.domain.model.card.LoyaltyPoints;
 import de.avalax.mtg_insight.domain.model.color.Color;
 import de.avalax.mtg_insight.domain.model.mana.ConvertedManaCost;
+import de.avalax.mtg_insight.domain.model.mana.Mana;
+import de.avalax.mtg_insight.domain.model.mana.ManaCost;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
 
 import static org.hamcrest.Matchers.isEmptyString;
@@ -88,6 +91,19 @@ public class CardRepresentationTest {
     public void genericCard_shouldReturnEmptyPowerToughness() throws Exception {
         String creatureBody = cardRepresentation.powerToughness();
         assertThat(creatureBody, isEmptyString());
+    }
+
+    @Test
+    public void genericCard_shouldReturnCmc() throws Exception {
+        List<ManaCost> manaCostList = new ArrayList<>();
+        manaCostList.add(new ManaCost(Collections.<Mana>emptyList(),null));
+        manaCostList.add(new ManaCost(Collections.<Mana>emptyList(),null));
+
+        convertedManaCost = new ConvertedManaCost("cmcToString", manaCostList);
+
+        int convertedManaCost = cardRepresentation.convertedManaCostAsInteger();
+
+        assertThat(convertedManaCost, equalTo(2));
     }
 
     public class color {

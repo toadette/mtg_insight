@@ -78,4 +78,8 @@ public class CardRepresentation {
     private CreatureBody creatureBody() {
         return ((Creature) card).creatureBody();
     }
+
+    public int convertedManaCostAsInteger() {
+        return card.convertedManaCost().manaCostAsList().size();
+    }
 }

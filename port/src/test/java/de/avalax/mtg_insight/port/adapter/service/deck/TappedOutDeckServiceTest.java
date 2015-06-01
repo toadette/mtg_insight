@@ -8,14 +8,13 @@ import de.avalax.mtg_insight.domain.model.deck.Deckname;
 import de.avalax.mtg_insight.domain.model.deck.JobProgressListener;
 import de.avalax.mtg_insight.domain.model.exception.DeckNotFoundException;
 import de.avalax.mtg_insight.port.adapter.service.ability.AbilityTokenizer;
-import de.avalax.mtg_insight.port.adapter.service.mtgdb.MtgDBCardService;
 import de.avalax.mtg_insight.port.adapter.service.color.ColorMatcher;
 import de.avalax.mtg_insight.port.adapter.service.manaCost.ManaTokenizer;
+import de.avalax.mtg_insight.port.adapter.service.mtgdb.MtgDBCardService;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 public class TappedOutDeckServiceTest {
 
@@ -48,11 +47,12 @@ public class TappedOutDeckServiceTest {
         setUp1();
         Deck deck = tappedOutDeckService.deckFromDeckname(new Deckname(deckname), listener);
         assertThat(deck.name().getName(), equalTo("From the Grave, to the Cradle"));
-        assertThat(deck.deck(), hasSize(64));
-        assertThat(deck.deck().get(0).name(), equalTo("Boneyard Wurm"));
-        assertThat(deck.deck().get(1).name(), equalTo("Boneyard Wurm"));
-        assertThat(deck.deck().get(13).name(), equalTo("Drown in Filth"));
-        assertThat(deck.deck().get(45).name(), equalTo("Svogthos, the Restless Tomb"));
+
+        org.assertj.core.api.Assertions.assertThat(deck.deck()).hasSize(64);
+        assertThat(deck.deck().creatures().get(0).name(), equalTo("Boneyard Wurm"));
+        assertThat(deck.deck().creatures().get(1).name(), equalTo("Boneyard Wurm"));
+        assertThat(deck.deck().spells().get(0).name(), equalTo("Drown in Filth"));
+        assertThat(deck.deck().lands().get(0).name(), equalTo("Svogthos, the Restless Tomb"));
     }
 
     @Test(expected = DeckNotFoundException.class)
@@ -66,7 +66,7 @@ public class TappedOutDeckServiceTest {
         setUp2();
         Deck deck = tappedOutDeckService.deckFromDeckname(new Deckname(deckname), listener);
         assertThat(deck.name().getName(), equalTo("Lotus Blade [Modern]"));
-        assertThat(deck.deck(), hasSize(60));
+        org.assertj.core.api.Assertions.assertThat(deck.deck()).hasSize(60);
         assertThat(deck.sideboard(), hasSize(15));
         assertThat(deck.sideboard().get(0).name(), equalTo("Celestial Purge"));
         assertThat(deck.sideboard().get(1).name(), equalTo("Celestial Purge"));

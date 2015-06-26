@@ -8,6 +8,7 @@ import de.avalax.mtg_insight.domain.model.card.Card;
 import de.avalax.mtg_insight.domain.model.card.CardBuilder;
 import de.avalax.mtg_insight.domain.model.card.CardService;
 import de.avalax.mtg_insight.domain.model.exception.CardNotFoundException;
+import de.avalax.mtg_insight.domain.model.exception.InvalidCardnameException;
 import de.bechte.junit.runners.context.HierarchicalContextRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -32,7 +33,7 @@ public class CachedCardServiceTest {
         cardService = new CachedCardService(realCardService, cacheStrategy);
     }
 
-    @Test(expected = CardNotFoundException.class)
+    @Test(expected = InvalidCardnameException.class)
     public void invalidInput_shouldHaveNoInteractions() throws Exception {
         assertThat(cardService.cardFromCardname(null)).isNull();
         assertThat(cardService.cardFromCardname("")).isNull();

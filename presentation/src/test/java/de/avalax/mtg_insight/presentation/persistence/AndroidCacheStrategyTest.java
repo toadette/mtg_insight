@@ -19,7 +19,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(manifest = "src/main/AndroidManifest.xml", emulateSdk=18)
+@Config(manifest = "src/main/AndroidManifest.xml",sdk = 18)
 public class AndroidCacheStrategyTest {
     private CacheStrategy cacheStrategy;
 

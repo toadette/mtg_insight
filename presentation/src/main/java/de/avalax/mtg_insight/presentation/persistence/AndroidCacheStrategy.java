@@ -16,11 +16,15 @@ public class AndroidCacheStrategy implements CacheStrategy {
 
     @Override
     public void put(Card card) {
-        if (card.getClass().getSimpleName().equals("GenericCard")) {
+        if (isGenericCard(card)) {
             Log.e("skipping generic card", card.name());
             return;
         }
         cardRepository.save(card);
+    }
+
+    private boolean isGenericCard(Card card) {
+        return card.getClass().getSimpleName().equals("GenericCard");
     }
 
     @Override

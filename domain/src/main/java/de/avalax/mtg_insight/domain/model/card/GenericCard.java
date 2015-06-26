@@ -40,6 +40,7 @@ public class GenericCard implements Card {
     }
 
     void convertedManaCost(ConvertedManaCost convertedManaCost) {
+        //TODO: forbid null
         this.convertedManaCost = convertedManaCost;
     }
 }

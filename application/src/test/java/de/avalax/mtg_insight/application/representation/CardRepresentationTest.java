@@ -70,12 +70,6 @@ public class CardRepresentationTest {
     }
 
     @Test
-    public void nullInstance_shouldReturnEmptyConvertedString() throws Exception {
-        convertedManaCost = null;
-        assertThat(cardRepresentation.convertedManaCost(), equalTo(""));
-    }
-
-    @Test
     public void convertedManaCostWitManaCost_shouldReturnConvertedString() throws Exception {
         convertedManaCost = new ConvertedManaCost("cmcToString", null);
         assertThat(cardRepresentation.convertedManaCost(), equalTo("cmcToString"));
@@ -83,7 +77,7 @@ public class CardRepresentationTest {
 
     @Test
     public void genericCard_shouldBeNoCreature() throws Exception {
-        boolean isCreature = cardRepresentation.hasPowerToughness();
+        boolean isCreature = cardRepresentation.isCreatureOrPlaneswalker();
         assertThat(isCreature, equalTo(Boolean.FALSE));
     }
 
@@ -172,7 +166,7 @@ public class CardRepresentationTest {
 
         @Test
         public void creatureRepresentation_shouldBeACreature() throws Exception {
-            boolean isCreature = cardRepresentation.hasPowerToughness();
+            boolean isCreature = cardRepresentation.isCreatureOrPlaneswalker();
             assertThat(isCreature, equalTo(Boolean.TRUE));
         }
 
@@ -200,7 +194,7 @@ public class CardRepresentationTest {
 
         @Test
         public void creatureRepresentation_shouldBeACreature() throws Exception {
-            boolean hasPowerToughness = cardRepresentation.hasPowerToughness();
+            boolean hasPowerToughness = cardRepresentation.isCreatureOrPlaneswalker();
             assertThat(hasPowerToughness, equalTo(Boolean.TRUE));
         }
 
@@ -222,7 +216,7 @@ public class CardRepresentationTest {
 
         @Test
         public void planeswalkerRepresentation_shouldHavePowerToughness() throws Exception {
-            boolean hasPowerToughness = cardRepresentation.hasPowerToughness();
+            boolean hasPowerToughness = cardRepresentation.isCreatureOrPlaneswalker();
             assertThat(hasPowerToughness, equalTo(Boolean.TRUE));
         }
 

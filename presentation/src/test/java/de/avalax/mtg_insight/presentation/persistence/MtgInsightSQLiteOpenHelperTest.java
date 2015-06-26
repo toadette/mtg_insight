@@ -19,7 +19,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(manifest = "src/main/AndroidManifest.xml", emulateSdk=18)
+@Config(manifest = "src/main/AndroidManifest.xml", sdk=18)
 public class MtgInsightSQLiteOpenHelperTest {
 
     private Context context;

@@ -4,6 +4,7 @@ import de.avalax.mtg_insight.domain.model.card.Card;
 import de.avalax.mtg_insight.domain.model.card.CardService;
 import de.avalax.mtg_insight.domain.model.exception.CardCorruptedException;
 import de.avalax.mtg_insight.domain.model.exception.CardNotFoundException;
+import de.avalax.mtg_insight.domain.model.exception.InvalidCardnameException;
 
 public class CachedCardService implements CardService {
     private final CardService cardService;
@@ -16,9 +17,13 @@ public class CachedCardService implements CardService {
 
     @Override
     public Card cardFromCardname(String cardname) throws CardNotFoundException, CardCorruptedException {
-        if (cardname == null || cardname.isEmpty()) {
-            throw new CardNotFoundException();
+        if (invalidCardname(cardname)) {
+            throw new InvalidCardnameException();
         }
+        return fetchCard(cardname);
+    }
+
+    private Card fetchCard(String cardname) throws CardNotFoundException, CardCorruptedException {
         Card card;
         try {
             card = cacheStrategy.get(cardname);
@@ -27,5 +32,9 @@ public class CachedCardService implements CardService {
             cacheStrategy.put(card);
         }
         return card;
+    }
+
+    private boolean invalidCardname(String cardname) {
+        return cardname == null || cardname.isEmpty();
     }
 }

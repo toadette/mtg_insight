@@ -2,10 +2,11 @@ package de.avalax.mtg_insight.presentation.launcher;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 
 import de.avalax.mtg_insight.R;
 
-public class LauncherActivity extends ActionBarActivity {
+public class LauncherActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

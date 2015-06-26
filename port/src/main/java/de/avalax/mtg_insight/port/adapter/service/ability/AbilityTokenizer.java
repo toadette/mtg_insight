@@ -22,7 +22,7 @@ public class AbilityTokenizer {
 
     private List<Ability> getAbilities(String description) {
         List<Ability> abilities = new ArrayList<>();
-        if (description == "") {
+        if (description.equals("")) {
             return abilities;
         }
         String[] split = description.split(",");

@@ -3,24 +3,26 @@ package de.avalax.mtg_insight.application.representation;
 import de.avalax.mtg_insight.domain.model.card.Card;
 import de.avalax.mtg_insight.domain.model.card.Creature;
 import de.avalax.mtg_insight.domain.model.card.CreatureBody;
+import de.avalax.mtg_insight.domain.model.card.LoyaltyPoints;
 import de.avalax.mtg_insight.domain.model.card.Planeswalker;
 
 public class CardRepresentation {
     private static final String STAR_PT = "*";
+    private static final int INITIAL_COUNT_OF_CARD = 1;
     private Card card;
-    private int count;
+    private int countOfCard;
 
     public CardRepresentation(Card card) {
         this.card = card;
-        this.count = 1;
+        this.countOfCard = INITIAL_COUNT_OF_CARD;
     }
 
-    public void setCountOfCard(int count) {
-        this.count = count;
+    public void setCountOfCard(int countOfCard) {
+        this.countOfCard = countOfCard;
     }
 
     public int count() {
-        return count;
+        return countOfCard;
     }
 
     public String name() {
@@ -28,19 +30,20 @@ public class CardRepresentation {
     }
 
     public String convertedManaCost() {
-        if (card.convertedManaCost() == null) {
-            return "";
-        }
         return card.convertedManaCost().toString();
     }
 
     public CardColorRepresentation color() {
-        if (card.colorOfCard().isEmpty()) {
+        if (isColorless()) {
             return CardColorRepresentation.COLORLESS;
         }
-        if (card.colorOfCard().size() > 1) {
+        if (isMulticolored()) {
             return CardColorRepresentation.MULTICOLOR;
         }
+        return cardColorRepresentationForFirstColor();
+    }
+
+    private CardColorRepresentation cardColorRepresentationForFirstColor() {
         switch (card.colorOfCard().get(0)) {
             case WHITE:
                 return CardColorRepresentation.WHITE;
@@ -57,22 +60,53 @@ public class CardRepresentation {
         }
     }
 
-    public boolean hasPowerToughness() {
-        return card instanceof Creature || card instanceof Planeswalker;
+    private boolean isColorless() {
+        return card.colorOfCard().isEmpty();
+    }
+
+    private boolean isMulticolored() {
+        return card.colorOfCard().size() > 1;
     }
 
     public String powerToughness() {
-        if (!hasPowerToughness()) {
-            return "";
+        if (isCreature()) {
+            String power = bodyAttribute(creatureBody().power());
+            String toughness = bodyAttribute(creatureBody().toughness());
+            return powerToughnessString(power, toughness);
         }
-        if (card instanceof Creature) {
-            return bodyAttributeStringFrom(creatureBody().power()) + " / " + bodyAttributeStringFrom(creatureBody().toughness());
+        if (isPlaneswalker()) {
+            int loyaltyPoints = loyaltyPoints().loyaltyPoints();
+            return loyaltyPointsString(loyaltyPoints);
         }
-        return String.valueOf(((Planeswalker) card).loyaltyPoints().loyaltyPoints());
+        return "";
     }
 
-    private String bodyAttributeStringFrom(int power) {
-        return power == -1 ? STAR_PT : String.valueOf(power);
+    private String loyaltyPointsString(int loyaltyPoints) {
+        return String.valueOf(loyaltyPoints);
+    }
+
+    private LoyaltyPoints loyaltyPoints() {
+        return ((Planeswalker) card).loyaltyPoints();
+    }
+
+    private String powerToughnessString(String power, String toughness) {
+        return power + " / " + toughness;
+    }
+
+    private boolean isCreature() {
+        return card instanceof Creature;
+    }
+
+    public boolean isCreatureOrPlaneswalker() {
+        return isCreature() || isPlaneswalker();
+    }
+
+    private boolean isPlaneswalker() {
+        return card instanceof Planeswalker;
+    }
+
+    private String bodyAttribute(int powerToughness) {
+        return powerToughness == -1 ? STAR_PT : String.valueOf(powerToughness);
     }
 
     private CreatureBody creatureBody() {

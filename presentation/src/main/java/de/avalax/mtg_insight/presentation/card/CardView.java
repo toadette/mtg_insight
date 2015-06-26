@@ -52,7 +52,7 @@ public class CardView extends LinearLayout {
         } else {
             setBackground(cardRepresentationToDrawable.cardBackgroundFrom(cardRepresentation));
         }
-        if (cardRepresentation.hasPowerToughness()) {
+        if (cardRepresentation.isCreatureOrPlaneswalker()) {
             creatureBody.setText(cardRepresentation.powerToughness());
         } else {
             creatureBody.setVisibility(INVISIBLE);

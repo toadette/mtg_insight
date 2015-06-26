@@ -1,6 +1,7 @@
 package de.avalax.mtg_insight.port.adapter.service.deck;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import de.avalax.mtg_insight.domain.model.deck.Deck;
@@ -42,6 +43,7 @@ public class TappedOutDeckServiceTest {
         tappedOutDeckService = new TappedOutDeckService(new MtgDBCardService(new ManaTokenizer(), new ColorMatcher(), new AbilityTokenizer()));
     }
 
+    @Ignore("use other deck")
     @Test
     public void testDeckFromDeckname() throws Exception {
         setUp1();
@@ -75,6 +77,7 @@ public class TappedOutDeckServiceTest {
         assertThat(deck.sideboard().get(14).name(), equalTo("Stony Silence"));
     }
 
+    @Ignore("use other deck")
     @Test
     public void testDeckFromDeckname_shouldReturnPrintableName() throws Exception {
         setUp3();

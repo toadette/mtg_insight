@@ -10,8 +10,8 @@ import android.widget.ProgressBar;
 
 import javax.inject.Inject;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import de.avalax.mtg_insight.R;
 import de.avalax.mtg_insight.domain.model.deck.Deck;
 import de.avalax.mtg_insight.domain.model.deck.DeckService;
@@ -21,22 +21,22 @@ import de.avalax.mtg_insight.presentation.tasks.DeckServiceResponse;
 import de.avalax.mtg_insight.presentation.tasks.DeckServiceTask;
 
 public class PlaymatFragment extends Fragment implements DeckServiceResponse {
-    @InjectView(R.id.creatures)
+    @Bind(R.id.creatures)
     protected LinearLayout creatures;
 
-    @InjectView(R.id.spells)
+    @Bind(R.id.spells)
     protected LinearLayout spells;
 
-    @InjectView(R.id.permanents)
+    @Bind(R.id.permanents)
     protected LinearLayout permanents;
 
-    @InjectView(R.id.planeswalkers)
+    @Bind(R.id.planeswalkers)
     protected LinearLayout planeswalkers;
 
-    @InjectView(R.id.lands)
+    @Bind(R.id.lands)
     protected LinearLayout lands;
 
-    @InjectView(R.id.progressBar)
+    @Bind(R.id.progressBar)
     protected ProgressBar progressBar;
 
     @Inject
@@ -47,7 +47,7 @@ public class PlaymatFragment extends Fragment implements DeckServiceResponse {
         super.onCreateView(inflater, container, savedInstanceState);
         final View view = inflater.inflate(R.layout.fragment_playmat, container, false);
         ((MtgInsightApplication) getActivity().getApplicationContext()).inject(this);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
         return view;
     }
 

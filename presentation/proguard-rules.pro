@@ -51,7 +51,7 @@
 
 # Butter Knife
 -dontwarn butterknife.internal.**
--keep class **$$ViewInjector { *; }
+-keep class **$$ViewBinder { *; }
 -keepnames class * { @butterknife.InjectView *;}
 
 # Dagger

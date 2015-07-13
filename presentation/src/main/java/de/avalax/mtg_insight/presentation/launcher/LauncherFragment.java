@@ -31,7 +31,7 @@ public class LauncherFragment extends Fragment {
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_launcher, container, false);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
         ((MtgInsightApplication) getActivity().getApplication()).inject(this);
         return view;
     }

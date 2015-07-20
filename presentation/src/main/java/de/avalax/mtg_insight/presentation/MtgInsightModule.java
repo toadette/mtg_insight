@@ -12,6 +12,7 @@ import de.avalax.mtg_insight.application.launcher.LauncherApplicationService;
 import de.avalax.mtg_insight.application.port.adapter.CacheStrategy;
 import de.avalax.mtg_insight.application.port.adapter.CachedCardService;
 import de.avalax.mtg_insight.domain.model.card.CardRepository;
+import de.avalax.mtg_insight.domain.model.cardDrawing.CardDrawingCalculator;
 import de.avalax.mtg_insight.domain.model.deck.DeckService;
 import de.avalax.mtg_insight.port.adapter.service.ability.AbilityTokenizer;
 import de.avalax.mtg_insight.port.adapter.service.card.TranslatingCardService;
@@ -89,5 +90,11 @@ public class MtgInsightModule {
     @Singleton
     TranslatingCardService provideTranslatingCardService() {
         return new TranslatingCardService();
+    }
+
+    @Provides
+    @Singleton
+    CardDrawingCalculator provideCardDrawingCalculator() {
+        return new CardDrawingCalculator();
     }
 }

@@ -11,13 +11,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class CardDrawingCalculatorTest {
     private void assertDrawPercentage(int cardsDrawnBefore, double expectedDrawPercentage, String cardName, CardCollection cards) {
-        double drawPercentage = cardDrawingCalculator.cardDrawingCalculator(cardsDrawnBefore, cards, new CardBuilder(cardName).build());
+        double drawPercentage = cardDrawingCalculator.cardDrawPercentage(cardsDrawnBefore, cards, new CardBuilder(cardName).build());
 
         assertThat(drawPercentage).isEqualTo(expectedDrawPercentage);
     }
 
     private void assertDrawPercentage(double expectedDrawPercentage, String cardName, CardCollection cards) {
-        double drawPercentage = cardDrawingCalculator.cardDrawingCalculator(1, cards, new CardBuilder(cardName).build());
+        double drawPercentage = cardDrawingCalculator.cardDrawPercentage(1, cards, new CardBuilder(cardName).build());
 
         assertThat(drawPercentage).isEqualTo(expectedDrawPercentage);
     }

@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import junit.framework.TestCase;
+
 import javax.inject.Inject;
 
 import de.avalax.mtg_insight.R;
@@ -23,6 +25,7 @@ public class CardView extends LinearLayout {
     private TextView name;
     private TextView convertedManaCost;
     private TextView creatureBody;
+    private TextView drawPercentage;
 
     public CardView(Context context, CardRepresentation cardRepresentation) {
         super(context);
@@ -40,6 +43,7 @@ public class CardView extends LinearLayout {
         name = (TextView) findViewById(R.id.name);
         convertedManaCost = (TextView) findViewById(R.id.converted_mana_cost);
         creatureBody = (TextView) findViewById(R.id.creatureBody);
+        drawPercentage = (TextView) findViewById(R.id.drawPercentage);
     }
 
     private void attributes(CardRepresentation cardRepresentation) {
@@ -57,6 +61,7 @@ public class CardView extends LinearLayout {
         } else {
             creatureBody.setVisibility(INVISIBLE);
         }
+        drawPercentage.setText(cardRepresentation.getDrawPercentage());
     }
 
     private void addCountToCardView(CardRepresentation cardRepresentation) {

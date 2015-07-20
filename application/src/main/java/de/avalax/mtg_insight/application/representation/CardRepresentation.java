@@ -11,6 +11,7 @@ public class CardRepresentation {
     private static final int INITIAL_COUNT_OF_CARD = 1;
     private Card card;
     private int countOfCard;
+    private String drawPercentage;
 
     public CardRepresentation(Card card) {
         this.card = card;
@@ -115,5 +116,13 @@ public class CardRepresentation {
 
     public int convertedManaCostAsInteger() {
         return card.convertedManaCost().manaCostAsList().size();
+    }
+
+    public void setDrawPercentage(double drawPercentage) {
+        this.drawPercentage = String.valueOf(drawPercentage);
+    }
+
+    public String getDrawPercentage() {
+        return drawPercentage;
     }
 }

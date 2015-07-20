@@ -7,7 +7,7 @@ import de.avalax.mtg_insight.domain.model.deck.CardCollection;
 
 public class CardDrawingCalculator {
 
-    public double cardDrawingCalculator(int cardsToDraw, CardCollection cards, Card card) {
+    public double cardDrawPercentage(int cardsToDraw, CardCollection cards, Card card) {
         if (cards.size() == 0) {
             return 0;
         }

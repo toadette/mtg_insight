@@ -13,6 +13,8 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.avalax.mtg_insight.R;
+import de.avalax.mtg_insight.application.calculation.CardCalculationService;
+import de.avalax.mtg_insight.domain.model.cardDrawing.CardDrawingCalculator;
 import de.avalax.mtg_insight.domain.model.deck.Deck;
 import de.avalax.mtg_insight.domain.model.deck.DeckService;
 import de.avalax.mtg_insight.presentation.MtgInsightApplication;
@@ -42,6 +44,9 @@ public class PlaymatFragment extends Fragment implements DeckServiceResponse {
     @Inject
     protected DeckService deckService;
 
+    @Inject
+    protected CardDrawingCalculator cardDrawingCalculator;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
@@ -64,24 +69,25 @@ public class PlaymatFragment extends Fragment implements DeckServiceResponse {
     @Override
     public void processFinish(Deck deck) {
         creatures.removeAllViews();
+        CardCalculationService cardCalculationService = new CardCalculationService(cardDrawingCalculator, deck.deck());
 
-        for (CardView card : new CardRepresentationAdapter(getActivity(), deck.deck().creatures())) {
+        for (CardView card : new CardRepresentationAdapter(getActivity(), deck.deck().creatures(), cardCalculationService)) {
             creatures.addView(card);
         }
         permanents.removeAllViews();
-        for (CardView card : new CardRepresentationAdapter(getActivity(), deck.deck().permanents())) {
+        for (CardView card : new CardRepresentationAdapter(getActivity(), deck.deck().permanents(), cardCalculationService)) {
             permanents.addView(card);
         }
         spells.removeAllViews();
-        for (CardView card : new CardRepresentationAdapter(getActivity(), deck.deck().spells())) {
+        for (CardView card : new CardRepresentationAdapter(getActivity(), deck.deck().spells(), cardCalculationService)) {
             spells.addView(card);
         }
         planeswalkers.removeAllViews();
-        for (CardView card : new CardRepresentationAdapter(getActivity(), deck.deck().planeswalkers())) {
+        for (CardView card : new CardRepresentationAdapter(getActivity(), deck.deck().planeswalkers(), cardCalculationService)) {
             planeswalkers.addView(card);
         }
         lands.removeAllViews();
-        for (CardView card : new CardRepresentationAdapter(getActivity(), deck.deck().lands())) {
+        for (CardView card : new CardRepresentationAdapter(getActivity(), deck.deck().lands(), cardCalculationService)) {
             lands.addView(card);
         }
         getActivity().setTitle(deck.name().getName());

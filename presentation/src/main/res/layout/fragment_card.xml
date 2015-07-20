@@ -48,6 +48,16 @@
                 android:layout_alignParentBottom="true"
                 android:textStyle="bold"
                 android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/drawPercentage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:text="@string/generic_power_toughness"
+                android:layout_alignParentTop="true"
+                android:textStyle="bold"
+                android:textSize="24sp" />
         </RelativeLayout>
     </RelativeLayout>
 </merge>

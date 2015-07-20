@@ -73,4 +73,8 @@ public class CardCollection implements Iterable<Card> {
     public List<Land> lands() {
         return lands;
     }
+
+    public int size() {
+        return deck.size();
+    }
 }

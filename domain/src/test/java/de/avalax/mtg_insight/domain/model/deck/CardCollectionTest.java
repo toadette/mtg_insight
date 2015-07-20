@@ -21,6 +21,7 @@ public class CardCollectionTest {
     public void emptyDeck_shouldHAveNothingToIterate() throws Exception {
         CardCollection cardCollection = new CardCollection();
 
+        assertThat(cardCollection.size()).isZero();
         assertThat(cardCollection).isEmpty();
         assertThat(cardCollection.creatures()).isEmpty();
         assertThat(cardCollection.spells()).isEmpty();
@@ -37,6 +38,7 @@ public class CardCollectionTest {
         cardCollection.add(card1);
         cardCollection.add(card2);
 
+        assertThat(cardCollection.size()).isEqualTo(2);
         assertThat(cardCollection).containsExactly(card1, card2);
         assertThat(cardCollection.creatures()).isEmpty();
         assertThat(cardCollection.spells()).isEmpty();
@@ -51,6 +53,7 @@ public class CardCollectionTest {
         Card card1 = new CardBuilder("1").creatureCard(new CreatureBody(2, 2), null).build();
         cardCollection.add(card1);
 
+        assertThat(cardCollection.size()).isEqualTo(1);
         assertThat(cardCollection).containsExactly(card1);
         assertThat(cardCollection.creatures()).containsExactly((Creature) card1);
         assertThat(cardCollection.spells()).isEmpty();
@@ -67,6 +70,7 @@ public class CardCollectionTest {
         cardCollection.add(card1);
         cardCollection.add(card2);
 
+        assertThat(cardCollection.size()).isEqualTo(2);
         assertThat(cardCollection).containsExactly(card1, card2);
         assertThat(cardCollection.creatures()).isEmpty();
         assertThat(cardCollection.spells()).containsExactly((Spell) card1, (Spell) card2);
@@ -83,6 +87,7 @@ public class CardCollectionTest {
         cardCollection.add(card1);
         cardCollection.add(card2);
 
+        assertThat(cardCollection.size()).isEqualTo(2);
         assertThat(cardCollection).containsExactly(card1, card2);
         assertThat(cardCollection.creatures()).isEmpty();
         assertThat(cardCollection.spells()).isEmpty();
@@ -111,6 +116,7 @@ public class CardCollectionTest {
         Card card1 = new CardBuilder("1").landCard().build();
         cardCollection.add(card1);
 
+        assertThat(cardCollection.size()).isEqualTo(1);
         assertThat(cardCollection).containsExactly(card1);
         assertThat(cardCollection.creatures()).isEmpty();
         assertThat(cardCollection.spells()).isEmpty();

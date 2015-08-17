@@ -65,7 +65,7 @@ repositories {
 
 dependencies {
     testCompile 'junit:junit:4.12'
-    testCompile 'de.bechte.junit:junit-hierarchicalcontextrunner:4.12.0'
+    testCompile 'de.bechte.junit:junit-hierarchicalcontextrunner:4.12.1'
     testCompile 'org.hamcrest:hamcrest-all:1.3'
     testCompile 'org.mockito:mockito-all:1.10.19'
     testCompile("org.robolectric:robolectric:3.0") {
